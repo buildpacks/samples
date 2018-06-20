@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+env_dir=$1/env
+cache_dir=$2
+launch_dir=$3
+
+nodejs_url=https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz
+nodejs=$(basename "${nodejs_url%.tar.tgz}")
+
+# TODO: add support for vendored apps
+if [[ -f node_modules ]]; then
+    >&2 echo "Vendored apps not supported."
+    exit 1
+fi
+
+# Load user-provided build-time environment variables
+for var in "$env_dir"/*; do
+    declare "$(basename "$var")=$(<"$var")"
+done
+
+# If it doesn't exist locally, create a Node.js cache layer with
+# POSIX-style root for build (bin, lib, include, etc).
+# This makes Node.js available to subsequent buildpacks as well.
+if [[ ! -d $cache_dir/$nodejs ]]; then
+    wget -q -O - "$nodejs_url" | tar -C "$cache_dir" xJf -
+    mkdir -p "$cache_dir/$nodejs/env"
+    echo "$cache_dir/node_modules" > "$cache_dir/$nodejs/env/NODE_PATH"
+fi
+
+# If it doesn't exist remotely, create a Node.js launch layer with
+# POSIX-style root for launch (bin, lib, etc).
+if [[ ! -f $launch_dir/$nodejs.toml ]]; then
+    mkdir "$launch_dir/$nodejs"
+    cp -r "$cache_dir/$nodejs"/{bin,lib} "$launch_dir/$nodejs/"
+fi
+
+# Make npm, node, etc. accessible in this script
+export PATH=$PATH:$cache_dir/$nodejs/bin
+export LD_LIBRARY_PATH=$PATH:$cache_dir/$nodejs/lib
+
+# TODO: (saves ~3s) generate ./package-lock.json if necessary and
+# TODO: compare to copy in cache and checksum in node_modules.toml
+
+# Update cached node modules
+if [[ -d $cache_dir/node_modules ]]; then
+    ln -sf "$cache_dir/node_modules" node_modules
+    npm rebuild "--nodedir=$cache_dir/$nodejs"
+fi
+npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
+if [[ ! -d $cache_dir/node_modules ]]; then
+    mv node_modules "$cache_dir/"
+    ln -sf "$cache_dir/node_modules" node_modules
+fi
+
+# Update remote node modules layer if necessary
+local_checksum=$(md5sum package-lock.json | cut -d' ' -f1)
+if [[ -f $launch_dir/node_modules.toml ]]; then
+    remote_checksum=$(cat "$launch_dir/node_modules.toml" | yj -t | jq -r .lock_checksum)
+fi
+if [[ $local_checksum != $remote_checksum ]] ; then
+    cp -r "$cache_dir/node_modules" "$launch_dir/"
+    echo "lock_checksum = \"$local_checksum\"" > "$launch_dir/node_modules.toml"
+fi
