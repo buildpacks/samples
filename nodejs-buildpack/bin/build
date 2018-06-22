@@ -28,7 +28,7 @@ fi
 # POSIX-style root for build (bin, lib, include, etc).
 # This makes Node.js available to subsequent buildpacks as well.
 if [[ ! -d $cache_dir/$nodejs ]]; then
-    wget -q -O - "$nodejs_url" | tar -C "$cache_dir" xJf -
+    wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir"
     mkdir -p "$cache_dir/$nodejs/env"
     echo "$cache_dir/node_modules" > "$cache_dir/$nodejs/env/NODE_PATH"
 fi
