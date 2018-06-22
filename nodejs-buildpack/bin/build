@@ -9,9 +9,13 @@ launch_toml=$1/launch.toml
 
 # TODO: pull version from package.json
 nodejs_url=https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz
-nodejs=$(basename "${nodejs_url%.tar.tgz}")
+nodejs=$(basename "${nodejs_url%.tar.xz}")
 
-# TODO: add support for vendored apps
+# TODO: to add support for vendored apps:
+# - delete node_modules layer in cache
+# - delete node_modules.toml in launch
+# - rebuild node_modules in app dir
+# - don't set NODE_PATH
 if [[ -f node_modules ]]; then
     >&2 echo "Vendored apps not supported."
     exit 1
