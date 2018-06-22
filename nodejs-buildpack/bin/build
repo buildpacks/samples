@@ -15,7 +15,7 @@ nodejs=$(basename "${nodejs_url%.tar.xz}")
 # - delete node_modules.toml in launch
 # - rebuild node_modules in app dir
 # - don't set NODE_PATH
-if [[ -f node_modules ]]; then
+if [[ -e node_modules ]]; then
     >&2 echo "Vendored apps not supported."
     exit 1
 fi
