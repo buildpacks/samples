@@ -57,6 +57,7 @@ if [[ -d $cache_dir/node_modules ]]; then
     npm rebuild "--nodedir=$cache_dir/$nodejs"
 fi
 npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
+mkdir -p node_modules
 if [[ ! -d $cache_dir/node_modules ]]; then
     mv node_modules "$cache_dir/"
     ln -sf "$cache_dir/node_modules" node_modules

@@ -1,4 +1,4 @@
 id = "sh.packs.samples.buildpack.nodejs"
 version = "0.0.1"
 name = "Sample Node.js Buildpack"
-stacks = ["alpine:3.7"]
+stacks = ["ubuntu:18.04"]
