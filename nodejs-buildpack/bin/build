@@ -18,9 +18,11 @@ if [[ -f node_modules ]]; then
 fi
 
 # Load user-provided build-time environment variables
-for var in "$env_dir"/*; do
-    declare "$(basename "$var")=$(<"$var")"
-done
+if compgen -G "$env_dir/*" > /dev/null; then
+    for var in "$env_dir"/*; do
+        declare "$(basename "$var")=$(<"$var")"
+    done
+fi
 
 # If it doesn't exist locally, create a Node.js cache layer with
 # POSIX-style root for build (bin, lib, include, etc).
