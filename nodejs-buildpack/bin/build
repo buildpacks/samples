@@ -74,6 +74,7 @@ else
 fi
 npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
 
+echo "DG($PWD): ln -sf \"$launch_dir/node_modules\" node_modules"
 ln -sf "$launch_dir/node_modules" node_modules
 
 # Update remote node modules layer if necessary
