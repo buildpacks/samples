@@ -66,16 +66,15 @@ fi
 
 # Update cached node modules
 if [[ -d $cache_dir/node_modules ]]; then
-    ln -sf "$cache_dir/node_modules" node_modules
+    ln -snf "$cache_dir/node_modules" node_modules
     npm rebuild "--nodedir=$cache_dir/nodejs"
 else
     mkdir "$cache_dir/node_modules"
-    ln -sf "$cache_dir/node_modules" node_modules
+    ln -snf "$cache_dir/node_modules" node_modules
 fi
 npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
 
-echo "DG($PWD): ln -sf \"$launch_dir/node_modules\" node_modules"
-ln -sf "$launch_dir/node_modules" node_modules
+ln -snf "$launch_dir/node_modules" node_modules
 
 # Update remote node modules layer if necessary
 local_checksum=$(md5sum package-lock.json | cut -d' ' -f1)
