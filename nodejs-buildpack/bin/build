@@ -7,8 +7,8 @@ cache_dir=$2
 launch_dir=$3
 
 # TODO: pull version from package.json
-nodejs_url=https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz
-nodejs=$(basename "${nodejs_url%.tar.xz}")
+NODE_VERSION=v8.11.3
+nodejs_url=https://nodejs.org/dist/$NODE_VERSION/node-${NODE_VERSION}-linux-x64.tar.xz
 
 # TODO: to add support for vendored apps:
 # - delete node_modules layer in cache
@@ -30,37 +30,47 @@ fi
 # If it doesn't exist locally, create a Node.js cache layer with
 # POSIX-style root for build (bin, lib, include, etc).
 # This makes Node.js available to subsequent buildpacks as well.
-if [[ ! -d $cache_dir/$nodejs ]]; then
-    wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir"
-    mkdir -p "$cache_dir/$nodejs/env"
-    echo "$cache_dir/node_modules" > "$cache_dir/$nodejs/env/NODE_PATH"
+if [[ -f $cache_dir/nodejs.toml ]]; then
+    cached_nodejs_version=$(cat "$cache_dir/nodejs.toml" | yj -t | jq -r .version)
+fi
+if [[ $NODE_VERSION != $cached_nodejs_version ]] ; then
+    rm -rf "$cache_dir/nodejs"
+    mkdir "$cache_dir/nodejs"
+    wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir/nodejs" --strip-components=1
+    mkdir -p "$cache_dir/nodejs/env"
+    echo "$cache_dir/node_modules" > "$cache_dir/nodejs/env/NODE_PATH"
+    echo "version = \"$NODE_VERSION\"" > "$cache_dir/nodejs.toml"
 fi
 
 # If it doesn't exist remotely, create a Node.js launch layer with
 # POSIX-style root for launch (bin, lib, etc).
-if [[ ! -f $launch_dir/$nodejs.toml ]]; then
-    mkdir "$launch_dir/$nodejs"
-    cp -r "$cache_dir/$nodejs"/{bin,lib} "$launch_dir/$nodejs/"
+if [[ -f $launch_dir/nodejs.toml ]]; then
+    launch_nodejs_version=$(cat "$launch_dir/nodejs.toml" | yj -t | jq -r .version)
+fi
+if [[ $NODE_VERSION != $launch_nodejs_version ]] ; then
+    mkdir "$launch_dir/nodejs"
+    cp -r "$cache_dir/nodejs"/{bin,lib} "$launch_dir/nodejs/"
+    cp "$cache_dir/nodejs.toml" "$launch_dir/nodejs.toml"
 fi
 
 # Make npm, node, etc. accessible in this script
-export PATH=$PATH:$cache_dir/$nodejs/bin
-export LD_LIBRARY_PATH=$PATH:$cache_dir/$nodejs/lib
+export PATH=$PATH:$cache_dir/nodejs/bin
+export LD_LIBRARY_PATH=$PATH:$cache_dir/nodejs/lib
 
 # TODO: (saves ~3s) generate ./package-lock.json if necessary and
 # TODO: compare to copy in cache and checksum in node_modules.toml
 
 # Update cached node modules
 if [[ -d $cache_dir/node_modules ]]; then
-    ln -sf "$cache_dir/node_modules" node_modules
-    npm rebuild "--nodedir=$cache_dir/$nodejs"
+    ln -snf "$cache_dir/node_modules" node_modules
+    npm rebuild "--nodedir=$cache_dir/nodejs"
+else
+    mkdir "$cache_dir/node_modules"
+    ln -snf "$cache_dir/node_modules" node_modules
 fi
 npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
-mkdir -p node_modules
-if [[ ! -d $cache_dir/node_modules ]]; then
-    mv node_modules "$cache_dir/"
-    ln -sf "$cache_dir/node_modules" node_modules
-fi
+
+ln -snf "$launch_dir/node_modules" node_modules
 
 # Update remote node modules layer if necessary
 local_checksum=$(md5sum package-lock.json | cut -d' ' -f1)
