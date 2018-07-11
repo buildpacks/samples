@@ -54,13 +54,13 @@ export LD_LIBRARY_PATH=$PATH:$cache_dir/$nodejs/lib
 if [[ -d $cache_dir/node_modules ]]; then
     ln -sf "$cache_dir/node_modules" node_modules
     npm rebuild "--nodedir=$cache_dir/$nodejs"
-fi
-npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
-mkdir -p node_modules
-if [[ ! -d $cache_dir/node_modules ]]; then
-    mv node_modules "$cache_dir/"
+else
+    mkdir "$cache_dir/node_modules"
     ln -sf "$cache_dir/node_modules" node_modules
 fi
+npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
+
+ln -sf "$launch_dir/node_modules" node_modules
 
 # Update remote node modules layer if necessary
 local_checksum=$(md5sum package-lock.json | cut -d' ' -f1)
