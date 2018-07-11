@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
-set -x
 
 env_dir=$1/env
 cache_dir=$2
@@ -40,6 +39,7 @@ if [[ $NODE_VERSION != $cached_nodejs_version ]] ; then
     wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir/nodejs" --strip-components=1
     mkdir -p "$cache_dir/nodejs/env"
     echo "$cache_dir/node_modules" > "$cache_dir/nodejs/env/NODE_PATH"
+    echo "version = \"$NODE_VERSION\"" > "$cache_dir/nodejs.toml"
 fi
 
 # If it doesn't exist remotely, create a Node.js launch layer with
