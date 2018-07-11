@@ -54,11 +54,11 @@ if [[ $NODE_VERSION != $launch_nodejs_version ]] ; then
 fi
 
 # Make npm, node, etc. accessible in this script
-export PATH=$PATH:$cache_dir/$nodejs/bin
+export PATH=$PATH:$cache_dir/nodejs/bin
 if [[ -z $LD_LIBRARY_PATH ]]; then
-    export LD_LIBRARY_PATH=$cache_dir/$nodejs/lib
+    export LD_LIBRARY_PATH=$cache_dir/nodejs/lib
 else
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cache_dir/$nodejs/lib
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cache_dir/nodejs/lib
 fi
 
 # TODO: (saves ~3s) generate ./package-lock.json if necessary and
@@ -67,7 +67,7 @@ fi
 # Update cached node modules
 if [[ -d $cache_dir/node_modules ]]; then
     ln -sf "$cache_dir/node_modules" node_modules
-    npm rebuild "--nodedir=$cache_dir/$nodejs"
+    npm rebuild "--nodedir=$cache_dir/nodejs"
 else
     mkdir "$cache_dir/node_modules"
     ln -sf "$cache_dir/node_modules" node_modules
