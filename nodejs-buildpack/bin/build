@@ -7,8 +7,8 @@ cache_dir=$2
 launch_dir=$3
 
 # TODO: pull version from package.json
-NODE_VERSION=v8.11.3
-nodejs_url=https://nodejs.org/dist/$NODE_VERSION/node-${NODE_VERSION}-linux-x64.tar.xz
+node_version=v8.11.3
+nodejs_url=https://nodejs.org/dist/$node_version/node-${node_version}-linux-x64.tar.xz
 
 # TODO: to add support for vendored apps:
 # - delete node_modules layer in cache
@@ -33,13 +33,13 @@ fi
 if [[ -f $cache_dir/nodejs.toml ]]; then
     cached_nodejs_version=$(cat "$cache_dir/nodejs.toml" | yj -t | jq -r .version)
 fi
-if [[ $NODE_VERSION != $cached_nodejs_version ]] ; then
+if [[ $node_version != $cached_nodejs_version ]] ; then
     rm -rf "$cache_dir/nodejs"
     mkdir "$cache_dir/nodejs"
     wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir/nodejs" --strip-components=1
     mkdir -p "$cache_dir/nodejs/env"
     echo "$cache_dir/node_modules" > "$cache_dir/nodejs/env/NODE_PATH"
-    echo "version = \"$NODE_VERSION\"" > "$cache_dir/nodejs.toml"
+    echo "version = \"$node_version\"" > "$cache_dir/nodejs.toml"
 fi
 
 # If it doesn't exist remotely, create a Node.js launch layer with
@@ -47,7 +47,7 @@ fi
 if [[ -f $launch_dir/nodejs.toml ]]; then
     launch_nodejs_version=$(cat "$launch_dir/nodejs.toml" | yj -t | jq -r .version)
 fi
-if [[ $NODE_VERSION != $launch_nodejs_version ]] ; then
+if [[ $node_version != $launch_nodejs_version ]] ; then
     mkdir "$launch_dir/nodejs"
     cp -r "$cache_dir/nodejs"/{bin,lib} "$launch_dir/nodejs/"
     cp "$cache_dir/nodejs.toml" "$launch_dir/nodejs.toml"
