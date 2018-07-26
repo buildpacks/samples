@@ -55,7 +55,11 @@ fi
 
 # Make npm, node, etc. accessible in this script
 export PATH=$PATH:$cache_dir/nodejs/bin
-export LD_LIBRARY_PATH=$PATH:$cache_dir/nodejs/lib
+if [[ -z $LD_LIBRARY_PATH ]]; then
+    export LD_LIBRARY_PATH=$cache_dir/nodejs/lib
+else
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cache_dir/nodejs/lib
+fi
 
 # TODO: (saves ~3s) generate ./package-lock.json if necessary and
 # TODO: compare to copy in cache and checksum in node_modules.toml
