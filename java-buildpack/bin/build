@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+echo "---> Java buildpack"
+
+set -eo pipefail
+
+env_dir=$1/env
+cache_dir=$2
+launch_dir=$3
+
+# Load user-provided build-time environment variables
+if compgen -G "$env_dir/*" > /dev/null; then
+  for var in "$env_dir"/*; do
+    declare "$(basename "$var")=$(<"$var")"
+  done
+fi
+
+echo "---> Installing JDK"
+
+if [[ ! -f $launch_dir/jdk.toml ]]; then
+  mkdir -p $launch_dir/jdk
+  jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
+  curl -sfL "$jdk_url" | tar pxz -C $launch_dir/jdk --strip-components=1
+  mkdir -p $launch_dir/jdk/.profile.d
+  cat << EOF > $launch_dir/jdk/.profile.d/jdk.sh
+export JAVA_HOME=$launch_dir/jdk
+export PATH=\$JAVA_HOME/bin:\$PATH
+export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:\$LD_LIBRARY_PATH"
+EOF
+  echo "version = \"1.8.0_163\"" > $launch_dir/jdk.toml
+fi
+source $launch_dir/jdk/.profile.d/jdk.sh
+
+echo "---> Installing Maven"
+
+mkdir -p $cache_dir/maven/.m2
+if [[ ! -f $cache_dir/maven.toml ]]; then
+  maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
+  curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
+  echo "version = \"3.5.4\"" > $cache_dir/maven.toml
+fi
+export PATH=$PATH:$cache_dir/maven/bin
+
+echo "---> Running Maven"
+
+MAVEN_OPTS="${MAVEN_OPTS:-"-Xmx1024m -Duser.home=$cache_dir -Dmaven.repo.local=$cache_dir/.m2/repository"}"
+mvn clean install -B -DskipTests
+
+# Set default start command
+for jarFile in $(find target -maxdepth 1 -name "*.jar" -type f); do
+  echo "processes = [{ type = \"web\", command = \"java -jar $jarFile\"}]" > "$launch_dir/launch.toml"
+  break;
+done
