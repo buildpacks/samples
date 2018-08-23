@@ -48,7 +48,7 @@ export PATH=$PATH:$cache_dir/maven/bin
 
 echo "---> Running Maven"
 
-MAVEN_OPTS="${MAVEN_OPTS:-"-Xmx1024m -Duser.home=$cache_dir -Dmaven.repo.local=$cache_dir/.m2/repository"}"
+MAVEN_OPTS="${MAVEN_OPTS:-"-Xmx1024m"}"
 mvn clean install -B -DskipTests
 
 # Set default start command
