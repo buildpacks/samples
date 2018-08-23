@@ -1,0 +1,4 @@
+id = "sh.packs.samples.buildpack.java"
+version = "0.0.1"
+name = "Sample Java Buildpack"
+stacks = ["packs/v3"]
