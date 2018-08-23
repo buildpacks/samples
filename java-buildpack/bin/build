@@ -37,6 +37,8 @@ source $launch_dir/jdk/.profile.d/jdk.sh
 echo "---> Installing Maven"
 
 mkdir -p $cache_dir/maven/.m2
+ln -s $cache_dir/maven/.m2 $HOME/.m2
+
 if [[ ! -f $cache_dir/maven.toml ]]; then
   maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
   curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
