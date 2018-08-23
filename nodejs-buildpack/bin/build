@@ -34,12 +34,15 @@ if [[ -f $cache_dir/nodejs.toml ]]; then
     cached_nodejs_version=$(cat "$cache_dir/nodejs.toml" | yj -t | jq -r .version)
 fi
 if [[ $node_version != $cached_nodejs_version ]] ; then
+    echo "Providing nodejs for later buildpacks - $node_version"
     rm -rf "$cache_dir/nodejs"
     mkdir "$cache_dir/nodejs"
     wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir/nodejs" --strip-components=1
     mkdir -p "$cache_dir/nodejs/env"
     echo "$cache_dir/node_modules" > "$cache_dir/nodejs/env/NODE_PATH"
     echo "version = \"$node_version\"" > "$cache_dir/nodejs.toml"
+else
+    echo "Using cached nodejs for later buildpacks - $node_version"
 fi
 
 # If it doesn't exist remotely, create a Node.js launch layer with
@@ -48,9 +51,12 @@ if [[ -f $launch_dir/nodejs.toml ]]; then
     launch_nodejs_version=$(cat "$launch_dir/nodejs.toml" | yj -t | jq -r .version)
 fi
 if [[ $node_version != $launch_nodejs_version ]] ; then
+    echo "Providing nodejs for runtime - $node_version"
     mkdir "$launch_dir/nodejs"
     cp -r "$cache_dir/nodejs"/{bin,lib} "$launch_dir/nodejs/"
     cp "$cache_dir/nodejs.toml" "$launch_dir/nodejs.toml"
+else
+    echo "Using cached nodejs layer for runtime - $node_version"
 fi
 
 # Make npm, node, etc. accessible in this script
@@ -66,12 +72,14 @@ fi
 
 # Update cached node modules
 if [[ -d $cache_dir/node_modules ]]; then
+    echo "Rebuilding node modules (from cache)"
     ln -snf "$cache_dir/node_modules" node_modules
     npm rebuild "--nodedir=$cache_dir/nodejs"
 else
     mkdir "$cache_dir/node_modules"
     ln -snf "$cache_dir/node_modules" node_modules
 fi
+echo "Installing node modules"
 npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
 
 ln -snf "$launch_dir/node_modules" node_modules
@@ -84,6 +92,8 @@ fi
 if [[ $local_checksum != $remote_checksum ]] ; then
     cp -r "$cache_dir/node_modules" "$launch_dir/"
     echo "lock_checksum = \"$local_checksum\"" > "$launch_dir/node_modules.toml"
+else
+    echo "Using cached node modules layer for runtime"
 fi
 
 # Set default start command
