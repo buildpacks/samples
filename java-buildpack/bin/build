@@ -32,24 +32,27 @@ EOF
   # TODO put the jdk in the cache
   # TODO write to $cache_dir/jdk/env
 fi
-source $launch_dir/jdk/.profile.d/jdk.sh
-
-echo "---> Installing Maven"
+source $launch_dir/jdk/profile.d/jdk.sh
 
 mkdir -p $cache_dir/maven/.m2
 ln -s $cache_dir/maven/.m2 $HOME/.m2
+MAVEN_OPTS="${MAVEN_OPTS:-"-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"}"
 
-if [[ ! -f $cache_dir/maven.toml ]]; then
-  maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
-  curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
-  echo "version = \"3.5.4\"" > $cache_dir/maven.toml
+if [[ -x mvnw ]]; then
+  echo "---> Running Maven Wrapper"
+  ./mvnw clean install -B -DskipTests
+else
+  if [[ ! -f $cache_dir/maven.toml ]]; then
+    echo "---> Installing Maven"
+    maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
+    curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
+    echo "version = \"3.5.4\"" > $cache_dir/maven.toml
+  fi
+  export PATH=$PATH:$cache_dir/maven/bin
+
+  echo "---> Running Maven"
+  mvn clean install -B -DskipTests
 fi
-export PATH=$PATH:$cache_dir/maven/bin
-
-echo "---> Running Maven"
-
-MAVEN_OPTS="${MAVEN_OPTS:-"-Xmx1024m"}"
-mvn clean install -B -DskipTests
 
 # Set default start command
 for jarFile in $(find target -maxdepth 1 -name "*.jar" -type f); do
