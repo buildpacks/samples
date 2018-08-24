@@ -2,8 +2,12 @@
 
 set -eo pipefail
 
-if [[ -f package.json ]]; then
-    exit 0
+if [[ ! -f package.json ]]; then
+    exit 100
 fi
 
-exit 1
+semver=$(jq -r .version package.json)
+version=v$(wget -q -O - "https://semver.io/node/resolve/${semver:-*}")
+echo "nodejs = { version = \"$version\" }"
+
+exit 0
