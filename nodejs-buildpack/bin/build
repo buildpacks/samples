@@ -10,21 +10,17 @@ launch_dir=$3
 node_version=v8.11.3
 nodejs_url=https://nodejs.org/dist/${node_version}/node-${node_version}-linux-x64.tar.xz
 
-# TODO: to add support for vendored apps:
-# - delete node_modules layer in cache
-# - delete node_modules.toml in launch
-# - rebuild node_modules in app dir
-# - don't set NODE_PATH
-if [[ -e node_modules ]]; then
-    >&2 echo "Vendored apps not supported."
-    exit 1
-fi
-
 # Load user-provided build-time environment variables
 if compgen -G "$env_dir/*" > /dev/null; then
     for var in "$env_dir"/*; do
         declare "$(basename "$var")=$(<"$var")"
     done
+fi
+
+# If the app is vendored, treat the vendored modules as if cached.
+if [[ -e node_modules ]]; then
+    rm -rf "$cache_dir/node_modules"
+    mv node_modules "$cache_dir/"
 fi
 
 # If it doesn't exist locally, create a Node.js cache layer with
@@ -55,11 +51,7 @@ fi
 
 # Make npm, node, etc. accessible in this script
 export PATH=$PATH:$cache_dir/nodejs/bin
-if [[ -z $LD_LIBRARY_PATH ]]; then
-    export LD_LIBRARY_PATH=$cache_dir/nodejs/lib
-else
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cache_dir/nodejs/lib
-fi
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}$cache_dir/nodejs/lib
 
 # TODO: (saves ~3s) generate ./package-lock.json if necessary and
 # TODO: compare to copy in cache and checksum in node_modules.toml
