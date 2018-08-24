@@ -6,8 +6,7 @@ env_dir=$1/env
 cache_dir=$2
 launch_dir=$3
 
-# TODO: pull version from package.json
-node_version=v8.11.3
+node_version=$(cat - | yj -t | jq -r .nodejs.version)
 nodejs_url=https://nodejs.org/dist/${node_version}/node-${node_version}-linux-x64.tar.xz
 
 # Load user-provided build-time environment variables
