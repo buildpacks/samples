@@ -8,6 +8,12 @@ env_dir=$1/env
 cache_dir=$2
 launch_dir=$3
 
+jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
+jdk_version="1.8.0_163"
+
+maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
+maven_version="3.5.4"
+
 # Load user-provided build-time environment variables
 if compgen -G "$env_dir/*" > /dev/null; then
   for var in "$env_dir"/*; do
@@ -17,36 +23,65 @@ fi
 
 echo "---> Installing JDK"
 
-if [[ ! -f $launch_dir/jdk.toml ]]; then
-  mkdir -p $launch_dir/jdk
-  jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
-  curl -sfL "$jdk_url" | tar pxz -C $launch_dir/jdk --strip-components=1
+# If it doesn't exist locally, create a JDK cache layer
+# This makes JDK available to subsequent buildpacks as well.
+if [[ -f $cache_dir/jdk.toml ]]; then
+  cached_jdk_url=$(cat "$cache_dir/jdk.toml" | yj -t | jq -r .url 2>/dev/null || echo 'JDK TOML parsing failed')
+fi
+if [[ $jdk_url != $cached_jdk_url ]] ; then
+  rm -rf "$cache_dir"/jdk
+  mkdir -p "$cache_dir"/jdk/env
+  curl -sfL "$jdk_url" | tar pxz -C "$cache_dir"/jdk --strip-components=1
+  echo -e "version = \"$jdk_version\"\nurl = \"$jdk_url\"" > "$cache_dir"/jdk.toml
+
+  echo "$cache_dir"/jdk > "$cache_dir"/jdk/env/JAVA_HOME
+  if [[ -z $LD_LIBRARY_PATH ]]; then
+    echo "$JAVA_HOME/jre/lib/amd64/server" > $cache_dir/jdk/env/LD_LIBRARY_PATH
+  else
+    echo "$JAVA_HOME/jre/lib/amd64/server:$LD_LIBRARY_PATH" > $cache_dir/jdk/env/LD_LIBRARY_PATH
+  fi
+fi
+# Set env variables to make jdk accessible
+for var in "$cache_dir"/jdk/env/*; do
+  declare "$(basename "$var")=$(<"$var")"
+done
+export PATH=$cache_dir/jdk/bin:$PATH
+
+# If it doesn't exist remotely, create a JDK launch layer
+if [[ -f $launch_dir/jdk.toml ]]; then
+  launch_jdk_url=$(cat "$launch_dir/jdk.toml" | yj -t | jq -r .url 2>/dev/null || echo 'JDK TOML parsing failed')
+fi
+if [[ $jdk_url != $launch_jdk_url ]] ; then
+  cp -r "$cache_dir"/jdk "$launch_dir"
+  cp "$cache_dir"/jdk.toml "$launch_dir"/jdk.toml
+
   mkdir -p $launch_dir/jdk/profile.d
   cat << EOF > $launch_dir/jdk/profile.d/jdk.sh
 export JAVA_HOME=$launch_dir/jdk
-export PATH=\$JAVA_HOME/bin:\$PATH
-export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:\$LD_LIBRARY_PATH"
-EOF
-  echo "version = \"1.8.0_163\"" > $launch_dir/jdk.toml
-
-  # TODO put the jdk in the cache
-  # TODO write to $cache_dir/jdk/env
+if [[ -z \$LD_LIBRARY_PATH ]]; then
+  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
+else
+  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:$LD_LIBRARY_PATH"
 fi
-source $launch_dir/jdk/profile.d/jdk.sh
+EOF
+fi
 
-mkdir -p $cache_dir/maven/.m2
-ln -s $cache_dir/maven/.m2 $HOME/.m2
+mkdir -p $cache_dir/maven_m2
+ln -s $cache_dir/maven_m2 $HOME/.m2
 MAVEN_OPTS="${MAVEN_OPTS:-"-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"}"
 
 if [[ -x mvnw ]]; then
   echo "---> Running Maven Wrapper"
   ./mvnw clean install -B -DskipTests
 else
-  if [[ ! -f $cache_dir/maven.toml ]]; then
+  if [[ -f $cache_dir/maven.toml ]]; then
+    cached_maven_url=$(cat "$cache_dir/maven.toml" | yj -t | jq -r .url 2>/dev/null || echo 'Maven TOML parsing failed')
+  fi
+  if [[ $maven_url != $cached_maven_url ]] ; then
     echo "---> Installing Maven"
-    maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
+    rm -rf "$cache_dir/maven"
     curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
-    echo "version = \"3.5.4\"" > $cache_dir/maven.toml
+    echo -e "version = \"$maven_version\"\nurl = \"$maven_url\"" > "$cache_dir"/maven.toml
   fi
   export PATH=$PATH:$cache_dir/maven/bin
 
