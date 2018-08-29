@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+download() {
+  local url=${1:?}
+  local out=${2:?}
+  if which wget > /dev/null 2>&1; then
+    wget -q -O - "$url" | tar pxz -C "$out" --strip-components=1
+  else
+    curl -sfL "$url" | tar pxz -C "$out" --strip-components=1
+  fi
+}
+
 echo "---> Java buildpack"
 
 set -eo pipefail
@@ -20,7 +30,7 @@ echo "---> Installing JDK"
 if [[ ! -f $launch_dir/jdk.toml ]]; then
   mkdir -p $launch_dir/jdk
   jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
-  curl -sfL "$jdk_url" | tar pxz -C $launch_dir/jdk --strip-components=1
+  download "$jdk_url" "$launch_dir/jdk"
   mkdir -p $launch_dir/jdk/profile.d
   cat << EOF > $launch_dir/jdk/profile.d/jdk.sh
 export JAVA_HOME=$launch_dir/jdk
@@ -45,7 +55,7 @@ else
   if [[ ! -f $cache_dir/maven.toml ]]; then
     echo "---> Installing Maven"
     maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
-    curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
+    download "$maven_url" "$cache_dir/maven"
     echo "version = \"3.5.4\"" > $cache_dir/maven.toml
   fi
   export PATH=$PATH:$cache_dir/maven/bin
