@@ -79,8 +79,10 @@ else
   fi
   if [[ $maven_url != $cached_maven_url ]] ; then
     echo "---> Installing Maven"
-    rm -rf "$cache_dir/maven"
-    wget -q -O - "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
+    maven_dir="$cache_dir/maven"
+    rm -rf "$maven_dir"
+    mkdir -p "$maven_dir"
+    wget -q -O - "$maven_url" | tar pxz -C "$maven_dir" --strip-components=1
     echo -e "version = \"$maven_version\"\nurl = \"$maven_url\"" > "$cache_dir"/maven.toml
   fi
   export PATH=$PATH:$cache_dir/maven/bin
