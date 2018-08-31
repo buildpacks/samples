@@ -31,7 +31,7 @@ fi
 if [[ $jdk_url != $cached_jdk_url ]] ; then
   rm -rf "$cache_dir"/jdk
   mkdir -p "$cache_dir"/jdk/env
-  curl -sfL "$jdk_url" | tar pxz -C "$cache_dir"/jdk --strip-components=1
+  wget -q -O - "$jdk_url" | tar pxz -C "$cache_dir"/jdk --strip-components=1
   echo -e "version = \"$jdk_version\"\nurl = \"$jdk_url\"" > "$cache_dir"/jdk.toml
 
   echo "$cache_dir"/jdk > "$cache_dir"/jdk/env/JAVA_HOME
@@ -79,8 +79,10 @@ else
   fi
   if [[ $maven_url != $cached_maven_url ]] ; then
     echo "---> Installing Maven"
-    rm -rf "$cache_dir/maven"
-    curl -sfL "$maven_url" | tar pxz -C "$cache_dir/maven" --strip-components=1
+    maven_dir="$cache_dir/maven"
+    rm -rf "$maven_dir"
+    mkdir -p "$maven_dir"
+    wget -q -O - "$maven_url" | tar pxz -C "$maven_dir" --strip-components=1
     echo -e "version = \"$maven_version\"\nurl = \"$maven_url\"" > "$cache_dir"/maven.toml
   fi
   export PATH=$PATH:$cache_dir/maven/bin
