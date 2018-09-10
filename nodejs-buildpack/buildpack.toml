@@ -1,4 +1,7 @@
-id = "sh.packs.samples.buildpack.nodejs"
+[buildpack]
+id = "io.buildpacks.samples.nodejs"
 version = "0.0.1"
 name = "Sample Node.js Buildpack"
-stacks = ["packs/v3"]
+
+[[stacks]]
+id = "io.buildpacks.stacks.bionic"

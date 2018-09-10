@@ -1,4 +1,7 @@
-id = "sh.packs.samples.buildpack.java"
+[buildpack]
+id = "io.buildpacks.samples.java"
 version = "0.0.1"
 name = "Sample Java Buildpack"
-stacks = ["packs/v3"]
+
+[[stacks]]
+id = "io.buildpacks.stacks.bionic"
