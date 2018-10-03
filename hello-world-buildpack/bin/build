@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+echo "---> Hello World buildpack"
+
+set -eo pipefail
+
+env_dir=$1/env
+cache_dir=$2
+launch_dir=$3
+
+echo "     env_dir: ${env_dir}"
+echo "     cache_dir: ${cache_dir}"
+echo "     launch_dir: ${launch_dir}"
+
+echo "---> Done"
