@@ -1,0 +1,17 @@
+[[buildpacks]]
+id = "io.buildpacks.samples.nodejs"
+uri = "file://nodejs-buildpack"
+
+[[buildpacks]]
+id = "io.buildpacks.samples.java"
+uri = "file://java-buildpack"
+
+[[groups]]
+buildpacks = [
+  { id = "io.buildpacks.samples.java", version = "0.0.1" },
+]
+
+[[groups]]
+buildpacks = [
+  { id = "io.buildpacks.samples.nodejs", version = "0.0.1" },
+]
