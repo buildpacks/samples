@@ -5,8 +5,8 @@ echo "---> Java buildpack"
 set -eo pipefail
 
 env_dir=$1/env
-cache_dir=$2
-launch_dir=$3
+cache_dir=$3
+launch_dir=$4
 
 jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
 jdk_version="1.8.0_163"
