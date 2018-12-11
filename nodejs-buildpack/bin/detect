@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-plan_dir=$2
+plan_path=$2
 
 if [[ ! -f package.json ]]; then
     exit 100
@@ -10,6 +10,6 @@ fi
 
 semver=$(jq -r .engines.node package.json)
 version=v$(wget -q -O - "https://semver.io/node/resolve/${semver:-*}")
-echo "version = \"$version\"" > "$plan_dir/nodejs"
+echo -e "[nodejs]\n  version = \"$version\"" > "$plan_path"
 
 exit 0

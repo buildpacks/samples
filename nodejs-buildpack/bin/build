@@ -2,9 +2,11 @@
 
 set -eo pipefail
 
-env_dir=$1/env
-cache_dir=$3
-launch_dir=$4
+env_dir="$2/env"
+layers_dir="$1"
+plan_path="$3"
+
+cat $plan_path
 
 node_version=$(cat - | yj -t | jq -r .nodejs.version)
 nodejs_url=https://nodejs.org/dist/${node_version}/node-${node_version}-linux-x64.tar.xz
@@ -18,64 +20,59 @@ fi
 
 # If the app is vendored, treat the vendored modules as if cached.
 if [[ -e node_modules ]]; then
-    rm -rf "$cache_dir/node_modules"
-    mv node_modules "$cache_dir/"
+    rm -rf "$layers_dir/node_modules"
+    mv node_modules "$layers_dir/"
 fi
 
 # If it doesn't exist locally, create a Node.js cache layer with
 # POSIX-style root for build (bin, lib, include, etc).
 # This makes Node.js available to subsequent buildpacks as well.
-if [[ -f $cache_dir/nodejs.toml ]]; then
-    cached_nodejs_version=$(cat "$cache_dir/nodejs.toml" | yj -t | jq -r .version)
+if [[ -f $layers_dir/nodejs.toml ]]; then
+    cached_nodejs_version=$(cat "$layers_dir/nodejs.toml" | yj -t | jq -r .metadata.version)
 fi
 if [[ $node_version != $cached_nodejs_version ]] ; then
-    rm -rf "$cache_dir/nodejs"
-    mkdir "$cache_dir/nodejs"
-    wget -q -O - "$nodejs_url" | tar -xJf - -C "$cache_dir/nodejs" --strip-components=1
-    mkdir -p "$cache_dir/nodejs/env"
-    echo "$cache_dir/node_modules" > "$cache_dir/nodejs/env/NODE_PATH"
-    echo "version = \"$node_version\"" > "$cache_dir/nodejs.toml"
-fi
-
-# If it doesn't exist remotely, create a Node.js launch layer with
-# POSIX-style root for launch (bin, lib, etc).
-if [[ -f $launch_dir/nodejs.toml ]]; then
-    launch_nodejs_version=$(cat "$launch_dir/nodejs.toml" | yj -t | jq -r .version)
-fi
-if [[ $node_version != $launch_nodejs_version ]] ; then
-    mkdir "$launch_dir/nodejs"
-    cp -r "$cache_dir/nodejs"/{bin,lib} "$launch_dir/nodejs/"
-    cp "$cache_dir/nodejs.toml" "$launch_dir/nodejs.toml"
+    rm -rf "$layers_dir/nodejs"
+    rm -rf "$layers_dir/nodejs.toml"
+    mkdir "$layers_dir/nodejs"
+    wget -q -O - "$nodejs_url" | tar -xJf - -C "$layers_dir/nodejs" --strip-components=1
+    mkdir -p "$layers_dir/nodejs/env"
+    echo "$layers_dir/node_modules" > "$layers_dir/nodejs/env/NODE_PATH"
+    echo "launch = true" > "$layers_dir/nodejs.toml"
+    echo "build = true" >> "$layers_dir/nodejs.toml"
+    echo "cache = true" >> "$layers_dir/nodejs.toml"
+    echo -e "[metadata]\n  version = \"$node_version\"" >> "$layers_dir/nodejs.toml"
 fi
 
 # Make npm, node, etc. accessible in this script
-export PATH=$PATH:$cache_dir/nodejs/bin
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}$cache_dir/nodejs/lib
+export PATH=$PATH:$layers_dir/nodejs/bin
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}$layers_dir/nodejs/lib
 
 # TODO: (saves ~3s) generate ./package-lock.json if necessary and
 # TODO: compare to copy in cache and checksum in node_modules.toml
 
 # Update cached node modules
-if [[ -d $cache_dir/node_modules ]]; then
-    ln -snf "$cache_dir/node_modules" node_modules
-    npm rebuild "--nodedir=$cache_dir/nodejs"
+if [[ -d $layers_dir/node_modules ]]; then
+    npm rebuild "--nodedir=$layers_dir/nodejs"
 else
-    mkdir "$cache_dir/node_modules"
-    ln -snf "$cache_dir/node_modules" node_modules
+    mkdir "$layers_dir/node_modules"
 fi
-npm install --unsafe-perm --userconfig .npmrc --cache "$cache_dir/npm-cache"
+ln -snf "$layers_dir/node_modules" node_modules
 
-ln -snf "$launch_dir/node_modules" node_modules
+npm install --unsafe-perm --userconfig .npmrc --cache "$layers_dir/npm-cache"
+echo "cache = true" > "$layers_dir/npm-cache.toml"
+
 
 # Update remote node modules layer if necessary
 local_checksum=$(md5sum package-lock.json | cut -d' ' -f1)
-if [[ -f $launch_dir/node_modules.toml ]]; then
-    remote_checksum=$(cat "$launch_dir/node_modules.toml" | yj -t | jq -r .lock_checksum)
+if [[ -f $layers_dir/node_modules.toml ]]; then
+    remote_checksum=$(cat "$layers_dir/node_modules.toml" | yj -t | jq -r .metadata.lock_checksum)
 fi
 if [[ $local_checksum != $remote_checksum ]] ; then
-    cp -r "$cache_dir/node_modules" "$launch_dir/"
-    echo "lock_checksum = \"$local_checksum\"" > "$launch_dir/node_modules.toml"
+    echo "launch = true" > "$layers_dir/node_modules.toml"
+    echo "build = true" >> "$layers_dir/node_modules.toml"
+    echo "cache = true" >> "$layers_dir/node_modules.toml"
+    echo -e "[metadata]\n  lock_checksum = \"$local_checksum\"" >> "$layers_dir/node_modules.toml"
 fi
 
 # Set default start command
-echo 'processes = [{ type = "web", command = "npm start"}]' > "$launch_dir/launch.toml"
+echo 'processes = [{ type = "web", command = "npm start"}]' > "$layers_dir/launch.toml"
