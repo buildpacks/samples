@@ -2,3 +2,4 @@
 
 Compatible apps:
 - Maven apps
+- Gradle apps

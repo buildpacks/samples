@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-if [[ -f pom.xml ]]; then
+if [[ -f pom.xml ]] || [[ -f build.gradle ]]; then
     exit 0
 fi
 
