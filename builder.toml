@@ -21,3 +21,8 @@ buildpacks = [ { id = "io.buildpacks.samples.go", version = "latest" } ]
 
 [[groups]]
 buildpacks = [ { id = "io.buildpacks.samples.java", version = "latest" } ]
+
+[stack]
+id = "io.buildpacks.stack.bionic"
+run-image = "packs/run:0.1.0"
+build-image = "packs/build:0.1.0"
