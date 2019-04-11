@@ -9,6 +9,11 @@ uri = "./go-buildpack"
 latest = true
 
 [[buildpacks]]
+id = "io.buildpacks.samples.gradle"
+uri = "./gradle-buildpack"
+latest = true
+
+[[buildpacks]]
 id = "io.buildpacks.samples.java"
 uri = "./java-buildpack"
 latest = true
@@ -18,6 +23,9 @@ buildpacks = [ { id = "io.buildpacks.samples.nodejs", version = "latest" } ]
 
 [[groups]]
 buildpacks = [ { id = "io.buildpacks.samples.go", version = "latest" } ]
+
+[[groups]]
+buildpacks = [ { id = "io.buildpacks.samples.gradle", version = "latest" } ]
 
 [[groups]]
 buildpacks = [ { id = "io.buildpacks.samples.java", version = "latest" } ]
