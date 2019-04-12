@@ -42,7 +42,12 @@ export PATH=$PATH:$layers_dir/go/bin
 export GO111MODULE=on
 
 go version
-go build -o app.out
+if [ -d "vendor" ]; then
+    go build -o app.out --mod=vendor
+else
+    go build -o app.out
+fi
+
 
 # Set default start command
 echo 'processes = [{ type = "web", command = "./app.out"}]' > "$layers_dir/launch.toml"
