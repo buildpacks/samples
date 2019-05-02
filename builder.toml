@@ -7,6 +7,6 @@ latest = true
 buildpacks = [ { id = "io.buildpacks.samples.java", version = "latest" } ]
 
 [stack]
-id = "io.buildpacks.stack.bionic"
+id = "io.buildpacks.stacks.bionic"
 run-image = "packs/run:0.1.0"
 build-image = "packs/build:0.1.0"
