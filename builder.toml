@@ -8,5 +8,5 @@ buildpacks = [ { id = "io.buildpacks.samples.java", version = "latest" } ]
 
 [stack]
 id = "io.buildpacks.stacks.bionic"
-run-image = "packs/run:0.1.0"
-build-image = "packs/build:0.1.0"
+run-image = "cnbs/run:latest"
+build-image = "cnbs/build:latest"
