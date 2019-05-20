@@ -15,6 +15,8 @@ jdk_version="1.8.0_163"
 maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
 maven_version="3.5.4"
 
+bin_dir=$(dirname "${BASH_SOURCE[0]}")
+
 # Load user-provided build-time environment variables
 if compgen -G "$env_dir/*" > /dev/null; then
   for var in "$env_dir"/*; do
@@ -32,7 +34,7 @@ fi
 if [[ $jdk_url != $cached_jdk_url ]] ; then
   rm -rf "$layers_dir"/jdk
   mkdir -p "$layers_dir"/jdk/env
-  wget -q -O - "$jdk_url" | tar pxz -C "$layers_dir"/jdk --strip-components=1
+  ${bin_dir}/wget -q -O - "$jdk_url" | tar pxz -C "$layers_dir"/jdk --strip-components=1
   echo "launch = true" > "$layers_dir"/jdk.toml
   echo "build = true" >> "$layers_dir"/jdk.toml
   echo "cache = true" >> "$layers_dir"/jdk.toml
@@ -81,7 +83,7 @@ else
     maven_dir="$layers_dir/maven"
     rm -rf "$maven_dir"
     mkdir -p "$maven_dir"
-    wget -q -O - "$maven_url" | tar pxz -C "$maven_dir" --strip-components=1
+    ${bin_dir}/wget -q -O - "$maven_url" | tar pxz -C "$maven_dir" --strip-components=1
     echo "launch = false" > "$layers_dir"/maven.toml
     echo "build = true" >> "$layers_dir"/maven.toml
     echo "cache = true" >> "$layers_dir"/maven.toml

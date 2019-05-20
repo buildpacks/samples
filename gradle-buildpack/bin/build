@@ -11,6 +11,8 @@ plan_path="$3"
 jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
 jdk_version="1.8.0_163"
 
+bin_dir=$(dirname "${BASH_SOURCE[0]}")
+
 # Load user-provided build-time environment variables
 if compgen -G "$env_dir/*" > /dev/null; then
   for var in "$env_dir"/*; do
@@ -28,7 +30,7 @@ fi
 if [[ $jdk_url != $cached_jdk_url ]] ; then
   rm -rf "$layers_dir"/jdk
   mkdir -p "$layers_dir"/jdk/env
-  wget -q -O - "$jdk_url" | tar pxz -C "$layers_dir"/jdk --strip-components=1
+  ${bin_dir}/wget -q -O - "$jdk_url" | tar pxz -C "$layers_dir"/jdk --strip-components=1
   echo "launch = true" > "$layers_dir"/jdk.toml
   echo "build = true" >> "$layers_dir"/jdk.toml
   echo "cache = true" >> "$layers_dir"/jdk.toml
