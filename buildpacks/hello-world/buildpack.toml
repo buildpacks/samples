@@ -1,8 +1,18 @@
+# Buildpack API version
 api = "0.2"
 
+# Buildpack ID and metadata
+[buildpack]
 id = "io.buildpacks.samples.buildpack.hello-world"
 version = "0.0.1"
 name = "Hello World Buildpack"
 
+# Stacks that the buildpack will work with
 [[stacks]]
-id = "packs/v3"
+id = "io.buildpacks.samples.stacks.bionic"
+
+[[stacks]]
+id = "heroku-18"
+
+[[stacks]]
+id = "org.cloudfoundry.stacks.cflinuxfs3"

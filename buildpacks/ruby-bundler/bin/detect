@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+if [[ ! -f Gemfile ]]; then
+   exit 100
+fi
+
+plan=$2
+version=2.5.1
+
+if [[ -f .ruby-version ]]; then
+    version=$(cat .ruby-version | tr -d '[:space:]')
+fi
+
+echo "provides = [{ name = \"ruby\" }]" > "$plan"
+echo "requires = [{ name = \"ruby\", version = \"$version\" }]" >> "$plan"

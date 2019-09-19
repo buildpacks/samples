@@ -9,12 +9,14 @@ RUN go get github.com/Azure/acr-docker-credential-helper/src/docker-credential-a
 
 FROM ${base_image}
 
+# Install packages that we want to make available at build time
 RUN apt-get update && \
-  apt-get install -y git && \
+  apt-get install -y git wget && \
   rm -rf /var/lib/apt/lists/*
 
 COPY --from=helpers /go/bin /usr/local/bin
-ARG stack_id="io.buildpacks.stacks.bionic"
+
+ARG stack_id
 
 USER cnb
 LABEL io.buildpacks.stack.id=${stack_id}

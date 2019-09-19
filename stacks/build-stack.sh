@@ -9,9 +9,10 @@ VERSION=${DEFAULT_VERSION}
 
 usage() {
   echo "Usage: "
-  echo "  $0 [-p <prefix> -v <version>] <dir>"
+  echo "  $0 [-p <prefix> -v <version>] <id> <dir>"
   echo "    -p    prefix to use for images      (default: ${DEFAULT_PREFIX})"
   echo "    -v    version to tag images with    (default: ${DEFAULT_VERSION})"
+  echo "   <id>   id of the stack"
   echo "   <dir>  directory of stack to build"
   exit 1; 
 }
@@ -34,7 +35,8 @@ while getopts "v:p:" o; do
   esac
 done
 
-STACK_DIR=${@:$OPTIND:1}
+STACK_ID=${@:$OPTIND:1}
+STACK_DIR=${@:$OPTIND+1:1}
 
 if [[ -z ${PREFIX} ]]; then
   echo "Prefix cannot be empty"
@@ -45,6 +47,13 @@ fi
 
 if [[ -z ${STACK_DIR} ]]; then
   echo "Must specify stack directory"
+  echo
+  usage
+  exit 1
+fi
+
+if [[ -z ${STACK_ID} ]]; then
+  echo "Must specify stack id"
   echo
   usage
   exit 1
@@ -61,10 +70,10 @@ BUILD_IMAGE=${PREFIX}-build:${VERSION}
 docker build -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
 
 echo "BUILDING ${BUILD_IMAGE}..."
-docker build --build-arg "base_image=${BASE_IMAGE}" -t "${BUILD_IMAGE}"  "${IMAGE_DIR}/build"
+docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${BUILD_IMAGE}"  "${IMAGE_DIR}/build"
 
 echo "BUILDING ${RUN_IMAGE}..."
-docker build --build-arg "base_image=${BASE_IMAGE}" -t "${RUN_IMAGE}" "${IMAGE_DIR}/run"
+docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${RUN_IMAGE}" "${IMAGE_DIR}/run"
 
 echo
 echo "To publish these images:"
