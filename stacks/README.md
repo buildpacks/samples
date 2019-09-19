@@ -1,4 +1,4 @@
-# Stacks
+# Sample Stacks
 
 Sample of stacks.
 
@@ -19,4 +19,8 @@ Example:
 ./build-stack.sh bionic
 ```
 
-To use this stack see the `pack create-builder` [documentation](https://github.com/buildpack/pack/blob/master/README.md#working-with-builders-using-create-builder)
+To use this stack see the [sample builders](../builders)
+
+### Additional Resources
+
+* [Stacks documentation](https://buildpacks.io/docs/using-pack/stacks/)

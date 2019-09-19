@@ -8,5 +8,5 @@ group = [ { id = "io.buildpacks.samples.java", version = "0.0.1" } ]
 
 [stack]
 id = "io.buildpacks.stacks.bionic"
-run-image = "cnbs/run:latest"
-build-image = "cnbs/build:latest"
+run-image = "sample/stack-run:latest"
+build-image = "sample/stack-build:latest"
