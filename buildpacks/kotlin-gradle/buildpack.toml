@@ -3,9 +3,9 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.gradle"
+id = "io.buildpacks.samples.kotlin-gradle"
 version = "0.0.1"
-name = "Sample Gradle Buildpack"
+name = "Sample Kotlin Gradle Buildpack"
 
 # Stacks that the buildpack will work with
 [[stacks]]

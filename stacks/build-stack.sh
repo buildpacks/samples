@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 set -e
 
+ID_PREFIX="io.buildpacks.samples.stacks"
+
 DEFAULT_PREFIX=sample/stack
 DEFAULT_VERSION=latest
 
-PREFIX=${DEFAULT_PREFIX}
+REPO_PREFIX=${DEFAULT_PREFIX}
 VERSION=${DEFAULT_VERSION}
 
 usage() {
   echo "Usage: "
-  echo "  $0 [-p <prefix> -v <version>] <id> <dir>"
+  echo "  $0 [-p <prefix> -v <version>] <dir>"
   echo "    -p    prefix to use for images      (default: ${DEFAULT_PREFIX})"
   echo "    -v    version to tag images with    (default: ${DEFAULT_VERSION})"
-  echo "   <id>   id of the stack"
   echo "   <dir>  directory of stack to build"
   exit 1; 
 }
@@ -23,7 +24,7 @@ while getopts "v:p:" o; do
       VERSION=${OPTARG}
       ;;
     p)
-      PREFIX=${OPTARG}
+      REPO_PREFIX=${OPTARG}
       ;;
     \?)
       echo "Invalid option: -$OPTARG" 1>&2
@@ -35,10 +36,9 @@ while getopts "v:p:" o; do
   esac
 done
 
-STACK_ID=${@:$OPTIND:1}
-STACK_DIR=${@:$OPTIND+1:1}
+STACK_DIR=${@:$OPTIND:1}
 
-if [[ -z ${PREFIX} ]]; then
+if [[ -z ${REPO_PREFIX} ]]; then
   echo "Prefix cannot be empty"
   echo
   usage
@@ -52,20 +52,12 @@ if [[ -z ${STACK_DIR} ]]; then
   exit 1
 fi
 
-if [[ -z ${STACK_ID} ]]; then
-  echo "Must specify stack id"
-  echo
-  usage
-  exit 1
-fi
-
-docker pull ubuntu:bionic
-
 DIR=$(cd $(dirname $0) && pwd)
-IMAGE_DIR=${STACK_DIR}
-BASE_IMAGE=${PREFIX}-base:${VERSION}
-RUN_IMAGE=${PREFIX}-run:${VERSION}
-BUILD_IMAGE=${PREFIX}-build:${VERSION}
+IMAGE_DIR=$(realpath "${STACK_DIR}")
+STACK_ID="${ID_PREFIX}.$(basename "${IMAGE_DIR}")"
+BASE_IMAGE=${REPO_PREFIX}-base:${VERSION}
+RUN_IMAGE=${REPO_PREFIX}-run:${VERSION}
+BUILD_IMAGE=${REPO_PREFIX}-build:${VERSION}
 
 docker build -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
 
@@ -76,7 +68,10 @@ echo "BUILDING ${RUN_IMAGE}..."
 docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${RUN_IMAGE}" "${IMAGE_DIR}/run"
 
 echo
-echo "To publish these images:"
-for IMAGE in "${BASE_IMAGE}" "${RUN_IMAGE}" "${BUILD_IMAGE}"; do
-  echo "  docker push ${IMAGE}"
+echo "STACK BUILT!"
+echo
+echo "Stack ID: ${STACK_ID}"
+echo "Images:"
+for IMAGE in "${BASE_IMAGE}" "${BUILD_IMAGE}" "${RUN_IMAGE}"; do
+  echo "    ${IMAGE}"
 done

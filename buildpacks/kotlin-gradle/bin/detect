@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
+set +x
 
-if [[ -f build.gradle ]]; then
+if [[ -f ./gradlew ]]; then
     exit 0
 fi
 

@@ -1,0 +1,37 @@
+# Buildpacks to include in builder
+[[buildpacks]]
+id = "io.buildpacks.samples.java-maven"
+version = "0.0.1"
+uri = "../../buildpacks/java-maven"
+
+[[buildpacks]]
+id = "io.buildpacks.samples.kotlin-gradle"
+version = "0.0.1"
+uri = "../../buildpacks/kotlin-gradle"
+
+[[buildpacks]]
+id = "io.buildpacks.samples.ruby-bundler"
+version = "0.0.1"
+uri = "../../buildpacks/ruby-bundler"
+
+# Order used for detection
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.java-maven"
+version = "0.0.1"
+
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.kotlin-gradle"
+version = "0.0.1"
+
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.ruby-bundler"
+version = "0.0.1"
+
+# Stack that will be used by the builder
+[stack]
+id = "io.buildpacks.samples.stacks.bionic"
+run-image = "sample/stack-run:latest"
+build-image = "sample/stack-build:latest"
