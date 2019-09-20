@@ -1,4 +1,4 @@
 # Sample: Java Gradle Buildpack
 
 Compatible apps:
-- Gradle apps
+- Java apps that use Gradle for building

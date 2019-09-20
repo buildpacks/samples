@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
+set -eo pipefail
 
 echo "---> Java buildpack"
-
-set -eo pipefail
-set -x
 
 env_dir="$2/env"
 layers_dir="$1"
