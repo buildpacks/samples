@@ -7,7 +7,7 @@ Sample of stacks.
 To build the stack use the `./build-stack` script:
 
 ```text
-./stacks/build-stack.sh [-p <prefix> -v <version>] <dir>
+./build-stack.sh [-p <prefix> -v <version>] <dir>
   -p    prefix to use for images      (default: sample/stack)
   -v    version to tag images with    (default: latest)
   <dir>  directory of stack to build
