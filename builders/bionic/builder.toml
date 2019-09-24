@@ -33,5 +33,5 @@ version = "0.0.1"
 # Stack that will be used by the builder
 [stack]
 id = "io.buildpacks.samples.stacks.bionic"
-run-image = "sample/stack-run:latest"
-build-image = "sample/stack-build:latest"
+run-image = "cnbs/sample-stack-run:bionic"
+build-image = "cnbs/sample-stack-build:bionic"

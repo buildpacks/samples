@@ -6,7 +6,5 @@ Compatible apps:
 ### Usage
 
 ```bash
-pack build sample-app --builder <builder> --buildpack . --path ../../apps/java-maven 
+pack build sample-java-maven-app --builder cnbs/sample-builder:bionic --buildpack . --path ../../apps/java-maven
 ```
-
-_NOTE: See `pack suggest-builders` for possible builders_ 

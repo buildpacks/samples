@@ -10,9 +10,3 @@ name = "Sample Java Maven Buildpack"
 # Stacks that the buildpack will work with
 [[stacks]]
 id = "io.buildpacks.samples.stacks.bionic"
-
-[[stacks]]
-id = "heroku-18"
-
-[[stacks]]
-id = "org.cloudfoundry.stacks.cflinuxfs3"

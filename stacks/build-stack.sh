@@ -3,26 +3,20 @@ set -e
 
 ID_PREFIX="io.buildpacks.samples.stacks"
 
-DEFAULT_PREFIX=sample/stack
-DEFAULT_VERSION=latest
+DEFAULT_PREFIX=cnbs/sample-stack
 
 REPO_PREFIX=${DEFAULT_PREFIX}
-VERSION=${DEFAULT_VERSION}
 
 usage() {
   echo "Usage: "
-  echo "  $0 [-p <prefix> -v <version>] <dir>"
+  echo "  $0 [-p <prefix>] <dir>"
   echo "    -p    prefix to use for images      (default: ${DEFAULT_PREFIX})"
-  echo "    -v    version to tag images with    (default: ${DEFAULT_VERSION})"
   echo "   <dir>  directory of stack to build"
   exit 1; 
 }
 
 while getopts "v:p:" o; do
   case "${o}" in
-    v)
-      VERSION=${OPTARG}
-      ;;
     p)
       REPO_PREFIX=${OPTARG}
       ;;
@@ -54,10 +48,11 @@ fi
 
 DIR=$(cd $(dirname $0) && pwd)
 IMAGE_DIR=$(realpath "${STACK_DIR}")
+TAG=$(basename "${IMAGE_DIR}")
 STACK_ID="${ID_PREFIX}.$(basename "${IMAGE_DIR}")"
-BASE_IMAGE=${REPO_PREFIX}-base:${VERSION}
-RUN_IMAGE=${REPO_PREFIX}-run:${VERSION}
-BUILD_IMAGE=${REPO_PREFIX}-build:${VERSION}
+BASE_IMAGE=${REPO_PREFIX}-base:${TAG}
+RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
+BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
 
 docker build -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
 

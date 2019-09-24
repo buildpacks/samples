@@ -1,16 +1,15 @@
-GITHUB_TOKEN?=
 PACK_CMD?=$(shell which pack)
 ifeq ($(PACK_CMD),)
-ifneq ($(GITHUB_TOKEN),)
-	_PACK_VERSION=$(shell curl -s -H "Authorization: token $(GITHUB_TOKEN)" https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
-else
+ifeq ($(GITHUB_TOKEN),)
 	_PACK_VERSION=$(shell curl -s https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
+else
+	_PACK_VERSION=$(shell curl -s -H "Authorization: token $(GITHUB_TOKEN)" https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
 endif
 PACK_CMD=./out/pack
 PACK_VERSION:=$(_PACK_VERSION)
 endif
 
-all: ./out/pack stacks builders apps
+build: ./out/pack stacks builders apps
 
 ./out/pack:
 	@echo "> Using pack binary '$(PACK_CMD)'"  
@@ -25,28 +24,47 @@ stacks:
 	@echo "> Building 'bionic' stack..."
 	./stacks/build-stack.sh stacks/bionic
 
-builders: ./out/pack stacks
+builders: ./out/pack
 	@echo "> Building 'bionic' builder..."
-	$(PACK_CMD) create-builder sample-bionic-builder --builder-config builders/bionic/builder.toml
+	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --builder-config builders/bionic/builder.toml
 
-apps: ./out/pack builders
+apps: ./out/pack
 	@echo "> Creating 'java-maven' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-java-maven-app --builder sample-bionic-builder --path apps/java-maven
+	$(PACK_CMD) build sample-java-maven-app --builder cnbs/sample-builder:bionic --path apps/java-maven
 	
 	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app --builder sample-bionic-builder --path apps/kotlin-gradle
+	$(PACK_CMD) build sample-kotlin-gradle-app --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle
 	
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app --builder sample-bionic-builder --path apps/ruby-bundler
+	$(PACK_CMD) build sample-ruby-bundler-app --builder cnbs/sample-builder:bionic --path apps/ruby-bundler
+
+docker-login:
+	@echo "> Logging in to docker hub..."
+ifeq ($(DOCKER_USERNAME),)
+	@echo "No docker login information provided. Expecting DOCKER_USERNAME and DOCKER_PASSWORD envars."
+	exit 1
+else
+	@echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
+endif 
+
+deploy-stacks: docker-login
+	docker push cnbs/sample-stack-base:bionic
+	docker push cnbs/sample-stack-run:bionic
+	docker push cnbs/sample-stack-build:bionic
+	
+deploy-builders:
+	docker push cnbs/sample-builder:bionic
+	
+deploy: deploy-stacks deploy-builders
 
 clean:
 	rm -f ./out/*
-	docker rmi sample/stack-base || true
-	docker rmi sample/stack-run || true
-	docker rmi sample/stack-build || true
-	docker rmi sample-bionic-builder || true
+	docker rmi cnbs/sample-stack-base:bionic || true
+	docker rmi cnbs/sample-stack-run:bionic || true
+	docker rmi cnbs/sample-stack-build:bionic || true
+	docker rmi cnbs/sample-builder:bionic || true
 	docker rmi sample-java-maven-app || true
 	docker rmi sample-kotlin-gradle-app || true
 	docker rmi sample-ruby-bundler-app || true
 	
-.PHONY: stacks builders cleanup
+.PHONY: stacks builders apps cleanup
