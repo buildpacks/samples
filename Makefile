@@ -1,7 +1,7 @@
 GITHUB_TOKEN?=
 PACK_CMD?=$(shell which pack)
-ifndef PACK_CMD
-ifdef GITHUB_TOKEN
+ifeq ($(PACK_CMD),)
+ifneq ($(GITHUB_TOKEN),)
 	_PACK_VERSION=$(shell curl -s -H "Authorization: token $(GITHUB_TOKEN)" https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
 else
 	_PACK_VERSION=$(shell curl -s https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
@@ -13,6 +13,7 @@ endif
 all: ./out/pack stacks builders apps
 
 ./out/pack:
+	@echo "> Using pack binary '$(PACK_CMD)'"  
 ifdef PACK_VERSION
 	echo "> Downloading $(PACK_VERSION)"
 	mkdir -p ./out/
@@ -20,7 +21,7 @@ ifdef PACK_VERSION
 	tar xvzf out/pack.tgz -C out/
 endif
 
-stacks: ./out/pack
+stacks:
 	@echo "> Building 'bionic' stack..."
 	./stacks/build-stack.sh stacks/bionic
 
@@ -38,7 +39,7 @@ apps: ./out/pack builders
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-ruby-bundler-app --builder sample-bionic-builder --path apps/ruby-bundler
 
-cleanup:
+clean:
 	rm -f ./out/*
 	docker rmi sample/stack-base || true
 	docker rmi sample/stack-run || true

@@ -2,3 +2,7 @@ language: bash
 dist: bionic
 
 script: make all
+
+branches:
+  only:
+    - master
