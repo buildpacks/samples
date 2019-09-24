@@ -1,0 +1,4 @@
+language: bash
+dist: bionic
+
+script: make all

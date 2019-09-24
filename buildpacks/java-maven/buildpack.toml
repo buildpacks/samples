@@ -3,9 +3,9 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.java"
+id = "io.buildpacks.samples.java-maven"
 version = "0.0.1"
-name = "Sample Java Buildpack"
+name = "Sample Java Maven Buildpack"
 
 # Stacks that the buildpack will work with
 [[stacks]]
