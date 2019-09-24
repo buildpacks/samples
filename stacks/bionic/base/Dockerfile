@@ -2,6 +2,7 @@ FROM ubuntu:bionic
 ARG cnb_uid=1000
 ARG cnb_gid=1000
 
+# Install packages that we want to make available at both build and run time
 RUN apt-get update && \
   apt-get install -y xz-utils ca-certificates && \
   rm -rf /var/lib/apt/lists/*

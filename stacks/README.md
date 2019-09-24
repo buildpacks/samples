@@ -7,8 +7,8 @@ Sample of stacks.
 To build the stack use the `./build-stack` script:
 
 ```text
-./build-stack.sh [-p <prefix> -v <version>] <dir>
-  -p    prefix to use for images      (default: cnbs/sample-stack-)
+./build-stack.sh [-p <prefix> -v <version>] <id> <dir>
+  -p    prefix to use for images      (default: sample/stack)
   -v    version to tag images with    (default: latest)
   <dir>  directory of stack to build
 ```
@@ -16,7 +16,7 @@ To build the stack use the `./build-stack` script:
 Example:
 
 ```bash
-./build-stack.sh bionic
+./build-stack.sh io.buildpacks.samples.stacks.bionic bionic
 ```
 
 To use this stack see the [sample builders](../builders)

@@ -7,6 +7,6 @@ uri = "../buildpacks/java-maven"
 group = [ { id = "io.buildpacks.samples.java", version = "0.0.1" } ]
 
 [stack]
-id = "io.buildpacks.stacks.bionic"
+id = "io.buildpacks.samples.stacks.bionic"
 run-image = "sample/stack-run:latest"
 build-image = "sample/stack-build:latest"
