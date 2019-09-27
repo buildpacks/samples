@@ -12,7 +12,4 @@ name = "Hello World Buildpack"
 id = "io.buildpacks.samples.stacks.bionic"
 
 [[stacks]]
-id = "heroku-18"
-
-[[stacks]]
-id = "org.cloudfoundry.stacks.cflinuxfs3"
+id = "io.buildpacks.samples.stacks.alpine"

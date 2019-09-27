@@ -6,7 +6,11 @@ Compatible apps:
 ### Usage
 
 ```bash
-pack build sample-app --builder <builder> --buildpack . --path ../../apps/kotlin-gradle 
+pack build sample-kotlin-gradle-app --builder cnbs/sample-builder:alpine --buildpack . --path ../../apps/kotlin-gradle
 ```
 
-_NOTE: See `pack suggest-builders` for possible builders_ 
+OR
+
+```bash
+pack build sample-kotlin-gradle-app --builder cnbs/sample-builder:bionic --buildpack . --path ../../apps/kotlin-gradle
+```

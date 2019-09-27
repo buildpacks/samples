@@ -9,11 +9,6 @@ id = "io.buildpacks.samples.kotlin-gradle"
 version = "0.0.1"
 uri = "../../buildpacks/kotlin-gradle"
 
-[[buildpacks]]
-id = "io.buildpacks.samples.ruby-bundler"
-version = "0.0.1"
-uri = "../../buildpacks/ruby-bundler"
-
 # Order used for detection
 [[order]]
 [[order.group]]
@@ -25,13 +20,8 @@ version = "0.0.1"
 id = "io.buildpacks.samples.kotlin-gradle"
 version = "0.0.1"
 
-[[order]]
-[[order.group]]
-id = "io.buildpacks.samples.ruby-bundler"
-version = "0.0.1"
-
 # Stack that will be used by the builder
 [stack]
-id = "io.buildpacks.samples.stacks.bionic"
-run-image = "cnbs/sample-stack-run:bionic"
-build-image = "cnbs/sample-stack-build:bionic"
+id = "io.buildpacks.samples.stacks.alpine"
+run-image = "cnbs/sample-stack-run:alpine"
+build-image = "cnbs/sample-stack-build:alpine"

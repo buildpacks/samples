@@ -1,7 +1,11 @@
 language: bash
 dist: bionic
 
-script: make all
+script: make build
+
+deploy:
+  provider: script
+  script: bash make deploy
 
 branches:
   only:
