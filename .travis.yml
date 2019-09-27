@@ -5,7 +5,7 @@ script: make build
 
 deploy:
   provider: script
-  script: bash make deploy
+  script: make deploy
 
 branches:
   only:
