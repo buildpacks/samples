@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
+set -eo pipefail
 
 echo "---> Gradle buildpack"
-
-set -eo pipefail
 
 env_dir="$2/env"
 layers_dir="$1"
 plan_path="$3"
 
-jdk_url="https://cdn.azul.com/zulu/bin/zulu8.28.0.1-jdk8.0.163-linux_x64.tar.gz"
-jdk_version="1.8.0_163"
+jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_x64.tar.gz"
+jdk_version="1.8.0_222"
+
+if [[ -r /etc/alpine-release ]]; then
+    jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_musl_x64.tar.gz"
+    jdk_version="1.8.0_222"
+fi
 
 # Load user-provided build-time environment variables
 if compgen -G "$env_dir/*" > /dev/null; then
