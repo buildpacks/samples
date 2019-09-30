@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
+set -eo pipefail
 
 echo "---> Hello World buildpack"
-
-set -eo pipefail
 
 env_dir=$2/env
 layers_dir=$1

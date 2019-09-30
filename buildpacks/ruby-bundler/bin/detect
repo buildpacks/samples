@@ -1,16 +1,30 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# 1. CHECK IF APPLICABLE 
 if [[ ! -f Gemfile ]]; then
    exit 100
 fi
 
-plan=$2
-version=2.5.1
+# 2. GET ARGS
+plan_path=$2
 
+# 3. GET CONFIGURATION
+version=2.5.1
 if [[ -f .ruby-version ]]; then
     version=$(cat .ruby-version | tr -d '[:space:]')
 fi
 
-echo "provides = [{ name = \"ruby\" }]" > "$plan"
-echo "requires = [{ name = \"ruby\", version = \"$version\" }]" >> "$plan"
+# 4. DECLARE DEPENDENCIES
+cat >> "${plan_path}" <<EOL
+# Buildpack provides this dependency
+# Used to let other buildpacks know it's available  
+[[provides]]
+name = "ruby"
+
+# Buildpack requires this dependency
+# Used to let buildpacks (including ourselves) what dependencies we need
+[[requires]]
+name = "ruby"
+version = "${version}"
+EOL
