@@ -18,12 +18,17 @@ fi
 # 4. DECLARE DEPENDENCIES
 cat >> "${plan_path}" <<EOL
 # Buildpack provides this dependency
-# Used to let other buildpacks know it's available  
+#
+# NOTE: The dependency is provided during the 'build' process.
+#
 [[provides]]
 name = "ruby"
 
 # Buildpack requires this dependency
-# Used to let buildpacks (including ourselves) what dependencies we need
+#
+# NOTE: Everything aside from 'name' is simply additional information that the providing buildpack can use to resolve
+#       the dependency.
+#
 [[requires]]
 name = "ruby"
 version = "${version}"
