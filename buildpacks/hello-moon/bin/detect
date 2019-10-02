@@ -6,13 +6,6 @@ plan_path=$2
 
 # 2. DECLARE DEPENDENCIES (OPTIONAL)
 cat >> "${plan_path}" <<EOL
-# Buildpack provides this dependency
-#
-# NOTE: The dependency is provided during the 'build' process.
-#
-[[provides]]
-name = "some-world"
-
 # Buildpack requires this dependency
 #
 # NOTE: Everything aside from 'name' is simply additional information that the providing buildpack can use to resolve
@@ -20,4 +13,8 @@ name = "some-world"
 #
 [[requires]]
 name = "some-world"
+version = "0.1"     # Optional
+
+[requires.metadata]
+world = "Earth-616" # Optional
 EOL

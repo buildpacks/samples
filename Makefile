@@ -1,3 +1,4 @@
+PACK_FLAGS?=--no-pull
 PACK_CMD?=$(shell which pack)
 ifeq ($(PACK_CMD),)
 ifeq ($(GITHUB_TOKEN),)
@@ -9,11 +10,11 @@ PACK_CMD=./out/pack
 PACK_VERSION:=$(_PACK_VERSION)
 endif
 
-build: ./out/pack build-stacks build-builders build-apps
+build: ./out/pack build-stacks build-builders build-buildpacks
 
-build-alpine: build-stack-alpine build-builder-alpine build-apps-alpine
+build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
 
-build-bionic: build-stack-bionic build-builder-bionic build-apps-bionic
+build-bionic: build-stack-bionic build-builder-bionic build-buildpacks-bionic
 
 build-stacks: build-stack-alpine build-stack-bionic
 
@@ -29,30 +30,42 @@ build-builders: build-builder-alpine build-builder-bionic
 
 build-builder-alpine: ./out/pack
 	@echo "> Building 'alpine' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --builder-config builders/alpine/builder.toml
+	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --builder-config builders/alpine/builder.toml $(PACK_FLAGS)
 
 build-builder-bionic: ./out/pack
 	@echo "> Building 'bionic' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --builder-config builders/bionic/builder.toml
+	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --builder-config builders/bionic/builder.toml $(PACK_FLAGS)
 
-build-apps: build-apps-alpine build-apps-bionic
+build-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
-build-apps-alpine: ./out/pack
+build-buildpacks-alpine: ./out/pack
+	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
+	$(PACK_CMD) build sample-hello-moon-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
+
+	@echo "> Creating 'hello-world' app using 'alpine' builder..."
+	$(PACK_CMD) build sample-hello-world-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world $(PACK_FLAGS)
+
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine --builder cnbs/sample-builder:alpine --path apps/java-maven
+	$(PACK_CMD) build sample-java-maven-app:alpine --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS)
 	
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS)
 	
-build-apps-bionic: ./out/pack
+build-buildpacks-bionic: ./out/pack
+	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
+	$(PACK_CMD) build sample-hello-moon-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
+
+	@echo "> Creating 'hello-world' app using 'bionic' builder..."
+	$(PACK_CMD) build sample-hello-world-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world $(PACK_FLAGS)
+
 	@echo "> Creating 'java-maven' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-java-maven-app:bionic --builder cnbs/sample-builder:bionic --path apps/java-maven
+	$(PACK_CMD) build sample-java-maven-app:bionic --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS)
 	
 	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:bionic --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle
+	$(PACK_CMD) build sample-kotlin-gradle-app:bionic --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS)
 	
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler
+	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS)
 
 docker-login:
 	@echo "> Logging in to docker hub..."
@@ -95,10 +108,14 @@ clean:
 	docker rmi cnbs/sample-builder:bionic || true
 	
 	# alpine apps
+	docker rmi sample-hello-world-app:alpine || true
+	docker rmi sample-hello-moon-app:alpine || true
 	docker rmi sample-java-maven-app:alpine || true
 	docker rmi sample-kotlin-gradle-app:alpine || true
 	
 	# bionic apps
+	docker rmi sample-hello-world-app:bionic || true
+	docker rmi sample-hello-moon-app:bionic || true
 	docker rmi sample-java-maven-app:bionic || true
 	docker rmi sample-kotlin-gradle-app:bionic || true
 	docker rmi sample-ruby-bundler-app:bionic || true
