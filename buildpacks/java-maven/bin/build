@@ -10,8 +10,8 @@ plan_path="$3"
 
 # 2. LOAD USER-PROVIDED BUILD-TIME ENVIRONMENT VARIABLES
 if compgen -G "${env_dir}/*" > /dev/null; then
-  for var in "${env_dir}/*"; do
-    declare "$(basename "$var")=$(<"$var")"
+  for var in ${env_dir}/*; do
+    declare "$(basename ${var})=$(<${var})"
   done
 fi
 
@@ -118,7 +118,7 @@ fi
 # 6. SET DEFAULT START COMMAND
 target_dir="target"
 for jar_file in $(find "$target_dir" -maxdepth 1 -name "*.jar" -type f); do
-  cat > "${layers_dir}/launch.toml" <<EOL
+  cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
 command = "java -jar ${jar_file}"

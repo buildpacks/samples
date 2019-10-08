@@ -57,7 +57,7 @@ EOL
 fi
 
 # 7. SET DEFAULT START COMMAND
-cat > "${layers_dir}/launch.toml" <<EOL
+cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
 command = "bundle exec ruby app.rb"

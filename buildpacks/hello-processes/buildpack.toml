@@ -3,9 +3,9 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.hello-moon"
+id = "io.buildpacks.samples.hello-processes"
 version = "0.0.1"
-name = "Hello Moon Buildpack"
+name = "Hello Processes Buildpack"
 
 # Stacks that the buildpack will work with
 [[stacks]]

@@ -42,6 +42,9 @@ build-buildpacks-alpine: ./out/pack
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-hello-moon-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
 
+	@echo "> Creating 'hello-processes' app using 'alpine' builder..."
+	$(PACK_CMD) build sample-hello-processes-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-processes $(PACK_FLAGS)
+
 	@echo "> Creating 'hello-world' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-hello-world-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world $(PACK_FLAGS)
 
@@ -54,6 +57,9 @@ build-buildpacks-alpine: ./out/pack
 build-buildpacks-bionic: ./out/pack
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-hello-moon-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
+
+	@echo "> Creating 'hello-processes' app using 'bionic' builder..."
+	$(PACK_CMD) build sample-hello-processes-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-processes $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-hello-world-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world $(PACK_FLAGS)
@@ -108,14 +114,16 @@ clean:
 	docker rmi cnbs/sample-builder:bionic || true
 	
 	# alpine apps
-	docker rmi sample-hello-world-app:alpine || true
 	docker rmi sample-hello-moon-app:alpine || true
+	docker rmi sample-hello-processes-app:alpine || true
+	docker rmi sample-hello-world-app:alpine || true
 	docker rmi sample-java-maven-app:alpine || true
 	docker rmi sample-kotlin-gradle-app:alpine || true
 	
 	# bionic apps
-	docker rmi sample-hello-world-app:bionic || true
 	docker rmi sample-hello-moon-app:bionic || true
+	docker rmi sample-hello-processes-app:bionic || true
+	docker rmi sample-hello-world-app:bionic || true
 	docker rmi sample-java-maven-app:bionic || true
 	docker rmi sample-kotlin-gradle-app:bionic || true
 	docker rmi sample-ruby-bundler-app:bionic || true

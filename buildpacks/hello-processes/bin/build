@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> Hello processes buildpack"
+
+# INPUT ARGUMENTS
+env_dir=$2/env
+layers_dir=$1
+plan_path=$3
+
+# ADD SYS-INFO PROCESS
+echo "---> Adding sys-info process"
+sysinfo_layer_dir="${layers_dir}/sys-info"
+mkdir -p ${sysinfo_layer_dir}
+
+cat > "${sysinfo_layer_dir}.toml" << EOF
+launch = true
+EOF
+
+sysinfo_script="${sysinfo_layer_dir}/sys-info.sh"
+cat > ${sysinfo_script} <<EOL
+#!/usr/bin/env bash
+
+echo "     env vars:"
+export | sed 's/^/       /'
+EOL
+
+chmod +x ${sysinfo_script}
+
+cat >> "${layers_dir}/launch.toml" <<EOL
+[[processes]]
+type = "sys-info"
+command = "${sysinfo_script}"
+EOL
+
+echo "---> Done"
