@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Nothing to see here. :)
+# This buildpack applies unconditionally.
+
+exit 0

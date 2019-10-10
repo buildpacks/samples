@@ -8,6 +8,14 @@ layers_dir=$1
 plan_path=$3
 
 echo "     env_dir: ${env_dir}"
+echo "     env vars:"
+if compgen -G "${env_dir}/*" > /dev/null; then
+  for var in ${env_dir}/*; do
+    declare "$(basename ${var})=$(<${var})"
+  done
+fi
+export | sed 's/^/       /'
+
 echo "     layers_dir: ${layers_dir}"
 echo "     plan_path: ${plan_path}"
 echo "     plan contents:"
