@@ -14,6 +14,9 @@ id = "io.buildpacks.samples.ruby-bundler"
 version = "0.0.1"
 uri = "../../buildpacks/ruby-bundler"
 
+[[packages]]
+image = "cnbs/sample-package:hello-universe"
+
 # Order used for detection
 [[order]]
 [[order.group]]
@@ -28,6 +31,11 @@ version = "0.0.1"
 [[order]]
 [[order.group]]
 id = "io.buildpacks.samples.ruby-bundler"
+version = "0.0.1"
+
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.hello-universe"
 version = "0.0.1"
 
 # Stack that will be used by the builder

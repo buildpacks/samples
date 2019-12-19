@@ -1,0 +1,8 @@
+[buildpack]
+uri = "../../buildpacks/hello-universe/"
+
+[[dependencies]]
+uri = "../../buildpacks/hello-world/"
+
+[[dependencies]]
+uri = "../../buildpacks/hello-moon/"
