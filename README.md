@@ -12,21 +12,21 @@ Includes:
 * [Heroku Java Cloud Native Buildpack](https://github.com/heroku/java-buildpack)
 
 # Quick Reference
-- [Create a Buildpack Tutorial](https://buildpacks.io/docs/create-buildpack/) &rarr; Tutorial to get you started on your first Cloud Native Buildpack
+- [Create a Buildpack Tutorial](https://buildpacks.io/docs/buildpack-author-guide/create-buildpack/) &rarr; Tutorial to get you started on your first Cloud Native Buildpack
 - [Buildpacks.io](https://buildpacks.io/) &rarr; Cloud Native Buildpack website
-- [Pack – Buildpack CLI](https://github.com/buildpack/pack) &rarr; CLI used to consume the builder, along with source code, and construct an OCI image
-- [CNB Tutorial](https://github.com/buildpack/pack/blob/master/docs/tutorials/app-journey.md) &rarr; Tutorial to get you started using `pack`, a `builder`, and your application to create a working OCI image 
-- [Buildpack & Platform Specification](https://github.com/buildpack/spec) &rarr; Detailed definition of the interaction between a platform, a lifecycle, Cloud Native Buildpacks, and an application
+- [Pack – Buildpack CLI](https://github.com/buildpacks/pack) &rarr; CLI used to consume the builder, along with source code, and construct an OCI image
+- [CNB Tutorial](https://buildpacks.io/docs/app-journey/) &rarr; Tutorial to get you started using `pack`, a `builder`, and your application to create a working OCI image 
+- [Buildpack & Platform Specification](https://github.com/buildpacks/spec) &rarr; Detailed definition of the interaction between a platform, a lifecycle, Cloud Native Buildpacks, and an application
 
 # What are Cloud Native Buildpacks (CNBs)?
 ### CNBs  are modular components used to turn your app source code into a runnable OCI image. 
 Buildpacks, in general, provide a higher-level abstraction for building apps compared to Dockerfiles. Cloud Native Buildpacks, a project initiated by Pivotal and Heroku, is a member of the [Cloud Native Sandbox](https://www.cncf.io/). The project unifies the buildpack ecosystem, through a platform-to-buildpack contract that embraces modern container standards, specifically the OCI image format. 
 
 # A Quick Intro to CNBs:
-### All of the sample buildpacks in this repo implement the [CNB Spec](https://github.com/buildpack/spec/blob/master/buildpack.md)
+### All of the sample buildpacks in this repo implement the [CNB Spec](https://github.com/buildpacks/spec/blob/master/buildpack.md)
 
 ## Detect vs Build
-Each buildpack should have two executables files, `detect` and `build`, which get run during the detect phase and the build phase. The [lifecycle](https://github.com/buildpack/lifecycle) will run the `detect` files for all available buildpacks (parallelized by default), and then run all of the `build` files (serially) for buildpacks which succesfully passed the detect phase.
+Each buildpack should have two executables files, `detect` and `build`, which get run during the detect phase and the build phase. The [lifecycle](https://github.com/buildpacks/lifecycle) will run the `detect` files for all available buildpacks (parallelized by default), and then run all of the `build` files (serially) for buildpacks which succesfully passed the detect phase.
 
 ## Buildplan 
 The buildplan is a `toml` file that buildpacks can write to. It is the medium through which data is passed from the `detect` phase to the `build` phase. 
@@ -60,7 +60,7 @@ These are folders in the image, where your dependencies live. They have the gene
 
 
 ## Buildpack vs builder
-A **builder** contains internal operating system images, the lifecycle executables for your application, and a collection of Cloud Native Buildpacks, all structured according to the [CNB specification](https://github.com/buildpack/spec). Builders are [created by](https://github.com/buildpack/pack#working-with-builders-using-create-builder), and [consumed by](https://github.com/buildpack/pack#example-building-using-the-default-builder-image), the [pack CLI](https://github.com/buildpack/pack). 
+A **builder** contains internal operating system images, the lifecycle executables for your application, and a collection of Cloud Native Buildpacks, all structured according to the [CNB specification](https://github.com/buildpacks/spec). Builders are [created by](https://buildpacks.io/docs/operator-guide/create-a-builder/#2-create-builder), and [consumed by](https://buildpacks.io/docs/operator-guide/create-a-builder/#3-use-your-builder), the [pack CLI](https://github.com/buildpacks/pack). 
 
 ## Buildpack Structure
 A CNB must contain:
@@ -69,7 +69,7 @@ A CNB must contain:
 - `bin/build` &rarr; This must be an executable file
 
 ## Buildpack.toml
-Buildpacks must contain a `buildpack.toml` file, which gives your buildpack a globally unique id, and a valid name, version, and stack (OS image). The specification is [here](https://github.com/buildpack/spec/blob/master/buildpack.md#buildpacktoml-toml)
+Buildpacks must contain a `buildpack.toml` file, which gives your buildpack a globally unique id, and a valid name, version, and stack (OS image). The specification is [here](https://github.com/buildpacks/spec/blob/master/buildpack.md#buildpacktoml-toml)
 
 ```
 [buildpack]
