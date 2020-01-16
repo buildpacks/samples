@@ -63,5 +63,14 @@ type = "web"
 command = "bundle exec ruby app.rb"
 
 [[slices]]
-paths = ["vendor/ruby/2.5.0/bin/*", "vendor/ruby/2.5.0/cache/*", "vendor/ruby/2.5.0/gems/*", "2", "3"]
+paths = ["vendor/ruby/2.5.0/bin/*"]
+
+[[slices]]
+paths = ["vendor/ruby/2.5.0/cache/*"]
+
+[[slices]]
+paths = ["2"]
+
+[[slices]]
+paths = ["2", "3"]
 EOL
