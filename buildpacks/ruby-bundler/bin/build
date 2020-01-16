@@ -64,6 +64,4 @@ command = "bundle exec ruby app.rb"
 
 [[slices]]
 paths = ["vendor/ruby/2.5.0/bin/*", "vendor/ruby/2.5.0/cache/*", "vendor/ruby/2.5.0/gems/*", "2", "3"]
-
-[[craps]]
 EOL
