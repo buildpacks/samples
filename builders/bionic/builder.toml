@@ -35,3 +35,6 @@ version = "0.0.1"
 id = "io.buildpacks.samples.stacks.bionic"
 run-image = "cnbs/sample-stack-run:bionic"
 build-image = "cnbs/sample-stack-build:bionic"
+
+[lifecycle]
+uri = "/Users/pivotal/workspace/lifecycle/out/lifecycle-v0.0.0+linux.x86-64.tgz"

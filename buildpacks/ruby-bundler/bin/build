@@ -47,7 +47,7 @@ if [[ -f Gemfile.lock && ${local_bundler_checksum} == ${remote_bundler_checksum}
 else
   # Determine if there has been a gem dependency change and install new gems to the bundler layer; re-using existing and un-changed gems
   echo "---> Installing gems"
-  mkdir "${bundler_layer_dir}"
+  mkdir -p "${bundler_layer_dir}"
   cat > "${bundler_layer_dir}.toml" <<EOL
 cache = true
 launch = true
@@ -61,4 +61,9 @@ cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
 command = "bundle exec ruby app.rb"
+
+[[slices]]
+paths = ["vendor/ruby/2.5.0/bin/*", "vendor/ruby/2.5.0/cache/*", "vendor/ruby/2.5.0/gems/*", "2", "3"]
+
+[[craps]]
 EOL

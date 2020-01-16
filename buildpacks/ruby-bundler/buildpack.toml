@@ -3,8 +3,8 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.ruby-bundler"
-version = "0.0.1"
+id = "io.buildpacks.samples.ruby-bundler2"
+version = "0.0.2"
 name = "Sample Ruby Buildpack"
 
 # Stacks that the buildpack will work with
