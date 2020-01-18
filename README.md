@@ -1,4 +1,4 @@
-# Buildpack Samples [![Build Status](https://travis-ci.org/buildpack/samples.svg?branch=master)](https://travis-ci.org/buildpack/samples)
+# Buildpack Samples [![Build Status](https://travis-ci.org/buildpacks/samples.svg?branch=master)](https://travis-ci.org/buildpacks/samples/branches)
 
 This repository contains sample implementations for learning and testing purposes.
 

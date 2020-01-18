@@ -1,13 +1,19 @@
 PACK_FLAGS?=--no-pull
 PACK_CMD?=$(shell which pack)
 ifeq ($(PACK_CMD),)
-ifeq ($(GITHUB_TOKEN),)
-	_PACK_VERSION=$(shell curl -s https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
+GITHUB_TOKEN?=
+ifdef GITHUB_TOKEN
+_PACK_VERSION?=$(shell curl -s -H "Authorization: token $(GITHUB_TOKEN)" https://api.github.com/repos/buildpacks/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
 else
-	_PACK_VERSION=$(shell curl -s -H "Authorization: token $(GITHUB_TOKEN)" https://api.github.com/repos/buildpack/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
+_PACK_VERSION?=$(shell curl -s https://api.github.com/repos/buildpacks/pack/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')
 endif
-PACK_CMD=./out/pack
 PACK_VERSION:=$(_PACK_VERSION)
+PACK_CMD=./out/pack
+endif
+UNAME_S:=$(shell uname -s)
+OS:=linux
+ifeq ($(UNAME_S),Darwin)
+OS:=macos
 endif
 
 build: ./out/pack build-stacks build-builders build-buildpacks
@@ -80,7 +86,7 @@ ifeq ($(DOCKER_USERNAME),)
 	exit 1
 else
 	@echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
-endif 
+endif
 
 deploy-stacks: docker-login
 	docker push cnbs/sample-stack-base:alpine
@@ -93,7 +99,7 @@ deploy-stacks: docker-login
 deploy-builders: docker-login
 	docker push cnbs/sample-builder:alpine
 	docker push cnbs/sample-builder:bionic
-	
+
 deploy: deploy-stacks deploy-builders
 
 clean:
@@ -127,12 +133,15 @@ clean:
 	docker rmi sample-java-maven-app:bionic || true
 	docker rmi sample-kotlin-gradle-app:bionic || true
 	docker rmi sample-ruby-bundler-app:bionic || true
-
+	
 ./out/pack:
 	@echo "> Using pack binary '$(PACK_CMD)'"  
 ifdef PACK_VERSION
+	@if [ '${PACK_VERSION}' == 'null' ]; then echo "Will not download pack version '${PACK_VERSION}'. Make sure it's downloadable."; exit 1; fi
 	echo "> Downloading $(PACK_VERSION)"
 	mkdir -p ./out/
-	curl -s -L -o out/pack.tgz https://github.com/buildpack/pack/releases/download/v$(PACK_VERSION)/pack-v$(PACK_VERSION)-linux.tgz
+	
+	curl -s -L -o out/pack.tgz https://github.com/buildpacks/pack/releases/download/v$(PACK_VERSION)/pack-v$(PACK_VERSION)-$(OS).tgz
+	
 	tar xvzf out/pack.tgz -C out/
 endif
