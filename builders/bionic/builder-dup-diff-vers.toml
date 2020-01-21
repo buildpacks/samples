@@ -16,8 +16,8 @@ uri = "../../buildpacks/ruby-bundler"
 
 [[buildpacks]]
 id = "io.buildpacks.samples.ruby-bundler"
-version = "0.0.1"
-uri = "../../buildpacks/ruby-bundler"
+version = "0.0.2"
+uri = "../../buildpacks/ruby-bundler-02"
 
 [[buildpacks]]
 id = "io.buildpacks.samples.hello-moon"

@@ -1,0 +1,17 @@
+# Buildpack API version
+api = "0.2"
+
+[buildpack]
+  id = "io.buildpacks.samples.meta-moon"
+  name = "Metamoon buildpack"
+  version = "0.0.1"
+
+[[order]]
+
+[[order.group]]
+    id="io.buildpacks.samples.hello-moon"
+    version="0.0.1"
+
+[[order.group]]
+    id="io.buildpacks.samples.ruby-bundler"
+    version="0.0.2"

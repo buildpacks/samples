@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> Ruby Buildpack"
+
+# 1. GET ARGS
+layers_dir=$1
+plan_path=$3
+
+# 2. DOWNLOAD RUBY
+ruby_layer_dir="${layers_dir}/ruby"
+mkdir -p "${ruby_layer_dir}"
+
+# determine ruby version provided during detection
+ruby_version=$(cat "${plan_path}" | yj -t | jq -r '.entries[] | select(.name == "ruby") | .version')
+
+echo "---> Downloading and extracting Ruby ${ruby_version}"
+ruby_url=https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-${ruby_version}.tgz
+wget -q -O - "${ruby_url}" | tar -xzf - -C "${ruby_layer_dir}"
+
+# 3. MAKE RUBY AVAILABLE DURING LAUNCH
+cat > "${ruby_layer_dir}.toml" <<EOL
+launch = true
+metadata = "${ruby_version}"
+EOL
+
+# 4. MAKE RUBY AVAILABLE TO THIS SCRIPT
+export PATH="${ruby_layer_dir}/bin:${PATH}"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ruby_layer_dir}/lib"
+
+# 5. INSTALL BUNDLER
+echo "---> Installing bundler"
+gem install bundler --no-ri --no-rdoc
+
+# 6. INSTALL GEMS
+
+# Compares previous Gemfile.lock checksum to the current Gemfile.lock
+bundler_layer_dir="${layers_dir}/bundler"
+local_bundler_checksum=$(sha256sum Gemfile.lock | cut -d ' ' -f 1) 
+remote_bundler_checksum=$(cat "${bundler_layer_dir}.toml" | yj -t | jq -r .metadata 2>/dev/null || echo 'not found')
+
+if [[ -f Gemfile.lock && ${local_bundler_checksum} == ${remote_bundler_checksum} ]] ; then
+  # Determine if no gem dependencies have changed, so it can reuse existing gems without running bundle install
+  echo "---> Reusing gems"
+  bundle config --local path "${bundler_layer_dir}" >/dev/null
+  bundle config --local bin "${bundler_layer_dir}/bin" >/dev/null
+else
+  # Determine if there has been a gem dependency change and install new gems to the bundler layer; re-using existing and un-changed gems
+  echo "---> Installing gems"
+  mkdir "${bundler_layer_dir}"
+  cat > "${bundler_layer_dir}.toml" <<EOL
+cache = true
+launch = true
+metadata = "${local_bundler_checksum}"
+EOL
+  bundle install --path "${bundler_layer_dir}" --binstubs "${bundler_layer_dir}/bin"
+fi
+
+# 7. SET DEFAULT START COMMAND
+cat >> "${layers_dir}/launch.toml" <<EOL
+[[processes]]
+type = "web"
+command = "bundle exec ruby app.rb"
+EOL
