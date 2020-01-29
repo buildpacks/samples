@@ -18,6 +18,8 @@ endif
 
 build: ./out/pack build-stacks build-builders build-buildpacks
 
+build-windows: build-stack-nanoserver-1809
+
 build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
 
 build-bionic: build-stack-bionic build-builder-bionic build-buildpacks-bionic
@@ -26,11 +28,15 @@ build-stacks: build-stack-alpine build-stack-bionic
 
 build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
-	./stacks/build-stack.sh stacks/alpine
+	bash stacks/build-stack.sh stacks/alpine
 
 build-stack-bionic:
 	@echo "> Building 'bionic' stack..."
-	./stacks/build-stack.sh stacks/bionic
+	bash stacks/build-stack.sh stacks/bionic
+
+build-stack-nanoserver-1809:
+	@echo "> Building 'nanoserver-1809' stack..."
+	bash stacks/build-stack.sh stacks/nanoserver-1809
 
 build-builders: build-builder-alpine build-builder-bionic
 
