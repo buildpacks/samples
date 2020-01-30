@@ -70,16 +70,22 @@ build-buildpacks-bionic:
 
 deploy-linux: deploy-linux-stacks deploy-builders
 
-deploy-linux-stacks: docker-login
+deploy-linux-stacks:
+	@echo "> Deploying 'alpine' stack..."
 	docker push cnbs/sample-stack-base:alpine
 	docker push cnbs/sample-stack-run:alpine
 	docker push cnbs/sample-stack-build:alpine
+	
+	@echo "> Deploying 'bionic' stack..."
 	docker push cnbs/sample-stack-base:bionic
 	docker push cnbs/sample-stack-run:bionic
 	docker push cnbs/sample-stack-build:bionic
 	
-deploy-builders: docker-login
+deploy-builders:
+	@echo "> Deploying 'alpine' builder..."
 	docker push cnbs/sample-builder:alpine
+	
+	@echo "> Deploying 'bionic' builder..."
 	docker push cnbs/sample-builder:bionic
 
 clean-linux:
@@ -124,21 +130,16 @@ build-stack-nanoserver-1809:
 	@echo "> Building 'nanoserver-1809' stack..."
 	bash stacks/build-stack.sh stacks/nanoserver-1809
 
+deploy-windows: deploy-windows-stacks
+
+deploy-windows-stacks:
+	@echo "> Deploying 'nanoserver-1809' stack..."
+	docker push cnbs/sample-stack-base:nanoserver-1809
+	docker push cnbs/sample-stack-run:nanoserver-1809
+	docker push cnbs/sample-stack-build:nanoserver-1809
+
 clean-windows:
 	@echo "> Removing 'nanoserver-1809' stack..."
 	docker rmi cnbs/sample-stack-base:nanoserver-1809
 	docker rmi cnbs/sample-stack-run:nanoserver-1809
 	docker rmi cnbs/sample-stack-build:nanoserver-1809
-
-####################
-## Utilities
-####################
-
-docker-login:
-	@echo "> Logging in to docker hub..."
-ifeq ($(DOCKER_USERNAME),)
-	@echo "No docker login information provided. Expecting DOCKER_USERNAME and DOCKER_PASSWORD envars."
-	exit 1
-else
-	@echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
-endif

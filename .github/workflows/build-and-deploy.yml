@@ -1,4 +1,4 @@
-name: Test
+name: Build and Deploy
 
 on:
   push:
@@ -32,11 +32,30 @@ jobs:
         run: |
           curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.tgz
-      - name:
-        run: PACK_CMD=./pack make build-linux clean-linux
+      - uses: azure/docker-login@v1
+        with:
+          username: cnbs
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build
+        run: PACK_CMD=./pack make build-linux
+      - name: Deploy
+        if: github.event_name == 'push' && github.ref == 'master'
+        run: make deploy-linux
+      - name: Clean up
+        run: make clean-linux
   build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name:
-        run: make build-windows clean-windows
+      - uses: azure/docker-login@v1
+        with:
+          username: cnbs
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build
+        run: make build-windows
+      - name: Deploy
+        if: github.event_name == 'push' && github.ref == 'master'
+        run: make deploy-windows
+      - name: Clean up
+        run: make clean-windows
+
