@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Determine download URL for latest pack
+        id: pack-download-url
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            return github.repos.getLatestRelease({
+                owner: "buildpacks",
+                repo: "pack"
+            }).then(result => {
+                return result.data.assets
+                  .filter(a => a.name.includes("linux"))
+                  .map(a => a.browser_download_url)[0];
+            })
+      - name: Install pack
+        run: |
+          curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
+          tar -xvf pack.tgz
+      - name:
+        run: PACK_CMD=./pack make build-linux clean-linux
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name:
+        run: make build-windows clean-windows

@@ -20,3 +20,27 @@ Includes:
 - [Pack – Buildpack CLI](https://github.com/buildpacks/pack) &rarr; CLI used to consume the builder, along with source code, and construct an OCI image
 - [CNB Tutorial](https://buildpacks.io/docs/app-journey/) &rarr; Tutorial to get you started using `pack`, a `builder`, and your application to create a working OCI image 
 - [Buildpack & Platform Specification](https://github.com/buildpacks/spec) &rarr; Detailed definition of the interaction between a platform, a lifecycle, Cloud Native Buildpacks, and an application
+
+
+# Development
+
+### Prerequisites
+
+- [Docker](https://hub.docker.com/search/?type=edition&offering=community)
+- [Pack](https://buildpacks.io/docs/install-pack/)
+- [Make](https://www.gnu.org/software/make/)
+- [WSL w/ Ubuntu](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (Windows)
+
+#### Test
+
+##### Linux-Based Containers
+
+```shell script
+make build-linux
+```
+
+##### Windows-Based Containers
+
+```shell script
+make build-windows
+```
