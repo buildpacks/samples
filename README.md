@@ -1,4 +1,4 @@
-# Buildpack Samples [![Build Status](https://travis-ci.org/buildpacks/samples.svg?branch=master)](https://travis-ci.org/buildpacks/samples/branches)
+# Buildpack Samples [![Build Status](https://github.com/buildpacks/samples/workflows/Build%20and%20Deploy/badge.svg?branch=master)](https://github.com/buildpacks/samples/actions)
 
 This repository contains sample implementations for learning and testing purposes.
 
