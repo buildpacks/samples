@@ -6,3 +6,6 @@ uri = "../../buildpacks/hello-world/"
 
 [[dependencies]]
 uri = "../../buildpacks/hello-moon/"
+
+[[dependencies]]
+uri = "../../buildpacks/ruby-bundler/"

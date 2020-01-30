@@ -16,3 +16,24 @@ version = "0.0.1"
 [[order.group]]
 id = "io.buildpacks.samples.hello-moon"
 version = "0.0.1"
+
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.hello-world"
+version = "0.0.1"
+
+[[order.group]]
+id = "io.buildpacks.samples.ruby-bundler"
+version = "0.0.1"
+
+[[dependencies]]
+id = "io.buildpacks.samples.hello-moon"
+uri = "../hello-moon"
+
+[[dependencies]]
+id = "io.buildpacks.samples.hello-world"
+uri = "../hello-world"
+
+[[dependencies]]
+id = "io.buildpacks.samples.ruby-bundler"
+uri = "../ruby-bundler"
