@@ -5,7 +5,7 @@ PACK_CMD?=pack
 ## Linux
 ####################
 
-build-linux: build-linux-stacks build-builders build-buildpacks build-packages
+build-linux: build-linux-stacks build-packages build-builders build-buildpacks
 
 build-linux-stacks: build-stack-alpine build-stack-bionic
 
@@ -70,7 +70,7 @@ build-buildpacks-bionic:
 
 build-packages:
 	@echo "> Creating 'hello-universe' buildpack package"
-	pack create-package cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml
+	$(PACK_CMD) create-package cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
 
 deploy-linux: deploy-linux-stacks deploy-packages deploy-builders
 
