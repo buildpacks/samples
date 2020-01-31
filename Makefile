@@ -5,7 +5,7 @@ PACK_CMD?=pack
 ## Linux
 ####################
 
-build-linux: build-linux-stacks build-builders build-buildpacks
+build-linux: build-linux-stacks build-packages build-builders build-buildpacks
 
 build-linux-stacks: build-stack-alpine build-stack-bionic
 
@@ -68,23 +68,30 @@ build-buildpacks-bionic:
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS)
 
-deploy-linux: deploy-linux-stacks deploy-builders
+build-packages:
+	@echo "> Creating 'hello-universe' buildpack package"
+	$(PACK_CMD) create-package cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
+
+deploy-linux: deploy-linux-stacks deploy-packages deploy-builders
 
 deploy-linux-stacks:
 	@echo "> Deploying 'alpine' stack..."
 	docker push cnbs/sample-stack-base:alpine
 	docker push cnbs/sample-stack-run:alpine
 	docker push cnbs/sample-stack-build:alpine
-	
+
 	@echo "> Deploying 'bionic' stack..."
 	docker push cnbs/sample-stack-base:bionic
 	docker push cnbs/sample-stack-run:bionic
 	docker push cnbs/sample-stack-build:bionic
-	
+
+deploy-packages:
+	docker push cnbs/sample-package:hello-universe
+
 deploy-builders:
 	@echo "> Deploying 'alpine' builder..."
 	docker push cnbs/sample-builder:alpine
-	
+
 	@echo "> Deploying 'bionic' builder..."
 	docker push cnbs/sample-builder:bionic
 
@@ -117,7 +124,10 @@ clean-linux:
 	docker rmi sample-java-maven-app:bionic || true
 	docker rmi sample-kotlin-gradle-app:bionic || true
 	docker rmi sample-ruby-bundler-app:bionic || true
-	
+
+	@echo "> Removing packages..."
+	docker rmi cnbs/sample-package:hello-universe || true
+
 ####################
 ## Windows
 ####################

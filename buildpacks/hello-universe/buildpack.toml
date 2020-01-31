@@ -1,0 +1,18 @@
+# Buildpack API version
+api = "0.2"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "io.buildpacks.samples.hello-universe"
+version = "0.0.1"
+name = "Hello Universe Buildpack"
+
+# Order used for detection
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.hello-world"
+version = "0.0.1"
+
+[[order.group]]
+id = "io.buildpacks.samples.hello-moon"
+version = "0.0.1"
