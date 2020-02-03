@@ -5,7 +5,7 @@ PACK_CMD?=pack
 ## Linux
 ####################
 
-build-linux: build-linux-stacks buildpackages build-builders build-buildpacks
+build-linux: build-linux-stacks build-packages build-builders build-buildpacks
 
 build-linux-stacks: build-stack-alpine build-stack-bionic
 
@@ -68,9 +68,11 @@ build-buildpacks-bionic:
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS)
 
-buildpackages:
-	@echo "> Creating 'hello-universe' buildpack package"
+build-packages:
+	@echo "> Creating 'hello-world' buildpack package"
 	$(PACK_CMD) create-package cnbs/sample-package:hello-world --package-config packages/hello-world/package.toml $(PACK_FLAGS)
+
+	@echo "> Creating 'hello-universe' buildpack package"
 	$(PACK_CMD) create-package cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
 
 deploy-linux: deploy-linux-stacks deploy-packages deploy-builders
