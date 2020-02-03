@@ -45,10 +45,10 @@ build-buildpacks-alpine:
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-java-maven-app:alpine --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS)
-	
+
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-kotlin-gradle-app:alpine --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS)
-	
+
 build-buildpacks-bionic:
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-hello-moon-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
@@ -61,14 +61,17 @@ build-buildpacks-bionic:
 
 	@echo "> Creating 'java-maven' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-java-maven-app:bionic --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS)
-	
+
 	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-kotlin-gradle-app:bionic --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS)
-	
+
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS)
 
 build-packages:
+	@echo "> Creating 'hello-world' buildpack package"
+	$(PACK_CMD) create-package cnbs/sample-package:hello-world --package-config packages/hello-world/package.toml $(PACK_FLAGS)
+
 	@echo "> Creating 'hello-universe' buildpack package"
 	$(PACK_CMD) create-package cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
 
@@ -100,23 +103,23 @@ clean-linux:
 	docker rmi cnbs/sample-stack-base:alpine || true
 	docker rmi cnbs/sample-stack-run:alpine || true
 	docker rmi cnbs/sample-stack-build:alpine || true
-	
+
 	@echo "> Removing 'bionic' stack..."
 	docker rmi cnbs/sample-stack-base:bionic || true
 	docker rmi cnbs/sample-stack-run:bionic || true
 	docker rmi cnbs/sample-stack-build:bionic || true
-	
+
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
 	docker rmi cnbs/sample-builder:bionic || true
-	
+
 	@echo "> Removing 'alpine' apps..."
 	docker rmi sample-hello-moon-app:alpine || true
 	docker rmi sample-hello-processes-app:alpine || true
 	docker rmi sample-hello-world-app:alpine || true
 	docker rmi sample-java-maven-app:alpine || true
 	docker rmi sample-kotlin-gradle-app:alpine || true
-	
+
 	@echo "> Removing 'bionic' apps..."
 	docker rmi sample-hello-moon-app:bionic || true
 	docker rmi sample-hello-processes-app:bionic || true
