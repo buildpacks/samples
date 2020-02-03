@@ -5,7 +5,7 @@ PACK_CMD?=pack
 ## Linux
 ####################
 
-build-linux: build-linux-stacks build-packages build-builders build-buildpacks
+build-linux: build-linux-stacks buildpackages build-builders build-buildpacks
 
 build-linux-stacks: build-stack-alpine build-stack-bionic
 
