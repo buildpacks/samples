@@ -2,7 +2,7 @@
 uri = "../../buildpacks/hello-universe/"
 
 [[dependencies]]
-uri = "../../buildpacks/hello-world/"
+uri = "../../buildpacks/hello-moon"
 
 [[dependencies]]
-uri = "../../buildpacks/hello-moon/"
+image = "cnbs/sample-package:hello-world"
