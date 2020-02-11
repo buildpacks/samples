@@ -5,9 +5,10 @@ This repository contains sample implementations of the core components of the Cl
 Includes:
 
 - [Apps](apps/README.MD)
-- [Buildpacks](buildpackas/README.md)
+- [Buildpacks](buildpacks/README.md)
 - [Builders](builders/README.MD)
 - [Stacks](stacks/README.md)
+- [Packages](packages/README.md)
 
 
 ### Start here:
