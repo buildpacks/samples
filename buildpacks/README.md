@@ -1,6 +1,6 @@
 # Sample Buildpacks
 
-Sample of buildpacks. Buildpacks turn your source code into container images. Follow the `README.md` docs within each buildpack to learn more.
+Buildpacks turn your source code into container images. Follow the `README.md` docs within each buildpack to learn more.
 
 ### Additional Resources
 
