@@ -89,6 +89,8 @@ deploy-linux-stacks:
 	docker push cnbs/sample-stack-build:bionic
 
 deploy-packages:
+	@echo "> Deploying packages..."
+	docker push cnbs/sample-package:hello-world
 	docker push cnbs/sample-package:hello-universe
 
 deploy-builders:
