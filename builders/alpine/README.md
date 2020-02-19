@@ -1,8 +1,5 @@
 # Sample Alpine Builder
 
-### Prerequisites
-* [Pack](https://buildpacks.io/docs/install-pack/)
-
 ### Usage
 
 #### Creating the builder
