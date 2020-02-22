@@ -13,3 +13,6 @@ id = "io.buildpacks.samples.stacks.bionic"
 
 [[stacks]]
 id = "io.buildpacks.samples.stacks.alpine"
+
+[[stacks]]
+id = "io.buildpacks.samples.stacks.alpine-x-armv6"

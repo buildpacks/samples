@@ -1,0 +1,18 @@
+# Buildpacks to include in builder
+[[buildpacks]]
+uri = "../../buildpacks/hello-world"
+
+# Order used for detection
+[[order]]
+[[order.group]]
+id = "io.buildpacks.samples.hello-world"
+version = "0.0.1"
+
+[lifecycle]
+uri = "/path/to/custom/lifecycle.tgz"
+
+# Stack that will be used by the builder
+[stack]
+id = "io.buildpacks.samples.stacks.alpine-x-armv6"
+run-image = "cnbs/sample-stack-run:alpine-x-armv6"
+build-image = "cnbs/sample-stack-build:alpine-x-armv6"

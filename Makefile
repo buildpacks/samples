@@ -7,7 +7,7 @@ PACK_CMD?=pack
 
 build-linux: build-linux-stacks build-packages build-builders build-buildpacks
 
-build-linux-stacks: build-stack-alpine build-stack-bionic
+build-linux-stacks: build-stack-alpine build-stack-alpine-x-armv6 build-stack-bionic
 
 build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
 
@@ -16,6 +16,10 @@ build-bionic: build-stack-bionic build-builder-bionic build-buildpacks-bionic
 build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
 	bash stacks/build-stack.sh stacks/alpine
+	
+build-stack-alpine-x-armv6:
+	@echo "> Building 'alpine' stack..."
+	bash stacks/build-stack.sh stacks/alpine-x-armv6
 
 build-stack-bionic:
 	@echo "> Building 'bionic' stack..."
@@ -82,6 +86,10 @@ deploy-linux-stacks:
 	docker push cnbs/sample-stack-base:alpine
 	docker push cnbs/sample-stack-run:alpine
 	docker push cnbs/sample-stack-build:alpine
+	
+	@echo "> Deploying 'alpine-x-armv6' stack..."
+	docker push cnbs/sample-stack-run:alpine-x-armv6
+	docker push cnbs/sample-stack-build:alpine-x-armv6
 
 	@echo "> Deploying 'bionic' stack..."
 	docker push cnbs/sample-stack-base:bionic

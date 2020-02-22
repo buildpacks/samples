@@ -46,27 +46,33 @@ if [[ -z ${STACK_DIR} ]]; then
   exit 1
 fi
 
-DIR=$(cd $(dirname $0) && pwd)
 IMAGE_DIR=$(realpath "${STACK_DIR}")
 TAG=$(basename "${IMAGE_DIR}")
 STACK_ID="${ID_PREFIX}.$(basename "${IMAGE_DIR}")"
-BASE_IMAGE=${REPO_PREFIX}-base:${TAG}
-RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
-BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
 
-docker build -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
-
-echo "BUILDING ${BUILD_IMAGE}..."
-docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${BUILD_IMAGE}"  "${IMAGE_DIR}/build"
-
-echo "BUILDING ${RUN_IMAGE}..."
-docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${RUN_IMAGE}" "${IMAGE_DIR}/run"
+BUILT_IMAGES=
+BASE_IMAGE=
+for TYPE in "base" "run" "build"; do
+  IMAGE_NAME=${REPO_PREFIX}-${TYPE}:${TAG}
+  if [[ -d "${IMAGE_DIR}/${TYPE}" ]]; then
+    if [[ "${TYPE}" == "base" ]]; then
+      BASE_IMAGE="${IMAGE_NAME}"
+    fi
+    
+    echo "BUILDING ${IMAGE_NAME}..."
+    docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${IMAGE_NAME}"  "${IMAGE_DIR}/${TYPE}"
+    BUILT_IMAGES="${BUILT_IMAGES} ${IMAGE_NAME}"
+  else
+    echo "Skipping ${TYPE} due to directory missing..."
+  fi
+done
 
 echo
 echo "STACK BUILT!"
 echo
 echo "Stack ID: ${STACK_ID}"
 echo "Images:"
-for IMAGE in "${BASE_IMAGE}" "${BUILD_IMAGE}" "${RUN_IMAGE}"; do
-  echo "    ${IMAGE}"
-done
+for IMAGE in ${BUILT_IMAGES}; do
+  echo "  ${IMAGE}"
+done 
+echo
