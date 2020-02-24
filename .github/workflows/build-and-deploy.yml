@@ -39,7 +39,7 @@ jobs:
       - name: Build
         run: PACK_CMD=./pack make build-linux
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'master'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: make deploy-linux
       - name: Clean up
         run: make clean-linux
@@ -54,7 +54,7 @@ jobs:
       - name: Build
         run: make build-windows
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'master'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: make deploy-windows
       - name: Clean up
         run: make clean-windows
