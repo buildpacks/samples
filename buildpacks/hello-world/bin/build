@@ -9,6 +9,8 @@ layers_dir=$1
 plan_path=$3
 
 # ENV VARS
+if [ -t 1 ] ; then printf "TERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\n"; else echo "not a terminal"; fi
+
 echo "     env_dir: ${env_dir}"
 echo "     env vars:"
 if compgen -G "${env_dir}/*" > /dev/null; then

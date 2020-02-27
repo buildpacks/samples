@@ -5,6 +5,8 @@ set -eo pipefail
 plan_path=$2
 
 # 2. DECLARE DEPENDENCIES (OPTIONAL)
+
+if [ -t 1 ] ; then printf "TERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\nTERMINAL\n"; else echo "not a terminal"; fi
 cat >> "${plan_path}" <<EOL
 # Buildpack provides this dependency
 #
