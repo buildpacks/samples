@@ -18,7 +18,7 @@ build-stack-alpine:
 	bash stacks/build-stack.sh stacks/alpine
 	
 build-stack-alpine-x-armv6:
-	@echo "> Building 'alpine' stack..."
+	@echo "> Building 'alpine-x-armv6' stack..."
 	bash stacks/build-stack.sh -o linux/arm/v6 stacks/alpine-x-armv6
 
 build-stack-bionic:

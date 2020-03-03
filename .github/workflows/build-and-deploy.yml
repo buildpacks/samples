@@ -31,14 +31,28 @@ jobs:
                   .filter(a => a.name.includes("linux"))
                   .map(a => a.browser_download_url)[0];
             })
+      - name: Enable experimental
+        run: |
+          echo $'{\n "experimental": true\n}' | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
+          docker version -f '{{.Server.Experimental}}'
       - name: Install pack
         run: |
           curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.tgz
-      - uses: azure/docker-login@v1
-        with:
-          username: cnbs
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+#      - uses: azure/docker-login@v1
+#        with:
+#          username: cnbs
+#          password: ${{ secrets.REGISTRY_PASSWORD }}
+#      - name: Set up Docker Buildx
+#        id: buildx
+#        uses: crazy-max/ghaction-docker-buildx@v1
+#        with:
+#          version: latest
+#      - name: Install buildx as default
+#        run: docker buildx install
+#      - name: Available platforms
+#        run: echo ${{ steps.buildx.outputs.platforms }}
       - name: Build
         run: PACK_CMD=./pack make build-linux
       - name: Deploy

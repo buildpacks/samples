@@ -9,8 +9,6 @@ DEFAULT_PLATFORM=linux/amd64
 REPO_PREFIX=${DEFAULT_PREFIX}
 PLATFORM=${DEFAULT_PLATFORM}
 
-export
-
 usage() {
   echo "Usage: "
   echo "  $0 [-p <prefix>] [-o <platform>] <dir>"
