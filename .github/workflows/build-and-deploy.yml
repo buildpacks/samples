@@ -8,6 +8,9 @@ on:
     branches:
       - master
 
+env:
+  DOCKER_CLI_EXPERIMENTAL: enabled
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
