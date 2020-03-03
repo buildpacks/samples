@@ -4,21 +4,29 @@ set -e
 ID_PREFIX="io.buildpacks.samples.stacks"
 
 DEFAULT_PREFIX=cnbs/sample-stack
+DEFAULT_PLATFORM=linux/amd64
 
 REPO_PREFIX=${DEFAULT_PREFIX}
+PLATFORM=${DEFAULT_PLATFORM}
+
+export
 
 usage() {
   echo "Usage: "
-  echo "  $0 [-p <prefix>] <dir>"
+  echo "  $0 [-p <prefix>] [-o <platform>] <dir>"
   echo "    -p    prefix to use for images      (default: ${DEFAULT_PREFIX})"
+  echo "    -o    platform to use for images    (default: ${DEFAULT_PLATFORM})"
   echo "   <dir>  directory of stack to build"
   exit 1; 
 }
 
-while getopts "v:p:" o; do
-  case "${o}" in
+while getopts "v:p:o:" opt; do
+  case "${opt}" in
     p)
       REPO_PREFIX=${OPTARG}
+      ;;
+    o)
+      PLATFORM=${OPTARG}
       ;;
     \?)
       echo "Invalid option: -$OPTARG" 1>&2
@@ -60,7 +68,7 @@ for TYPE in "base" "run" "build"; do
     fi
     
     echo "BUILDING ${IMAGE_NAME}..."
-    docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${IMAGE_NAME}"  "${IMAGE_DIR}/${TYPE}"
+    docker build --platform "${PLATFORM}" --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${IMAGE_NAME}"  "${IMAGE_DIR}/${TYPE}"
     BUILT_IMAGES="${BUILT_IMAGES} ${IMAGE_NAME}"
   else
     echo "Skipping ${TYPE} due to directory missing..."
