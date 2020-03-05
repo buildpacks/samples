@@ -9,7 +9,7 @@ id = "io.buildpacks.samples.kotlin-gradle"
 version = "0.0.1"
 uri = "../../buildpacks/kotlin-gradle"
 
-[[packages]]
+[[buildpacks]]
 image = "cnbs/sample-package:hello-universe"
 
 # Order used for detection

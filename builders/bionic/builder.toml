@@ -14,7 +14,7 @@ id = "io.buildpacks.samples.ruby-bundler"
 version = "0.0.1"
 uri = "../../buildpacks/ruby-bundler"
 
-[[packages]]
+[[buildpacks]]
 image = "cnbs/sample-package:hello-universe"
 
 # Order used for detection

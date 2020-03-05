@@ -70,10 +70,10 @@ build-buildpacks-bionic:
 
 build-packages:
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) create-package cnbs/sample-package:hello-world --package-config packages/hello-world/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world --package-config packages/hello-world/package.toml $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) create-package cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
 
 deploy-linux: deploy-linux-stacks deploy-packages deploy-builders
 
