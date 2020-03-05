@@ -52,3 +52,7 @@ make build-linux
 ```shell script
 make build-windows
 ```
+
+#### Contributing
+- Samples are maintained by https://github.com/orgs/buildpacks/teams/learning-maintainers
+- Buildpacks Slack [#learning-team](https://buildpacks.slack.com/archives/CST4A3ECV)
