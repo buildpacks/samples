@@ -14,7 +14,7 @@ Includes:
 ### Start here:
 
 To get up and running, [install `pack`](https://buildpacks.io/docs/install-pack/) and run `make build-linux` or `make build-windows`, depending on your choice of target OS.
-Follow the `README.MD` docs at the root directory of each component to choose your next step. We recommend starting to play with building [apps](apps/README.MD).
+Follow the `README.MD` docs at the root directory of each component to choose your next step. We recommend starting to play with building [apps](./apps).
 
 
 ### External Buildpacks
