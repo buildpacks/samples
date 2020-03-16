@@ -1,5 +1,5 @@
-PACK_FLAGS?=--no-pull
-PACK_CMD?=pack
+PACK_FLAGS?=--no-pull --verbose
+PACK_CMD?=/Users/pivotal/workspace/pack/out/pack
 
 ####################
 ## Linux
@@ -158,3 +158,8 @@ clean-windows:
 	docker rmi cnbs/sample-stack-base:nanoserver-1809
 	docker rmi cnbs/sample-stack-run:nanoserver-1809
 	docker rmi cnbs/sample-stack-build:nanoserver-1809
+
+test-debug-lifecycle:
+	@echo "> Testing debug on the lifecycle...."
+	$(PACK_CMD) create-builder test-lifecycle-debug:alpine -b builders/alpine/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) build -B test-lifecycle-debug:alpine -p apps/ruby-bundler/ app-test:debug $(PACK_FLAGS)

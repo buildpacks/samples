@@ -33,3 +33,6 @@ version = "0.0.1"
 id = "io.buildpacks.samples.stacks.alpine"
 run-image = "cnbs/sample-stack-run:alpine"
 build-image = "cnbs/sample-stack-build:alpine"
+
+[lifecycle]
+uri = "file:///Users/pivotal/workspace/lifecycle/out/lifecycle-v0.5.0+linux.x86-64.tgz"
