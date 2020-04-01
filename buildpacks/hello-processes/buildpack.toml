@@ -6,6 +6,7 @@ api = "0.2"
 id = "io.buildpacks.samples.hello-processes"
 version = "0.0.1"
 name = "Hello Processes Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-process"
 
 # Stacks that the buildpack will work with
 [[stacks]]

@@ -6,6 +6,7 @@ api = "0.2"
 id = "io.buildpacks.samples.hello-moon"
 version = "0.0.1"
 name = "Hello Moon Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-moon"
 
 # Stacks that the buildpack will work with
 [[stacks]]
