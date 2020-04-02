@@ -1,0 +1,13 @@
+[project]
+id = "io.buildpacks.bash-script"
+name = "Bash Script"
+version = "1.0.0"
+
+[build]
+exclude = [
+    "README.md",
+    "bash-script-buildpack"
+]
+
+[[build.buildpacks]]
+uri = "bash-script-buildpack/"
