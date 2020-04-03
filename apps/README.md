@@ -13,7 +13,7 @@ To build images for most of these apps, simply execute:
 pack build -p apps/<APP> --builder cnbs/sample-builder:<bionic OR alpine> sample-app
 ```
 
-After building the app you should be able to simply run it via `docker run -it -p 8080:8080 sample-app`.
+_After building the app you should be able to simply run it via `docker run -it -p 8080:8080 sample-app`.
 Go to [localhost:8080](http://localhost:8080) to see the app running._
 
 ### What's next?
