@@ -1,11 +1,13 @@
 # Sample Apps
 
-DISCLAIMER: There is nothing special about the apps here. The apps are solely here to complete samples and tutorials.
-
-_No alterations are necessary to standard applications in order to be built by buildpacks._
+> DISCLAIMER: 
+> _No alterations are necessary to standard applications in order to be built by buildpacks._
+>
+> Some applications here have _optional_ files for extended functionality. They will be called out in their README.md file.
 
 ### Running the apps
-To build images for these apps, simply execute:
+
+To build images for most of these apps, simply execute:
 
 ```bash
 pack build -p apps/<APP> --builder cnbs/sample-builder:<bionic OR alpine> sample-app
