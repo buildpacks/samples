@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# 1. CHECK IF APPLICABLE 
+if [[ ! -f "app.sh" ]]; then
+   exit 100
+fi
+
+# LIST CONTENTS
+echo "---> Hello Bash Script buildpack"
+echo 
+echo "Here are the contents of the current working directory:"
+ls -alHR
