@@ -6,6 +6,7 @@ api = "0.2"
 id = "io.buildpacks.samples.hello-world"
 version = "0.0.1"
 name = "Hello World Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-world"
 
 # Stacks that the buildpack will work with
 [[stacks]]

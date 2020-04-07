@@ -6,6 +6,7 @@ api = "0.2"
 id = "io.buildpacks.samples.hello-universe"
 version = "0.0.1"
 name = "Hello Universe Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-universe"
 
 # Order used for detection
 [[order]]
