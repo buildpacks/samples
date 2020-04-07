@@ -3,8 +3,8 @@
 A sample of builders that use the [stacks](../stacks/) in this repo.
 
 ### Contains:
-- [Alpine](alpine/README.MD)
-- [Bionic](bionic/README.MD)
+- [Alpine](alpine/)
+- [Bionic](bionic/)
 
 ### Additional Resources
 
