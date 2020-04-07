@@ -6,7 +6,7 @@ Includes:
 
 - [Apps](apps/README.MD)
 - [Buildpacks](buildpacks/README.md)
-- [Builders](builders/README.MD)
+- [Builders](builders/README.md)
 - [Stacks](stacks/README.md)
 - [Packages](packages/README.md)
 
