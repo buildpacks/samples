@@ -4,17 +4,17 @@ This repository contains sample implementations of the core components of the Cl
 
 Includes:
 
-- [Apps](apps/README.MD)
-- [Buildpacks](buildpacks/README.md)
-- [Builders](builders/README.MD)
-- [Stacks](stacks/README.md)
-- [Packages](packages/README.md)
+- [Apps](apps/)
+- [Buildpacks](buildpacks/)
+- [Builders](builders/)
+- [Stacks](stacks/)
+- [Packages](packages/)
 
 
 ### Start here:
 
 To get up and running, [install `pack`](https://buildpacks.io/docs/install-pack/) and run `make build-linux` or `make build-windows`, depending on your choice of target OS.
-Follow the `README.MD` docs at the root directory of each component to choose your next step. We recommend starting to play with building [apps](./apps).
+Follow the `README.md` docs at the root directory of each component to choose your next step. We recommend starting to play with building [apps](./apps).
 
 
 ### External Buildpacks
