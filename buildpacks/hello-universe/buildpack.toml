@@ -3,7 +3,7 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.hello-universe"
+id = "buildpacks-io-samples/hello-universe"
 version = "0.0.1"
 name = "Hello Universe Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-universe"
@@ -11,9 +11,9 @@ homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-u
 # Order used for detection
 [[order]]
 [[order.group]]
-id = "io.buildpacks.samples.hello-world"
+id = "buildpacks-io-samples/hello-world"
 version = "0.0.1"
 
 [[order.group]]
-id = "io.buildpacks.samples.hello-moon"
+id = "buildpacks-io-samples/hello-moon"
 version = "0.0.1"
