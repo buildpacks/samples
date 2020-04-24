@@ -3,7 +3,7 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.bash-script"
+id = "buildpacks-io-samples/bash-script"
 version = "0.0.1"
 name = "Bash Script Buildpack"
 

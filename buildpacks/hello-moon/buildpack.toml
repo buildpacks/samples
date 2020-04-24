@@ -3,7 +3,7 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "io.buildpacks.samples.hello-moon"
+id = "buildpacks-io-samples/hello-moon"
 version = "0.0.1"
 name = "Hello Moon Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-moon"

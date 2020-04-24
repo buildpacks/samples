@@ -23,11 +23,11 @@ build-stack-bionic:
 
 build-builders: build-builder-alpine build-builder-bionic
 
-build-builder-alpine:
+build-builder-alpine: build-packages
 	@echo "> Building 'alpine' builder..."
 	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --builder-config builders/alpine/builder.toml $(PACK_FLAGS)
 
-build-builder-bionic:
+build-builder-bionic: build-packages
 	@echo "> Building 'bionic' builder..."
 	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --builder-config builders/bionic/builder.toml $(PACK_FLAGS)
 
