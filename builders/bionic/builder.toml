@@ -1,16 +1,16 @@
 # Buildpacks to include in builder
 [[buildpacks]]
-id = "buildpacks-io-samples/java-maven"
+id = "samples/java-maven"
 version = "0.0.1"
 uri = "../../buildpacks/java-maven"
 
 [[buildpacks]]
-id = "buildpacks-io-samples/kotlin-gradle"
+id = "samples/kotlin-gradle"
 version = "0.0.1"
 uri = "../../buildpacks/kotlin-gradle"
 
 [[buildpacks]]
-id = "buildpacks-io-samples/ruby-bundler"
+id = "samples/ruby-bundler"
 version = "0.0.1"
 uri = "../../buildpacks/ruby-bundler"
 
@@ -20,22 +20,22 @@ image = "cnbs/sample-package:hello-universe"
 # Order used for detection
 [[order]]
 [[order.group]]
-id = "buildpacks-io-samples/java-maven"
+id = "samples/java-maven"
 version = "0.0.1"
 
 [[order]]
 [[order.group]]
-id = "buildpacks-io-samples/kotlin-gradle"
+id = "samples/kotlin-gradle"
 version = "0.0.1"
 
 [[order]]
 [[order.group]]
-id = "buildpacks-io-samples/ruby-bundler"
+id = "samples/ruby-bundler"
 version = "0.0.1"
 
 [[order]]
 [[order.group]]
-id = "buildpacks-io-samples/hello-universe"
+id = "samples/hello-universe"
 version = "0.0.1"
 
 # Stack that will be used by the builder
