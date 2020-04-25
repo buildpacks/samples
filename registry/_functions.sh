@@ -30,7 +30,7 @@ generate_registry_entry() {
   mkdir -p "$LAYER_1/$LAYER_2"
   
   echo "Creating entry..."
-  cat <<EOF > "$LAYER_1/$LAYER_2/$NS_$NAME"
+  cat <<EOF > "${LAYER_1}/${LAYER_2}/${NS}_${NAME}"
 {"ns":"$NS","name":"$NAME","version":"$VERSION","yanked":false,"addr":"$REFERENCE"}
 EOF
 
