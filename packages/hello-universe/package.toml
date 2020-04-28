@@ -5,4 +5,4 @@ uri = "../../buildpacks/hello-universe/"
 uri = "../../buildpacks/hello-moon"
 
 [[dependencies]]
-image = "cnbs/sample-package:hello-world"
+uri = "../../buildpacks/hello-world"

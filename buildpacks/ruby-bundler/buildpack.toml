@@ -3,7 +3,7 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "buildpacks-io-samples/ruby-bundler"
+id = "samples/ruby-bundler"
 version = "0.0.1"
 name = "Sample Ruby Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/ruby-bundler"

@@ -3,7 +3,7 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "buildpacks-io-samples/hello-processes"
+id = "samples/hello-processes"
 version = "0.0.1"
 name = "Hello Processes Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/hello-process"
