@@ -141,11 +141,17 @@ build-windows: build-windows-stacks
 
 build-windows-stacks: build-stack-nanoserver-1809
 
+build-windows-builders: build-builder-nanoserver-1809
+
 build-stack-nanoserver-1809:
 	@echo "> Building 'nanoserver-1809' stack..."
 	bash stacks/build-stack.sh stacks/nanoserver-1809
 
-deploy-windows: deploy-windows-stacks
+build-builder-nanoserver-1809: build-stack-nanoserver-1809
+	@echo "> Building 'nanoserver-1809' builder..."
+	$(PACK_CMD) create-builder cnbs/sample-builder:nanoserver-1809 --builder-config builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
+
+deploy-windows: deploy-windows-stacks deploy-windows-builders
 
 deploy-windows-stacks:
 	@echo "> Deploying 'nanoserver-1809' stack..."
@@ -153,8 +159,13 @@ deploy-windows-stacks:
 	docker push cnbs/sample-stack-run:nanoserver-1809
 	docker push cnbs/sample-stack-build:nanoserver-1809
 
+deploy-windows-builders:
+	@echo "> Deploying 'nanoserver-1809' builder..."
+	docker push cnbs/sample-builder:nanoserver-1809
+
 clean-windows:
 	@echo "> Removing 'nanoserver-1809' stack..."
 	docker rmi cnbs/sample-stack-base:nanoserver-1809
 	docker rmi cnbs/sample-stack-run:nanoserver-1809
 	docker rmi cnbs/sample-stack-build:nanoserver-1809
+	docker rmi cnbs/sample-builder:nanoserver-1809
