@@ -1,4 +1,5 @@
 PACK_FLAGS?=--no-pull
+PACK_BUILD_FLAGS?=--trust-builder
 PACK_CMD?=pack
 
 ####################
@@ -35,38 +36,38 @@ build-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
 build-buildpacks-alpine:
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-processes' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-processes $(PACK_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-world-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world $(PACK_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:alpine --builder cnbs/sample-builder:alpine --buildpack buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:alpine --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-bionic:
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world --buildpack buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-processes' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-processes $(PACK_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-world-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world $(PACK_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:bionic --builder cnbs/sample-builder:bionic --buildpack buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'java-maven' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-java-maven-app:bionic --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:bionic --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:bionic --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:bionic --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS)
+	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-packages:
 	@echo "> Creating 'hello-world' buildpack package"

@@ -1,6 +1,6 @@
 # Buildpack Samples [![Build Status](https://github.com/buildpacks/samples/workflows/Build%20and%20Deploy/badge.svg?branch=master)](https://github.com/buildpacks/samples/actions)
 
-This repository contains sample implementations of the core components of the Cloud Native Buildpacks (CNB) project for learning and testing purposes.
+This repository contains sample implementations of the core components of the [Cloud Native Buildpacks](https://buildpacks.io/) (CNB) project for learning and testing purposes.
 
 Includes:
 
