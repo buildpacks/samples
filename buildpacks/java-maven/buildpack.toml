@@ -6,7 +6,7 @@ api = "0.2"
 id = "samples/java-maven"
 version = "0.0.1"
 name = "Sample Java Maven Buildpack"
-homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/java-maven"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/java-maven"
 
 
 # Stacks that the buildpack will work with

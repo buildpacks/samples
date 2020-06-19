@@ -6,7 +6,7 @@ api = "0.2"
 id = "samples/kotlin-gradle"
 version = "0.0.1"
 name = "Sample Kotlin Gradle Buildpack"
-homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/kotlin-gradle"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/kotlin-gradle"
 
 # Stacks that the buildpack will work with
 [[stacks]]

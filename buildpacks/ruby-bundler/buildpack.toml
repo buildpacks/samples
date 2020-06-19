@@ -6,7 +6,7 @@ api = "0.2"
 id = "samples/ruby-bundler"
 version = "0.0.1"
 name = "Sample Ruby Buildpack"
-homepage = "https://github.com/buildpacks/samples/tree/master/buildpacks/ruby-bundler"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/ruby-bundler"
 
 # Stacks that the buildpack will work with
 [[stacks]]
