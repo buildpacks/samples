@@ -11,3 +11,6 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/ruby-bund
 # Stacks that the buildpack will work with
 [[stacks]]
 id = "io.buildpacks.samples.stacks.bionic"
+
+[[stacks]]
+id = "io.buildpacks.stacks.bionic"
