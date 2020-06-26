@@ -17,3 +17,4 @@ id = "io.buildpacks.samples.stacks.alpine"
 
 [[stacks]]
 id = "io.buildpacks.stacks.bionic"
+mixins = ["build:set=shell-utils"]
