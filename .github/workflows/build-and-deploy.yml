@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
       - master
+  repository_dispatch:
+    types:
+      - pack-release
 
 jobs:
   build-linux:
@@ -58,4 +61,3 @@ jobs:
         run: make deploy-windows
       - name: Clean up
         run: make clean-windows
-
