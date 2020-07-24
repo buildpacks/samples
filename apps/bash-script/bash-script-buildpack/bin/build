@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-echo "---> Hello World buildpack"
+echo "---> Bash Script buildpack"
 
 # 1. INPUT ARGUMENTS
 layers_dir=$1
@@ -14,7 +14,6 @@ command = "./app.sh"
 EOL
 
 # LIST CONTENTS
-echo "---> Hello Bash Script buildpack"
 echo 
 echo "Here are the contents of the current working directory:"
 ls -alHR
