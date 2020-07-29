@@ -1,12 +1,10 @@
-FROM mcr.microsoft.com/windows/nanoserver:1809-KB4534273
-ARG cnb_uid=S-1-1-0
-ARG cnb_gid=S-1-1-0
+FROM mcr.microsoft.com/windows/nanoserver:1809
 
-USER ContainerAdministrator
-
-RUN net users /ADD cnb /passwordreq:no /expires:never
+# non-zero sets all user-owned directories to BUILTIN\Users
+ARG cnb_uid=1
+ARG cnb_gid=1
 
 ENV CNB_USER_ID=${cnb_uid}
 ENV CNB_GROUP_ID=${cnb_gid}
 
-USER cnb
+USER ContainerUser

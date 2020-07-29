@@ -138,7 +138,9 @@ clean-linux:
 ## Windows
 ####################
 
-build-windows: build-windows-stacks
+build-windows: build-windows-stacks build-windows-builders build-windows-buildpacks # build-windows-packages: not yet supported
+
+build-nanoserver-1809: build-stack-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
 
 build-windows-stacks: build-stack-nanoserver-1809
 
@@ -146,7 +148,19 @@ build-stack-nanoserver-1809:
 	@echo "> Building 'nanoserver-1809' stack..."
 	bash stacks/build-stack.sh stacks/nanoserver-1809
 
-deploy-windows: deploy-windows-stacks
+build-windows-builders: build-builder-nanoserver-1809
+
+build-builder-nanoserver-1809: # build-windows-packages: not yet supported
+	@echo "> Building 'nanoserver-1809' builder..."
+	$(PACK_CMD) create-builder cnbs/sample-builder:nanoserver-1809 --config builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
+
+build-windows-buildpacks: build-buildpacks-nanoserver-1809
+
+build-buildpacks-nanoserver-1809:
+	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
+	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
+deploy-windows: deploy-windows-stacks deploy-windows-builders # deploy-windows-packages: not yet supported
 
 deploy-windows-stacks:
 	@echo "> Deploying 'nanoserver-1809' stack..."
@@ -154,8 +168,18 @@ deploy-windows-stacks:
 	docker push cnbs/sample-stack-run:nanoserver-1809
 	docker push cnbs/sample-stack-build:nanoserver-1809
 
+deploy-windows-builders:
+	@echo "> Deploying 'alpine' builder..."
+	docker push cnbs/sample-builder:nanoserver-1809
+
 clean-windows:
 	@echo "> Removing 'nanoserver-1809' stack..."
-	docker rmi cnbs/sample-stack-base:nanoserver-1809
-	docker rmi cnbs/sample-stack-run:nanoserver-1809
-	docker rmi cnbs/sample-stack-build:nanoserver-1809
+	docker rmi cnbs/sample-stack-base:nanoserver-1809 || true
+	docker rmi cnbs/sample-stack-run:nanoserver-1809 || true
+	docker rmi cnbs/sample-stack-build:nanoserver-1809 || true
+
+	@echo "> Removing builders..."
+	docker rmi cnbs/sample-builder:nanoserver-1809 || true
+
+	@echo "> Removing 'nanoserver-1809' apps..."
+	docker rmi sample-hello-world-windows-app:nanoserver-1809 || true

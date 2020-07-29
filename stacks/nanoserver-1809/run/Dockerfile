@@ -5,3 +5,5 @@ FROM ${base_image}
 ARG stack_id
 
 LABEL io.buildpacks.stack.id=${stack_id}
+
+ENV foo = bar

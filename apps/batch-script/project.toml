@@ -1,0 +1,13 @@
+[project]
+id = "io.buildpacks.batch-script"
+name = "Batch Script"
+version = "1.0.0"
+
+[build]
+exclude = [
+    "README.md",
+    "batch-script-buildpack"
+]
+
+[[build.buildpacks]]
+uri = "batch-script-buildpack/"

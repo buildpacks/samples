@@ -1,0 +1,12 @@
+# Buildpack API version
+api = "0.2"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "samples/hello-world-windows"
+version = "0.0.1"
+name = "Hello World Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-world-windows"
+
+[[stacks]]
+  id = "io.buildpacks.samples.stacks.nanoserver-1809"

@@ -7,10 +7,12 @@ echo "---> Hello World buildpack"
 env_dir=$2/env
 layers_dir=$1
 plan_path=$3
+echo ALL ARGS $*
 
 # ENV VARS
 echo "     env_dir: ${env_dir}"
 echo "     env vars:"
+
 if compgen -G "${env_dir}/*" > /dev/null; then
   for var in ${env_dir}/*; do
     declare "$(basename ${var})=$(<${var})"
