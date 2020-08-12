@@ -152,13 +152,35 @@ build-windows-builders: build-builder-nanoserver-1809
 
 build-builder-nanoserver-1809: # build-windows-packages: not yet supported
 	@echo "> Building 'nanoserver-1809' builder..."
+# When pack.exe, replace directory-based buildpack with tgz in temporary builder.toml
+ifeq ($(OS),Windows_NT)
+	mkdir -p tmp
+	tar -czf tmp/hello-world-windows.tgz -C buildpacks/hello-world-windows .
+	sed "s|../../buildpacks/hello-world-windows|hello-world-windows.tgz|" builders/nanoserver-1809/builder.toml > tmp/builder.toml
+	$(PACK_CMD) create-builder cnbs/sample-builder:nanoserver-1809 --config tmp/builder.toml $(PACK_FLAGS)
+	rm -rf tmp
+else
 	$(PACK_CMD) create-builder cnbs/sample-builder:nanoserver-1809 --config builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
+endif
 
 build-windows-buildpacks: build-buildpacks-nanoserver-1809
 
 build-buildpacks-nanoserver-1809:
 	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
+# When pack.exe, replace directory-based buildpack with tgz
+ifeq ($(OS),Windows_NT)
+	mkdir -p tmp
+	tar -czf tmp/hello-world-windows.tgz -C buildpacks/hello-world-windows .
+	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack tmp/hello-world-windows.tgz $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	rm -rf tmp
+else
 	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+endif
+
+build-buildpacks-nanoserver-1809-on-posix:
+	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
+	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack tmp/hello-world-windows.tgz $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	rm -rf tmp
 
 deploy-windows: deploy-windows-stacks deploy-windows-builders # deploy-windows-packages: not yet supported
 
