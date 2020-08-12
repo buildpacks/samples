@@ -177,6 +177,20 @@ else
 	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 endif
 
+build-windows-apps:
+	@echo "> Creating 'batch-script' app using 'nanoserver-1809' builder..."
+# When pack.exe, replace directory-based buildpack with tgz
+ifeq ($(OS),Windows_NT)
+	mkdir -p tmp
+	tar -czf tmp/hello-world-windows.tgz -C buildpacks/hello-world-windows .
+	sed "s|batch-script-buildpack/|batch-script-buildpack.tgz|" apps/batch-script/project.toml > tmp/project.toml
+	tar -czf tmp/batch-script-buildpack.tgz -C apps/batch-script/batch-script-buildpack/ .
+	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --descriptor tmp/project.toml --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	rm -rf tmp
+else
+	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+endif
+
 build-buildpacks-nanoserver-1809-on-posix:
 	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
 	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack tmp/hello-world-windows.tgz $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
@@ -205,3 +219,4 @@ clean-windows:
 
 	@echo "> Removing 'nanoserver-1809' apps..."
 	docker rmi sample-hello-world-windows-app:nanoserver-1809 || true
+	docker rmi sample-batch-script-app:nanoserver-1809 || true
