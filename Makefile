@@ -6,7 +6,7 @@ PACK_CMD?=pack
 ## Linux
 ####################
 
-build-linux: build-linux-stacks build-packages build-builders build-buildpacks
+build-linux: build-linux-stacks build-linux-packages build-linux-builders build-linux-buildpacks
 
 build-linux-stacks: build-stack-alpine build-stack-bionic
 
@@ -22,17 +22,17 @@ build-stack-bionic:
 	@echo "> Building 'bionic' stack..."
 	bash stacks/build-stack.sh stacks/bionic
 
-build-builders: build-builder-alpine build-builder-bionic
+build-linux-builders: build-builder-alpine build-builder-bionic
 
-build-builder-alpine: build-packages
+build-builder-alpine: build-linux-packages
 	@echo "> Building 'alpine' builder..."
 	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --config builders/alpine/builder.toml $(PACK_FLAGS)
 
-build-builder-bionic: build-packages
+build-builder-bionic: build-linux-packages
 	@echo "> Building 'bionic' builder..."
 	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --config builders/bionic/builder.toml $(PACK_FLAGS)
 
-build-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
+build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
 build-buildpacks-alpine:
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
@@ -69,14 +69,14 @@ build-buildpacks-bionic:
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
 	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
-build-packages:
+build-linux-packages:
 	@echo "> Creating 'hello-world' buildpack package"
 	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world --config packages/hello-world/package.toml $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-universe' buildpack package"
 	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe --config packages/hello-universe/package.toml $(PACK_FLAGS)
 
-deploy-linux: deploy-linux-stacks deploy-packages deploy-builders
+deploy-linux: deploy-linux-stacks deploy-linux-packages deploy-linux-builders
 
 deploy-linux-stacks:
 	@echo "> Deploying 'alpine' stack..."
@@ -89,12 +89,12 @@ deploy-linux-stacks:
 	docker push cnbs/sample-stack-run:bionic
 	docker push cnbs/sample-stack-build:bionic
 
-deploy-packages:
-	@echo "> Deploying packages..."
+deploy-linux-packages:
+	@echo "> Deploying linux packages..."
 	docker push cnbs/sample-package:hello-world
 	docker push cnbs/sample-package:hello-universe
 
-deploy-builders:
+deploy-linux-builders:
 	@echo "> Deploying 'alpine' builder..."
 	docker push cnbs/sample-builder:alpine
 
