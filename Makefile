@@ -188,7 +188,7 @@ ifeq ($(OS),Windows_NT)
 	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --descriptor tmp/project.toml --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 	rm -rf tmp
 else
-	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 endif
 
 build-buildpacks-nanoserver-1809-on-posix:
