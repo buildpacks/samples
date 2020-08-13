@@ -182,9 +182,8 @@ build-windows-apps:
 # When pack.exe, replace directory-based buildpack with tgz
 ifeq ($(OS),Windows_NT)
 	mkdir -p tmp
-	tar -czf tmp/hello-world-windows.tgz -C buildpacks/hello-world-windows .
-	sed "s|batch-script-buildpack/|batch-script-buildpack.tgz|" apps/batch-script/project.toml > tmp/project.toml
 	tar -czf tmp/batch-script-buildpack.tgz -C apps/batch-script/batch-script-buildpack/ .
+	sed "s|batch-script-buildpack/|batch-script-buildpack.tgz|" apps/batch-script/project.toml > tmp/project.toml
 	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --descriptor tmp/project.toml --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 	rm -rf tmp
 else
