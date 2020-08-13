@@ -7,4 +7,7 @@ ARG cnb_gid=1
 ENV CNB_USER_ID=${cnb_uid}
 ENV CNB_GROUP_ID=${cnb_gid}
 
+# launcher requires a non-empty PATH to workaround https://github.com/buildpacks/pack/issues/800
+ENV PATH c:\\Windows\\system32;C:\\Windows
+
 USER ContainerUser
