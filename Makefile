@@ -26,11 +26,11 @@ build-builders: build-builder-alpine build-builder-bionic
 
 build-builder-alpine: build-packages
 	@echo "> Building 'alpine' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --builder-config builders/alpine/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --config builders/alpine/builder.toml $(PACK_FLAGS)
 
 build-builder-bionic: build-packages
 	@echo "> Building 'bionic' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --builder-config builders/bionic/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --config builders/bionic/builder.toml $(PACK_FLAGS)
 
 build-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
@@ -71,10 +71,10 @@ build-buildpacks-bionic:
 
 build-packages:
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world --package-config packages/hello-world/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world --config packages/hello-world/package.toml $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe --package-config packages/hello-universe/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe --config packages/hello-universe/package.toml $(PACK_FLAGS)
 
 deploy-linux: deploy-linux-stacks deploy-packages deploy-builders
 
