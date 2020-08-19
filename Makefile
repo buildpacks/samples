@@ -1,4 +1,4 @@
-PACK_FLAGS?=--no-pull
+PACK_FLAGS?=--pull-policy=never
 PACK_BUILD_FLAGS?=--trust-builder
 PACK_CMD?=pack
 
