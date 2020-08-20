@@ -35,12 +35,13 @@ jobs:
         run: |
           curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.tgz
+      - name: Build
+        run: PACK_CMD=./pack make build-linux
       - uses: azure/docker-login@v1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build
-        run: PACK_CMD=./pack make build-linux
       - name: Deploy
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: make deploy-linux
@@ -69,12 +70,13 @@ jobs:
         run: |
           curl -s -L -o pack.zip ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.zip
+      - name: Build
+        run: make build-windows
       - uses: azure/docker-login@v1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build
-        run: make build-windows
       - name: Deploy
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: make deploy-windows
