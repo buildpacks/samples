@@ -8,5 +8,11 @@ A no-op buildpack whose intent is to show minimal requirements of a buildpack on
 ### Usage
 
 ```bash
-pack build sample-hello-world-windows-app --builder cnbs/sample-builder:nanoserver-1809 --buildpack .
+pack build sample-hello-world-windows-app --builder cnbs/sample-builder:nanoserver-1809 --buildpack . --trust-builder
+```
+
+THEN
+
+```
+docker run sample-hello-world-windows-app echo hello
 ```
