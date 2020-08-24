@@ -6,7 +6,6 @@ echo --- Hello World buildpack
 set env_dir=%2\env
 set layers_dir=%1
 set plan_path=%3
-echo ALL ARGS %*
 
 :: ENV VARS
 echo      env_dir: %env_dir%
@@ -20,7 +19,6 @@ for /f "tokens=*" %%o in ('set') do (
     echo        %%o
 )
 
-
 :: LAYERS
 echo      layers_dir: %layers_dir%
 
@@ -30,7 +28,5 @@ echo      plan contents:
 for /f "tokens=*" %%o in ('type %plan_path%') do (
     echo        %%o
 )
-
-
 
 echo --- Done

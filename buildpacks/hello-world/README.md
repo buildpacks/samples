@@ -13,3 +13,9 @@ OR
 ```bash
 pack build sample-hello-world-app --builder cnbs/sample-builder:bionic --buildpack .
 ```
+
+THEN
+
+```
+docker run sagmple-hello-world-app echo hello
+```
