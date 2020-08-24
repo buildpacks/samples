@@ -1,0 +1,12 @@
+# Buildpack API version
+api = "0.2"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "samples/batch-script"
+version = "0.0.1"
+name = "Batch Script Buildpack"
+
+# Stacks that the buildpack will work with
+[[stacks]]
+id = "io.buildpacks.samples.stacks.nanoserver-1809"
