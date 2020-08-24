@@ -30,17 +30,7 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
 
-MSBuild /t:Rebuild /p:WebProjectOutputDir=%publish_path%;Configuration=Release;UseWPP_CopyWebApplication=True;WebProjectOutputDirInsideProject=False;PipelineDependsOnBuild=False
-if %ERRORLEVEL% NEQ 0 (
-    exit /b %ERRORLEVEL%
-)
-
-del /q /s /f c:\workspace\* >NUL
-if %ERRORLEVEL% NEQ 0 (
-    exit /b %ERRORLEVEL%
-)
-
-xcopy %publish_path% c:\workspace\ /e /h /y /c /b >NUL
+MSBuild /t:Rebuild /p:Configuration=Release
 if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
