@@ -1,0 +1,9 @@
+api = "0.2"
+
+[buildpack]
+  id = "samples/dotnet-framework"
+  version = "0.0.1"
+  name = "Sample .NET Framework Buildpack"
+
+[[stacks]]
+  id = "io.buildpacks.samples.stacks.dotnet-framework-1809"

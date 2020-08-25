@@ -2,3 +2,4 @@ HELP.md
 *.DS_Store
 .idea
 out/
+.tmp/

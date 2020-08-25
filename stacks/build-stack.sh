@@ -54,7 +54,9 @@ BASE_IMAGE=${REPO_PREFIX}-base:${TAG}
 RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
 BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
 
-docker build -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
+if [[ -d "${IMAGE_DIR}/base" ]]; then
+  docker build -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
+fi
 
 echo "BUILDING ${BUILD_IMAGE}..."
 docker build --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${BUILD_IMAGE}"  "${IMAGE_DIR}/build"
