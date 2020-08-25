@@ -18,7 +18,9 @@
 </head>
 <body>
     <div class="logo">
-        <img src="logos.png" width="800px"/>
+        <a href="https://buildpacks.io" target="_blank">
+            <img src="logos.png" width="800px"/>
+        </a>
     </div>
 </body>
 </html>
