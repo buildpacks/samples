@@ -30,7 +30,7 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
 
-MSBuild /t:Rebuild /p:Configuration=Release
+MSBuild /t:Rebuild /p:Configuration=Debug
 if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
