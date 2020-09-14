@@ -18,14 +18,9 @@ if compgen -G "${env_dir}/*" > /dev/null; then
 fi
 export | sed 's/^/       /'
 
-# VOLUMES
-volume_file=/platform/volume/volume_contents.txt
-if [[ -f "$volume_file" ]]; then
-  echo "     reading volume contents:"
-  echo "         $(cat /platform/volume/volume_contents.txt)"
-else
-  echo "     no volumes found under /platform/volume"
-fi
+# PLATFORM DIR
+echo "     listing platform provided contents:"
+echo "         $(ls -al $2)"
 
 # LAYERS
 echo "     layers_dir: ${layers_dir}"
