@@ -19,8 +19,8 @@ fi
 export | sed 's/^/       /'
 
 # VOLUMES
-VOLUME_FILE=/platform/volume/volume_contents.txt
-if [[ -f "$VOLUME_FILE" ]]; then
+volume_file=/platform/volume/volume_contents.txt
+if [[ -f "$volume_file" ]]; then
   echo "     reading volume contents:"
   echo "         $(cat /platform/volume/volume_contents.txt)"
 else
