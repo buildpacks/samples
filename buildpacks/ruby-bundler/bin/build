@@ -61,4 +61,7 @@ cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
 command = "bundle exec ruby app.rb"
+[[processes]]
+type = "worker"
+command = "bundle exec ruby worker.rb"
 EOL
