@@ -4,9 +4,14 @@ set -eo pipefail
 echo "---> Hello World buildpack"
 
 # INPUT ARGUMENTS
-env_dir=$2/env
+platform_dir=$2
+env_dir=${platform_dir}/env
 layers_dir=$1
 plan_path=$3
+
+# PLATFORM DIR
+echo "     platform_dir files:"
+ls -alR "${platform_dir}" | sed 's/^/       /'
 
 # ENV VARS
 echo "     env_dir: ${env_dir}"
@@ -17,10 +22,6 @@ if compgen -G "${env_dir}/*" > /dev/null; then
   done
 fi
 export | sed 's/^/       /'
-
-# PLATFORM DIR
-echo "     listing platform provided contents:"
-echo "         $(ls -al $2)"
 
 # LAYERS
 echo "     layers_dir: ${layers_dir}"
