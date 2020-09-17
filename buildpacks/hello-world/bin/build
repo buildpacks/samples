@@ -18,6 +18,10 @@ if compgen -G "${env_dir}/*" > /dev/null; then
 fi
 export | sed 's/^/       /'
 
+# PLATFORM DIR
+echo "     listing platform provided contents:"
+echo "         $(ls -al $2)"
+
 # LAYERS
 echo "     layers_dir: ${layers_dir}"
 
