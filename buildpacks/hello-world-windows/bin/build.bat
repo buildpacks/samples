@@ -3,9 +3,16 @@
 echo --- Hello World buildpack
 
 :: INPUT ARGUMENTS
-set env_dir=%2\env
+set platform_dir=%2
+set env_dir=%platform_dir%\env
 set layers_dir=%1
 set plan_path=%3
+
+:: PLATFORM DIR
+echo      platform_dir files:
+for /f "tokens=*" %%o in ('dir /s /q /b %platform_dir%') do (
+    echo        %%o
+)
 
 :: ENV VARS
 echo      env_dir: %env_dir%

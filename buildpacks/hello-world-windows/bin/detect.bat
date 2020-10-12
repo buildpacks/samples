@@ -4,9 +4,12 @@
 set plan_path=%2
 
 :: 2. DECLARE DEPENDENCIES (OPTIONAL)
-echo [[provides]] >> %plan_path%
-echo name = "some-world" >> %plan_path%
+(
+echo [[provides]]
+echo name = "some-world"
 
-echo [[requires]] >> %plan_path%
-echo name = "some-world" >> %plan_path%
+echo [[requires]]
+echo name = "some-world"
+) >> %plan_path%
+
 exit /b 0
