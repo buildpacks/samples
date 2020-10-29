@@ -1,6 +1,6 @@
 # Buildpacks to include in builder
 [[buildpacks]]
-image = "cnbs/sample-package:hello-universe-windows"
+uri = "docker://cnbs/sample-package:hello-universe-windows"
 
 # Order used for detection
 [[order]]
