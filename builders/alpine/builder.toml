@@ -10,7 +10,7 @@ version = "0.0.1"
 uri = "../../buildpacks/kotlin-gradle"
 
 [[buildpacks]]
-image = "cnbs/sample-package:hello-universe"
+uri = "docker://cnbs/sample-package:hello-universe"
 
 # Order used for detection
 [[order]]
