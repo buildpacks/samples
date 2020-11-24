@@ -1,0 +1,31 @@
+version: 2.1
+orbs:
+  pack: buildpacks/pack@dev:1dcd173
+workflows:
+  version: 2
+  main:
+    jobs:
+      # This is added just to limit the number of runs, given that this is a sample
+      - request-testing:
+          type: approval
+      - pack/build:
+          working-directory: apps/java-maven
+          image-name: cnbs/circleci-sample
+          builder: 'cnbs/sample-builder:bionic'
+          requires:
+            - request-testing
+      - test-and-publish:
+          requires:
+            - pack/build
+jobs:
+  test-and-publish:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          command: |
+            docker load -i /tmp/workspace/images/image.tgz
+            docker run -d -p 8080:8080 cnbs/circleci-sample
+            sleep 40
+            curl -k localhost:8080
