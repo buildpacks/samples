@@ -1,13 +1,11 @@
 # Buildpacks to include in builder
 [[buildpacks]]
-id = "samples/hello-world-windows"
-version = "0.0.1"
-uri = "../../buildpacks/hello-world-windows"
+uri = "docker://cnbs/sample-package:hello-universe-windows"
 
 # Order used for detection
 [[order]]
 [[order.group]]
-id = "samples/hello-world-windows"
+id = "samples/hello-universe-windows"
 version = "0.0.1"
 
 # Stack that will be used by the builder

@@ -1,0 +1,13 @@
+[buildpack]
+uri = "../../buildpacks/hello-universe-windows"
+
+[[dependencies]]
+uri = "../../buildpacks/hello-moon-windows"
+
+[[dependencies]]
+uri = "../../buildpacks/hello-world-windows"
+# Alternatively, to use an image while packaging, you can use:
+# uri = "docker://cnbs/sample-package:hello-world-windows"
+
+[platform]
+os = "windows"

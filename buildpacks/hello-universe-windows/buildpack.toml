@@ -1,0 +1,19 @@
+# Buildpack API version
+api = "0.2"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "samples/hello-universe-windows"
+version = "0.0.1"
+name = "Hello Universe Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-universe-windows"
+
+# Order used for detection
+[[order]]
+[[order.group]]
+id = "samples/hello-world-windows"
+version = "0.0.1"
+
+[[order.group]]
+id = "samples/hello-moon-windows"
+version = "0.0.1"
