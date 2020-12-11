@@ -207,6 +207,11 @@ deploy-windows-stacks:
 	docker push cnbs/sample-stack-run:dotnet-framework-1809
 	docker push cnbs/sample-stack-build:dotnet-framework-1809
 
+deploy-windows-packages:
+	@echo "> Deploying windows packages..."
+	docker push cnbs/sample-package:hello-world-windows
+	docker push cnbs/sample-package:hello-universe-windows
+
 deploy-windows-builders:
 	@echo "> Deploying 'nanoserver-1809' builder..."
 	docker push cnbs/sample-builder:nanoserver-1809
