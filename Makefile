@@ -134,6 +134,7 @@ clean-linux:
 	docker rmi sample-ruby-bundler-app:bionic || true
 
 	@echo "> Removing packages..."
+	docker rmi cnbs/sample-package:hello-world || true
 	docker rmi cnbs/sample-package:hello-universe || true
 
 	@echo "> Removing '.tmp'"
@@ -143,7 +144,7 @@ clean-linux:
 ## Windows
 ####################
 
-build-windows: build-windows-stacks build-windows-builders build-windows-buildpacks # build-windows-packages: not yet supported
+build-windows: build-windows-stacks build-windows-packages build-windows-builders build-windows-buildpacks
 
 build-nanoserver-1809: build-stack-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
 
@@ -159,23 +160,33 @@ build-stack-dotnet-framework-1809:
 
 build-windows-builders: build-builder-nanoserver-1809 build-builder-dotnet-framework-1809
 
-build-builder-nanoserver-1809: build-sample-root # build-windows-packages: not yet supported
+build-builder-nanoserver-1809: build-sample-root build-windows-packages
 	@echo "> Building 'nanoserver-1809' builder..."
 	$(PACK_CMD) create-builder cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
 
-build-builder-dotnet-framework-1809: build-sample-root # build-windows-packages: not yet supported
+build-builder-dotnet-framework-1809: build-sample-root build-windows-packages
 	@echo "> Building 'dotnet-framework-1809' builder..."
 	$(PACK_CMD) create-builder cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PACK_FLAGS)
 
 build-windows-buildpacks: build-buildpacks-nanoserver-1809 build-buildpacks-dotnet-framework-1809
 
 build-buildpacks-nanoserver-1809: build-sample-root
+	@echo "> Creating 'hello-moon-windows' app using 'nanoserver-1809' builder..."
+	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
 	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
 	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-dotnet-framework-1809: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-1809' builder..."
 	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-1809 --builder cnbs/sample-builder:dotnet-framework-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
+build-windows-packages: build-sample-root
+	@echo "> Creating 'hello-world-windows' buildpack package"
+	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PACK_FLAGS)
+
+	@echo "> Creating 'hello-universe-windows' buildpack package"
+	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PACK_FLAGS)
 
 build-windows-apps: build-sample-root
 	@echo "> Creating 'batch-script' app using 'nanoserver-1809' builder..."
@@ -184,7 +195,7 @@ build-windows-apps: build-sample-root
 	@echo "> Creating 'aspnet' app using 'dotnet-framework-1809' builder..."
 	$(PACK_CMD) build sample-aspnet-app:dotnet-framework-1809 --builder cnbs/sample-builder:dotnet-framework-1809 --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
-deploy-windows: deploy-windows-stacks deploy-windows-builders # deploy-windows-packages: not yet supported
+deploy-windows: deploy-windows-stacks deploy-windows-builders deploy-windows-packages
 
 deploy-windows-stacks:
 	@echo "> Deploying 'nanoserver-1809' stack..."
@@ -195,6 +206,11 @@ deploy-windows-stacks:
 	@echo "> Deploying 'dotnet-framework-1809' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-1809
 	docker push cnbs/sample-stack-build:dotnet-framework-1809
+
+deploy-windows-packages:
+	@echo "> Deploying windows packages..."
+	docker push cnbs/sample-package:hello-world-windows
+	docker push cnbs/sample-package:hello-universe-windows
 
 deploy-windows-builders:
 	@echo "> Deploying 'nanoserver-1809' builder..."
@@ -218,11 +234,16 @@ clean-windows:
 	docker rmi cnbs/sample-builder:dotnet-framework-1809 || true
 
 	@echo "> Removing 'nanoserver-1809' apps..."
+	docker rmi sample-hello-moon-windows-app:nanoserver-1809 || true
 	docker rmi sample-hello-world-windows-app:nanoserver-1809 || true
 	docker rmi sample-batch-script-app:nanoserver-1809 || true
 
 	@echo "> Removing 'dotnet-framework-1809' apps..."
 	docker rmi sample-aspnet-app:dotnet-framework-1809 || true
+
+	@echo "> Removing packages..."
+	docker rmi cnbs/sample-package:hello-world-windows || true
+	docker rmi cnbs/sample-package:hello-universe-windows || true
 
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp

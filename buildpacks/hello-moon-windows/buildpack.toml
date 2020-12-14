@@ -1,0 +1,16 @@
+# Buildpack API version
+api = "0.2"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "samples/hello-moon-windows"
+version = "0.0.1"
+name = "Hello Moon Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-moon-windows"
+
+# Stacks that the buildpack will work with
+[[stacks]]
+id = "io.buildpacks.samples.stacks.nanoserver-1809"
+
+[[stacks]]
+id = "io.buildpacks.samples.stacks.dotnet-framework-1809"

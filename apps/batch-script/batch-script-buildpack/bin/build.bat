@@ -5,9 +5,11 @@ echo --- Batch script buildpack
 set layers_dir=%1
 
 :: 2. SET DEFAULT START COMMAND
-echo [[processes]]>> %layers_dir%\launch.toml
-echo type = "web" >> %layers_dir%\launch.toml
-echo command = "app.bat" >> %layers_dir%\launch.toml
+(
+echo [[processes]]
+echo type = "web"
+echo command = "app.bat"
+) >> %layers_dir%\launch.toml
 
 :: LIST CONTENTS
 echo --- Hello Batch Script buildpack

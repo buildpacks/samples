@@ -1,4 +1,4 @@
-# Sample: Hello World Buildpack
+# Sample: Hello Moon Buildpack
 
 A no-op buildpack whose intent is to show how buildpack dependencies work. This buildpack depends on [hello-world](../hello-world).
 

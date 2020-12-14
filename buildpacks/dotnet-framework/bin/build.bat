@@ -14,9 +14,11 @@ if not exist %layer_path% (
 )
 
 if not exist %layer_toml_path% (
-    echo launch = false  >> %layer_toml_path%
-    echo build = true  >> %layer_toml_path%
-    echo cache = true  >> %layer_toml_path%
+    (
+    echo launch = false
+    echo build = true
+    echo cache = true
+    ) > %layer_toml_path%
 )
 
 if not exist %publish_path% (
@@ -35,6 +37,8 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
 
-echo [[processes]] >> %launch_toml_path%
-echo type = "web" >> %launch_toml_path%
-echo command = "C:\\ServiceMonitor.exe w3svc" >> %launch_toml_path%
+(
+echo [[processes]]
+echo type = "web"
+echo command = "C:\\ServiceMonitor.exe w3svc"
+) >> %launch_toml_path%
