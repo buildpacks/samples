@@ -1,24 +1,21 @@
 version: 2.1
 orbs:
-  pack: buildpacks/pack@dev:1dcd173
+  pack: buildpacks/pack@0.2.0
 workflows:
   version: 2
   main:
     jobs:
-      # This is added just to limit the number of runs, given that this is a sample
-      - request-testing:
-          type: approval
       - pack/build:
           working-directory: apps/java-maven
           image-name: cnbs/circleci-sample
           builder: 'cnbs/sample-builder:bionic'
-          requires:
-            - request-testing
-      - test-and-publish:
+      - test:
           requires:
             - pack/build
+
 jobs:
-  test-and-publish:
+  test:
+    # load and run the created image
     machine: true
     steps:
       - attach_workspace:
