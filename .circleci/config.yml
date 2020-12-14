@@ -1,6 +1,7 @@
 version: 2.1
+
 orbs:
-  pack: buildpacks/pack@0.2.1
+  pack: buildpacks/pack@dev:1f2a08e
 workflows:
   version: 2
   main:
