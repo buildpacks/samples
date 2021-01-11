@@ -17,5 +17,5 @@ pack build sample-hello-world-app --builder cnbs/sample-builder:bionic --buildpa
 THEN
 
 ```
-docker run sagmple-hello-world-app echo hello
+docker run sample-hello-world-app echo hello
 ```
