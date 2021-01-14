@@ -5,7 +5,7 @@
 #### Creating the builder
 
 ```bash
-pack create-builder cnbs/sample-builder:alpine --config builder.toml
+pack builder create cnbs/sample-builder:alpine --config builder.toml
 ```
 
 #### Build app with builder

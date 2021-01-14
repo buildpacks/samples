@@ -71,7 +71,7 @@ jobs:
           curl -s -L -o pack.zip ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.zip
           mkdir ~\.pack
-          echo "experimental = true" | Out-File -Encoding ASCII ~\.pack\config.toml
+          pack.exe config experimental true
       - name: Build
         run: make build-windows
       - uses: azure/docker-login@v1
