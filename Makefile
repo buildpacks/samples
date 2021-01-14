@@ -140,6 +140,9 @@ clean-linux:
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp
 
+set-experimental:
+	@echo "> Setting experimental"
+	$(PACK_CMD) config experimental true
 ####################
 ## Windows
 ####################

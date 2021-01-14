@@ -71,7 +71,8 @@ jobs:
           curl -s -L -o pack.zip ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.zip
           mkdir ~\.pack
-          pack.exe config experimental true
+      - name: Set Experimental
+        run: make set-experimental
       - name: Build
         run: make build-windows
       - uses: azure/docker-login@v1
