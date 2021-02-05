@@ -38,12 +38,12 @@ jobs:
       - name: Build
         run: PACK_CMD=./pack make build-linux
       - uses: azure/docker-login@v1
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: make deploy-linux
       - name: Clean up
         run: make clean-linux
@@ -75,12 +75,12 @@ jobs:
       - name: Build
         run: make build-windows
       - uses: azure/docker-login@v1
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: make deploy-windows
       - name: Clean up
         run: make clean-windows
