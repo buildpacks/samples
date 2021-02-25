@@ -1,0 +1,19 @@
+# Buildpacks to include in builder
+[[buildpacks]]
+uri = "../../buildpacks/hello-world-windows"
+
+# Order used for detection
+[[order]]
+[[order.group]]
+id = "samples/hello-world-windows"
+version = "0.0.1"
+
+# Stack that will be used by the builder
+[stack]
+id = "io.buildpacks.samples.stacks.wine"
+run-image = "cnbs/sample-stack-run:wine"
+build-image = "cnbs/sample-stack-build:wine"
+
+# Requires explicit Windows lifecycle to override pack's Linux default
+[lifecycle]
+uri = "https://github.com/buildpacks/lifecycle/releases/download/v0.10.2/lifecycle-v0.10.2+windows.x86-64.tgz"
