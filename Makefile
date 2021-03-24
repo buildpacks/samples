@@ -28,11 +28,11 @@ build-linux-builders: build-builder-alpine build-builder-bionic
 
 build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PACK_FLAGS)
 
 build-builder-bionic: build-linux-packages build-sample-root
 	@echo "> Building 'bionic' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:bionic --config $(SAMPLES_ROOT)/builders/bionic/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:bionic --config $(SAMPLES_ROOT)/builders/bionic/builder.toml $(PACK_FLAGS)
 
 build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
@@ -73,10 +73,10 @@ build-buildpacks-bionic: build-sample-root
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PACK_FLAGS)
 
 deploy-linux: deploy-linux-stacks deploy-linux-packages deploy-linux-builders
 
@@ -140,6 +140,9 @@ clean-linux:
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp
 
+set-experimental:
+	@echo "> Setting experimental"
+	$(PACK_CMD) config experimental true
 ####################
 ## Windows
 ####################
@@ -162,11 +165,11 @@ build-windows-builders: build-builder-nanoserver-1809 build-builder-dotnet-frame
 
 build-builder-nanoserver-1809: build-sample-root build-windows-packages
 	@echo "> Building 'nanoserver-1809' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
 
 build-builder-dotnet-framework-1809: build-sample-root build-windows-packages
 	@echo "> Building 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PACK_FLAGS)
 
 build-windows-buildpacks: build-buildpacks-nanoserver-1809 build-buildpacks-dotnet-framework-1809
 
@@ -183,10 +186,10 @@ build-buildpacks-dotnet-framework-1809: build-sample-root
 
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
-	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-universe-windows' buildpack package"
-	$(PACK_CMD) package-buildpack cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PACK_FLAGS)
 
 build-windows-apps: build-sample-root
 	@echo "> Creating 'batch-script' app using 'nanoserver-1809' builder..."

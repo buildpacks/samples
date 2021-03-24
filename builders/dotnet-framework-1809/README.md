@@ -8,7 +8,7 @@
 #### Creating the builder
 
 ```bash
-pack create-builder cnbs/sample-builder:dotnet-framework-1809 --config builder.toml
+pack builder create cnbs/sample-builder:dotnet-framework-1809 --config builder.toml
 ```
 
 #### Build app with builder
