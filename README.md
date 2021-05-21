@@ -1,4 +1,5 @@
-# Buildpack Samples [![Build Status](https://github.com/buildpacks/samples/workflows/Build%20and%20Deploy/badge.svg?branch=main)](https://github.com/buildpacks/samples/actions)
+# Buildpack Samples 
+[![Build Status](https://github.com/buildpacks/samples/workflows/Build%20and%20Deploy/badge.svg?branch=main)](https://github.com/buildpacks/samples/actions) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/buildpacks/samples)
 
 This repository contains sample implementations of the core components of the [Cloud Native Buildpacks](https://buildpacks.io/) (CNB) project for learning and testing purposes.
 
@@ -32,6 +33,12 @@ Follow the `README.md` docs at the root directory of each component to choose yo
 
 # Development
 
+## Development in the Browser
+Instead of setting everything up locally, you can open this repository in a completely pre-configured development environment in the cloud right from your browser:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/buildpacks/sample)
+
+## Local Development
 ### Prerequisites
 
 - [Docker](https://hub.docker.com/search/?type=edition&offering=community)
