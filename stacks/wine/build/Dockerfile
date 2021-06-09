@@ -17,7 +17,7 @@ COPY ./bin/lifecycle-wrapper.sh /cnb/lifecycle/detector
 COPY ./bin/lifecycle-wrapper.sh /cnb/lifecycle/exporter
 COPY ./bin/lifecycle-wrapper.sh /cnb/lifecycle/rebaser
 COPY ./bin/lifecycle-wrapper.sh /cnb/lifecycle/restorer
-RUN chmod 500 /cnb/lifecycle/*
+RUN chmod 555 /cnb/lifecycle/*
 
 ARG cnb_uid=1000
 ARG cnb_gid=1000
