@@ -198,7 +198,6 @@ clean-wine:
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp
 
-
 ####################
 ## Windows
 ####################
