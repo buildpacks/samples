@@ -6,7 +6,7 @@ Supported `pack build` cases:
 * Test basic Windows buildpacks.
 * Build and inspect minimal Windows app images.
 * Test Windows lifecycle implementations ([example](#Test-Windows-lifecycle-implementations)).
-* Build or rebase an app image with a runnable Windows run image ([example](#Build-with-a-valid-Windows-run-image)).
+* Build or rebase an app image with a runnable Windows run image ([example](#Build-and-publish-a-runnable-Windows-app-image-to-a-registry)).
 
 What is **not** supported:
 * Creating runnable app images on a local daemon, due to Windows/Linux image formatting differences.
@@ -66,15 +66,13 @@ docker run --rm ${myrepo}/sample-app:wine
 ```
 
 ### How it works
-* Linux container runs [`lifecycle-wrapper.sh`](../../stacks/lifecycle-wrapper.sh) instead of normal Linux `lifecycle` binary.
+* Builder is a Linux image but with a Windows lifecycle. 
+* Linux build-phase container runs [`lifecycle-wrapper.sh`](../../stacks/wine/build/bin/lifecycle-wrapper.sh) instead of normal Linux `lifecycle` binary.
 * Lifecycle wrapper does the following:
   * Maps Linux container CNB dirs into Wine environment.
   * Sets up Wine dependencies.
   * Proxies `/var/run/docker.sock` to `127.0.0.1:2375` and sets `DOCKER_HOST`.
   * Execs `wine lifecycle.exe`, using phase name and arguments.
-* `lifecycle.exe` does the following:
-  * Runs normally as if in a Windows runtime environment.
+* `lifecycle.exe` runs normally as if in a Windows runtime environment:
   * Executes Windows-formatted buildpack executables (`.bat`,`.exe`), profile scripts, etc.
   * Exports app images in Windows format to either a registry or local daemon (with `scratch`-based run-image, unless otherwise specified).
-
-

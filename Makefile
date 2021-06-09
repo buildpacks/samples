@@ -143,6 +143,7 @@ clean-linux:
 set-experimental:
 	@echo "> Setting experimental"
 	$(PACK_CMD) config experimental true
+
 ####################
 ## Wine
 ####################
@@ -305,7 +306,6 @@ clean-windows:
 
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp
-
 
 ####################
 ## Windows pack for any daemon OS
