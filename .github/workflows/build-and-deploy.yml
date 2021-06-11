@@ -36,7 +36,7 @@ jobs:
           curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.tgz
       - name: Build
-        run: PACK_CMD=./pack make build-linux
+        run: PACK_CMD=./pack make build-linux build-wine
       - uses: azure/docker-login@v1
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         with:
@@ -44,9 +44,9 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
-        run: make deploy-linux
+        run: make deploy-linux deploy-wine
       - name: Clean up
-        run: make clean-linux
+        run: make clean-linux clean-wine
   build-windows:
     runs-on: windows-latest
     steps:

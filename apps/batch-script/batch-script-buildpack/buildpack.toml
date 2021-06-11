@@ -10,3 +10,6 @@ name = "Batch Script Buildpack"
 # Stacks that the buildpack will work with
 [[stacks]]
 id = "io.buildpacks.samples.stacks.nanoserver-1809"
+
+[[stacks]]
+id = "io.buildpacks.samples.stacks.wine"

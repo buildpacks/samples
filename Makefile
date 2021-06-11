@@ -143,6 +143,61 @@ clean-linux:
 set-experimental:
 	@echo "> Setting experimental"
 	$(PACK_CMD) config experimental true
+
+####################
+## Wine
+####################
+
+build-wine: build-stack-wine build-builder-wine build-buildpacks-wine
+
+build-stack-wine:
+	@echo "> Building 'wine' stack..."
+	bash stacks/build-stack.sh stacks/wine
+
+build-builder-wine: build-sample-root
+	@echo "> Building 'wine' builder..."
+	$(PACK_CMD) create-builder cnbs/sample-builder:wine --config $(SAMPLES_ROOT)/builders/wine/builder.toml $(PACK_FLAGS)
+
+build-wine-apps: build-sample-root
+	@echo "> Creating 'batch-script' app using 'wine' builder..."
+	$(PACK_CMD) build sample-batch-script-app:wine --builder cnbs/sample-builder:wine --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
+build-buildpacks-wine: build-sample-root
+	@echo "> Creating 'hello-moon-windows' app using 'wine' builder..."
+	$(PACK_CMD) build sample-hello-moon-windows-app:wine --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
+	@echo "> Creating 'hello-world-windows' app using 'wine' builder..."
+	$(PACK_CMD) build sample-hello-world-windows-app:wine --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
+deploy-wine: deploy-wine-stacks deploy-wine-builders
+
+deploy-wine-stacks:
+	@echo "> Deploying 'wine' stack..."
+	docker push cnbs/sample-stack-base:wine
+	docker push cnbs/sample-stack-run:wine
+	docker push cnbs/sample-stack-build:wine
+
+deploy-wine-builders:
+	@echo "> Deploying 'wine' builder..."
+	docker push cnbs/sample-builder:wine
+
+clean-wine:
+	@echo "> Removing 'wine' stack..."
+	docker rmi cnbs/sample-stack-base:wine || true
+	docker rmi cnbs/sample-stack-run:wine || true
+	docker rmi cnbs/sample-stack-build:wine || true
+
+	@echo "> Removing builders..."
+	docker rmi cnbs/sample-builder:wine || true
+
+	@echo "> Removing 'wine' apps..."
+	docker rmi sample-hello-moon-windows-app:wine || true
+	docker rmi sample-hello-world-windows-app:wine || true
+	docker rmi sample-batch-script-app:wine || true
+
+	@echo "> Removing '.tmp'"
+	rm -rf .tmp
+
 ####################
 ## Windows
 ####################
@@ -250,7 +305,6 @@ clean-windows:
 
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp
-
 
 ####################
 ## Windows pack for any daemon OS
