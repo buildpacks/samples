@@ -173,7 +173,6 @@ deploy-wine: deploy-wine-stacks deploy-wine-builders
 
 deploy-wine-stacks:
 	@echo "> Deploying 'wine' stack..."
-	docker push cnbs/sample-stack-base:wine
 	docker push cnbs/sample-stack-run:wine
 	docker push cnbs/sample-stack-build:wine
 
