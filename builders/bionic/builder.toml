@@ -1,5 +1,15 @@
 # Buildpacks to include in builder
 [[buildpacks]]
+id = "samples/curl"
+version = "0.0.1"
+uri = "../../extensions/curl"
+
+[[buildpacks]]
+id = "samples/rebasable"
+version = "0.0.1"
+uri = "../../extensions/rebasable"
+
+[[buildpacks]]
 id = "samples/java-maven"
 version = "0.0.1"
 uri = "../../buildpacks/java-maven"
@@ -19,6 +29,14 @@ uri = "docker://cnbs/sample-package:hello-universe"
 
 # Order used for detection
 [[order]]
+[[order.group]]
+id = "samples/curl"
+version = "0.0.1"
+
+[[order.group]]
+id = "samples/rebasable"
+version = "0.0.1"
+
 [[order.group]]
 id = "samples/java-maven"
 version = "0.0.1"

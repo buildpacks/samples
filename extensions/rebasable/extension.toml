@@ -1,0 +1,8 @@
+api = "0.7"
+
+[extension]
+id = "samples/rebasable"
+name = "Rebasable Extension"
+version = "0.0.1"
+homepage = "https://github.com/buildpacks/samples/tree/main/extensions/rebasable"
+description = "This extension is rebasable because it creates a single directory under /opt."
