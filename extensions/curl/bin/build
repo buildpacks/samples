@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# INPUT ARGUMENTS
+platform_dir=$2
+env_dir=${platform_dir}/env
+output_dir=$1
+plan_path=$3
+
+# Create Dockerfile
+cat << EOF > ${output_dir}/Dockerfile
+ARG base_image
+FROM ${base_image}
+
+ARG some_arg
+RUN echo ${some_arg} > /opt/arg.txt
+
+ARG build_id=0
+RUN echo ${build_id}
+
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+EOF
+
+# Create build.toml
+cat << EOF > ${output_dir}/build.toml
+[[args]]
+name = "some_arg"
+value = "some-arg-build-value"
+EOF
+
+# Create launch.toml
+cat << EOF > ${output_dir}/launch.toml
+[[args]]
+name = "some_arg"
+value = "some-arg-launch-value"
+EOF
