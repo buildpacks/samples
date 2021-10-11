@@ -17,6 +17,16 @@ uri = "../../buildpacks/ruby-bundler"
 [[buildpacks]]
 uri = "docker://cnbs/sample-package:hello-universe"
 
+[[extensions]]
+id = "samples/curl"
+version = "0.0.1"
+uri = "../../extensions/curl"
+
+[[extensions]]
+id = "samples/rebasable"
+version = "0.0.1"
+uri = "../../extensions/rebasable"
+
 # Order used for detection
 [[order]]
 [[order.group]]
@@ -36,6 +46,16 @@ version = "0.0.1"
 [[order]]
 [[order.group]]
 id = "samples/hello-universe"
+version = "0.0.1"
+
+[[order-ext]]
+[[order-ext.group]]
+id = "samples/curl"
+version = "0.0.1"
+
+[[order-ext]]
+[[order-ext.group]]
+id = "samples/rebasable"
 version = "0.0.1"
 
 # Stack that will be used by the builder
