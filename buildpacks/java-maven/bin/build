@@ -8,6 +8,16 @@ layers_dir="$1"
 env_dir="$2/env"
 plan_path="$3"
 
+echo "Checking layers"
+ls -al /layers
+ls -al /layers/sbom || true
+ls -al /layers/sbom/build || true
+ls -al /layers/sbom/cache || true
+ls -al /layers/sbom/launch || true
+
+echo "Checking bp layers"
+ls -al $layers_dir
+
 # 2. LOAD USER-PROVIDED BUILD-TIME ENVIRONMENT VARIABLES
 if compgen -G "${env_dir}/*" > /dev/null; then
   for var in ${env_dir}/*; do
@@ -34,6 +44,13 @@ echo "---> Installing JDK"
 jdk_layer_dir=${layers_dir}/jdk
 if [[ -f ${jdk_layer_dir}.toml ]]; then
   cached_jdk_url=$(cat "${jdk_layer_dir}.toml" | yj -t | jq -r .metadata.url 2>/dev/null || echo 'JDK TOML parsing failed')
+  # re-use cached layer
+  cat > "${jdk_layer_dir}.toml" << EOF
+[types]
+launch = true
+build = true
+cache = true
+EOF
 fi
 
 if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
@@ -42,6 +59,7 @@ if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
   wget -q -O - "$jdk_url" | tar pxz -C "${jdk_layer_dir}" --strip-components=1
 
   cat > "${jdk_layer_dir}.toml" << EOF
+[types]
 launch = true
 build = true
 cache = true
@@ -79,8 +97,12 @@ export PATH=${jdk_layer_dir}/bin:$PATH
 m2_layer_dir="${layers_dir}/maven_m2"
 if [[ ! -d ${m2_layer_dir} ]]; then
   mkdir -p ${m2_layer_dir}
-  echo "cache = true" > ${m2_layer_dir}.toml
 fi
+# re-use cached layer
+cat > ${m2_layer_dir}.toml << EOF
+[types]
+cache = true
+EOF
 ln -s ${m2_layer_dir} $HOME/.m2
 
 # 5. RUN BUILD
@@ -100,13 +122,25 @@ else
     mkdir -p "${maven_layer_dir}"
     wget -q -O - "${maven_url}" | tar pxz -C "${maven_layer_dir}" --strip-components=1
     cat > "${maven_layer_dir}.toml" << EOF
+[types]
 launch = true
 build = true
 cache = true
 
+[bom]
+var = "val"
+
 [metadata]
 version = "${maven_version}"
 url = "${maven_url}"
+EOF
+  else
+    # re-use cached layer
+    cat > "${maven_layer_dir}.toml" << EOF
+[types]
+launch = true
+build = true
+cache = true
 EOF
   fi
   export PATH="${PATH}:${layers_dir}/maven/bin"
@@ -125,3 +159,16 @@ command = "java -jar ${jar_file}"
 EOL
   break;
 done
+
+# 7. Create SBOM
+cat > "${layers_dir}/jdk.bom.cdx.json" << EOF
+jdk_var: "val"
+EOF
+
+cat > "${layers_dir}/launch.bom.cdx.json" << EOF
+launch_var: "val"
+EOF
+
+cat > "${layers_dir}/build.bom.cdx.json" << EOF
+build_var: "val"
+EOF
