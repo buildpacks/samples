@@ -1,11 +1,12 @@
-[[group]]
+[[order]]
+[[order.group]]
 id = "samples/curl"
 version = "0.0.1"
-api = "0.7"
 extension = true
+optional = true
 
-[[group]]
+[[order.group]]
 id = "samples/rebasable"
 version = "0.0.1"
-api = "0.7"
 extension = true
+optional = true
