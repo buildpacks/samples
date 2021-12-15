@@ -3,3 +3,8 @@ HELP.md
 .idea
 out/
 .tmp/
+
+layers/config/
+layers/group.toml
+layers/plan.toml
+layers/samples_curl/
