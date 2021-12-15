@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Always detect
+exit 0

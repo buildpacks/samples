@@ -1,0 +1,8 @@
+api = "0.7"
+
+[extension]
+id = "samples/curl"
+name = "Curl Extension"
+version = "0.0.1"
+homepage = "https://github.com/buildpacks/samples/tree/main/extensions/curl"
+description = "This extension always installs the latest version of curl."
