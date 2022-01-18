@@ -43,3 +43,6 @@ version = "0.0.1"
 id = "io.buildpacks.samples.stacks.bionic"
 run-image = "cnbs/sample-stack-run:bionic"
 build-image = "cnbs/sample-stack-build:bionic"
+
+[lifecycle]
+uri = "/Users/narellano/workspace/lifecycle/out/lifecycle-v0.13.2-9+bb72bc41+linux.x86-64.tgz"

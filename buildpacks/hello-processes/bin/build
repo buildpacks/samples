@@ -21,7 +21,7 @@ EOF
 sysinfo_script="${sysinfo_layer_dir}/sys-info.sh"
 cat > ${sysinfo_script} <<EOL
 #!/usr/bin/env bash
-echo "     work dir:" $PWD
+echo "     work dir:" \$(pwd)
 echo "     env vars:"
 export | sed 's/^/       /'
 EOL
