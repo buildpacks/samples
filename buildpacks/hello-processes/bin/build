@@ -14,13 +14,14 @@ sysinfo_layer_dir="${layers_dir}/sys-info"
 mkdir -p ${sysinfo_layer_dir}
 
 cat > "${sysinfo_layer_dir}.toml" << EOF
+[types]
 launch = true
 EOF
 
 sysinfo_script="${sysinfo_layer_dir}/sys-info.sh"
 cat > ${sysinfo_script} <<EOL
 #!/usr/bin/env bash
-
+echo "     work dir:" $PWD
 echo "     env vars:"
 export | sed 's/^/       /'
 EOL
@@ -31,6 +32,7 @@ cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "sys-info"
 command = "${sysinfo_script}"
+working-directory = "/cnb"
 EOL
 
 echo "---> Done"

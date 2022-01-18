@@ -1,5 +1,5 @@
 # Buildpack API version
-api = "0.2"
+api = "0.8"
 
 # Buildpack ID and metadata
 [buildpack]
@@ -10,10 +10,4 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-pro
 
 # Stacks that the buildpack will work with
 [[stacks]]
-id = "io.buildpacks.samples.stacks.bionic"
-
-[[stacks]]
-id = "io.buildpacks.samples.stacks.alpine"
-
-[[stacks]]
-id = "io.buildpacks.stacks.bionic"
+id = "*"
