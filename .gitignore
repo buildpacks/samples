@@ -4,7 +4,9 @@ HELP.md
 out/
 .tmp/
 
+kaniko/
 layers/config/
 layers/group.toml
+layers/kaniko/
 layers/plan.toml
 layers/samples_curl/
