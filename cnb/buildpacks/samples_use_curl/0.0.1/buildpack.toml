@@ -3,6 +3,7 @@ api = "0.7"
 [buildpack]
 id = "samples/use_curl"
 version = "0.0.1"
+name = "Buildpack using curl"
 
 [[stacks]]
 id = "*"
