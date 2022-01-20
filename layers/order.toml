@@ -10,3 +10,9 @@ id = "samples/rebasable"
 version = "0.0.1"
 extension = true
 optional = true
+
+[[order.group]]
+id = "samples/use_curl"
+version = "0.0.1"
+extension = false
+optional = false

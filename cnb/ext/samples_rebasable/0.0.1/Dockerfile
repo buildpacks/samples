@@ -5,4 +5,5 @@ ARG build_id=0
 LABEL io.buildpacks.rebasable=true
 
 # TODO: replace with real package
-RUN curl -L https://example.com/mypkg-install | sh # installs to /opt
+RUN echo
+# RUN curl -L https://example.com/mypkg-install | sh # installs to /opt
