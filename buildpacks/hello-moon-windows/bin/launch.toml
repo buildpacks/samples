@@ -1,0 +1,15 @@
+[[processes]]
+type = "sys-info"
+command = "c:\layers\hello-moon-windows\0.0.1\sys-info\sys-info.bat"
+working-directory = "c:\cnb"
+
+[[processes]]
+type = "sys-info-args"
+command = "c:\layers\hello-moon-windows\0.0.1\sys-info\sys-info-args.bat"
+args = ["some-arg"]
+working-directory = "c:\cnb"
+
+[[processes]]
+type = "sys-info-direct"
+command = "c:\layers\hello-moon-windows\0.0.1\sys-info\sys-info-direct.bat"
+working-directory = "c:\cnb"
