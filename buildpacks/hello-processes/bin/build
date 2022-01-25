@@ -4,20 +4,24 @@ set -eo pipefail
 echo "---> Hello processes buildpack"
 
 # INPUT ARGUMENTS
+
 env_dir=$2/env
 layers_dir=$1
 plan_path=$3
 
-# ADD SYS-INFO PROCESS
-echo "---> Adding sys-info process"
+# ADD SYS-INFO LAYER DIR
+
+echo "---> Adding sys-info layer dir"
 sysinfo_layer_dir="${layers_dir}/sys-info"
 mkdir -p ${sysinfo_layer_dir}
-
 cat > "${sysinfo_layer_dir}.toml" << EOF
 [types]
 launch = true
 EOF
 
+# ADD SYS-INFO INDIRECT PROCESS
+
+echo "---> Adding sys-info indirect process"
 sysinfo_script="${sysinfo_layer_dir}/sys-info.sh"
 cat > ${sysinfo_script} <<EOL
 #!/usr/bin/env bash
@@ -25,13 +29,54 @@ echo "     work dir:" \$(pwd)
 echo "     env vars:"
 export | sed 's/^/       /'
 EOL
-
 chmod +x ${sysinfo_script}
 
 cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "sys-info"
 command = "${sysinfo_script}"
+working-directory = "/cnb"
+EOL
+
+# ADD SYS-INFO INDIRECT PROCESS WITH ARGS
+
+echo "---> Adding sys-info indirect process with args"
+sysinfo_script="${sysinfo_layer_dir}/sys-info-args.sh"
+cat > ${sysinfo_script} <<EOL
+#!/usr/bin/env bash
+echo "     first arg:" \$1
+echo "     work dir:" \$(pwd)
+echo "     env vars:"
+export | sed 's/^/       /'
+EOL
+chmod +x ${sysinfo_script}
+
+cat >> "${layers_dir}/launch.toml" <<EOL
+[[processes]]
+type = "sys-info-args"
+command = "${sysinfo_script}"
+args = ["some-arg"]
+working-directory = "/cnb"
+EOL
+
+
+# ADD SYS-INFO DIRECT PROCESS
+
+echo "---> Adding sys-info direct process"
+sysinfo_script="${sysinfo_layer_dir}/sys-info-direct.sh"
+cat > ${sysinfo_script} <<EOL
+#!/usr/bin/env bash
+echo "     work dir:" \$(pwd)
+echo "     env vars:"
+export | sed 's/^/       /'
+EOL
+chmod +x ${sysinfo_script}
+
+cat >> "${layers_dir}/launch.toml" <<EOL
+[[processes]]
+type = "sys-info-direct"
+command = "${sysinfo_script}"
+direct = true
 working-directory = "/cnb"
 EOL
 
