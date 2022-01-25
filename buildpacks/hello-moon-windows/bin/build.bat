@@ -24,13 +24,13 @@ for /f "tokens=*" %%o in ('type %plan_path%') do (
     echo        %%o
 )
 
-xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\launch.toml %layers_dir%\launch.toml
+echo F|xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\launch.toml %layers_dir%\launch.toml
 
-xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.toml %layers_dir%\sys-info.toml
+echo F|xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.toml %layers_dir%\sys-info.toml
 md %layers_dir%\sys-info
 
-xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.bat %layers_dir%\sys-info\sys-info.bat
-xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.bat %layers_dir%\sys-info\sys-info-args.bat
-xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.bat %layers_dir%\sys-info\sys-info-direct.bat
+echo F|xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.bat %layers_dir%\sys-info\sys-info.bat
+echo F|xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.bat %layers_dir%\sys-info\sys-info-args.bat
+echo F|xcopy c:\cnb\buildpacks\samples_hello-moon-windows\0.0.1\bin\sys-info.bat %layers_dir%\sys-info\sys-info-direct.bat
 
 echo --- Done
