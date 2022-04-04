@@ -48,7 +48,7 @@ jobs:
       - name: Clean up
         run: make clean-linux clean-wine
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
       - name: Determine download URL for latest pack
