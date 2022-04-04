@@ -36,7 +36,7 @@ Follow the `README.md` docs at the root directory of each component to choose yo
 ## Development in the Browser
 Instead of setting everything up locally, you can open this repository in a completely pre-configured development environment in the cloud right from your browser:
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/buildpacks/sample)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/buildpacks/samples)
 
 ## Local Development
 ### Prerequisites
