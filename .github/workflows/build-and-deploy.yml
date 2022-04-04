@@ -74,7 +74,7 @@ jobs:
       - name: Set Experimental
         run: make set-experimental
       - name: Build
-        run: make build-windows
+        run: make build-windows-1809
       - uses: azure/docker-login@v1
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         with:
@@ -82,6 +82,6 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
-        run: make deploy-windows
+        run: make deploy-windows-1809
       - name: Clean up
         run: make clean-windows
