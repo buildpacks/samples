@@ -48,21 +48,14 @@ jobs:
       - name: Clean up
         run: make clean-linux clean-wine
   build-windows:
-    strategy:
-      matrix:
-        include:
-          - os: windows-2019
-            version: 1809
-          - os: windows-2022
-            version: 2004
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
       - name: Determine download URL for latest pack
         id: pack-download-url
         uses: actions/github-script@0.4.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script: |
             return github.repos.getLatestRelease({
@@ -81,7 +74,7 @@ jobs:
       - name: Set Experimental
         run: make set-experimental
       - name: Build
-        run: make build-windows-${{ matrix.version }}
+        run: make build-windows-1809
       - uses: azure/docker-login@v1
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         with:
@@ -89,6 +82,6 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
-        run: make deploy-windows-${{ matrix.version }}
+        run: make deploy-windows-1809
       - name: Clean up
         run: make clean-windows
