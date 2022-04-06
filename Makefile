@@ -38,38 +38,38 @@ build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
 build-buildpacks-alpine: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:alpine --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-processes' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:alpine --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-world-app:alpine --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-bionic: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:bionic --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-processes' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:bionic --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-world-app:bionic --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'java-maven' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-java-maven-app:bionic --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:bionic --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app:bionic --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-ruby-bundler-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
@@ -160,14 +160,14 @@ build-builder-wine: build-sample-root
 
 build-wine-apps: build-sample-root
 	@echo "> Creating 'batch-script' app using 'wine' builder..."
-	$(PACK_CMD) build sample-batch-script-app:wine --builder cnbs/sample-builder:wine --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-batch-script-app:wine -v --builder cnbs/sample-builder:wine --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-wine: build-sample-root
 	@echo "> Creating 'hello-moon-windows' app using 'wine' builder..."
-	$(PACK_CMD) build sample-hello-moon-windows-app:wine --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world-windows' app using 'wine' builder..."
-	$(PACK_CMD) build sample-hello-world-windows-app:wine --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 deploy-wine: deploy-wine-stacks deploy-wine-builders
 
@@ -201,11 +201,19 @@ clean-wine:
 ## Windows
 ####################
 
-build-windows: build-windows-stacks build-windows-packages build-windows-builders build-windows-buildpacks
+build-windows: build-windows-1809 build-windows-2004
+
+build-windows-1809: build-windows-packages build-nanoserver-1809 build-dotnet-framework-1809
+
+build-windows-2004: build-windows-packages build-dotnet-framework-2004
+
+build-windows-stacks: build-stack-nanoserver-1809 build-stack-dotnet-framework-1809 build-stack-dotnet-framework-2004
 
 build-nanoserver-1809: build-stack-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
 
-build-windows-stacks: build-stack-nanoserver-1809 build-stack-dotnet-framework-1809
+build-dotnet-framework-1809: build-stack-dotnet-framework-1809 build-builder-dotnet-framework-1809 build-buildpacks-dotnet-framework-1809
+
+build-dotnet-framework-2004: build-stack-dotnet-framework-2004 build-builder-dotnet-framework-2004 build-buildpacks-dotnet-framework-2004
 
 build-stack-nanoserver-1809:
 	@echo "> Building 'nanoserver-1809' stack..."
@@ -215,28 +223,40 @@ build-stack-dotnet-framework-1809:
 	@echo "> Building 'dotnet-framework-1809' stack..."
 	bash stacks/build-stack.sh stacks/dotnet-framework-1809
 
-build-windows-builders: build-builder-nanoserver-1809 build-builder-dotnet-framework-1809
+build-stack-dotnet-framework-2004:
+	@echo "> Building 'dotnet-framework-2004' stack..."
+	bash stacks/build-stack.sh stacks/dotnet-framework-2004
 
-build-builder-nanoserver-1809: build-sample-root build-windows-packages
+build-windows-builders: build-builder-nanoserver-1809 build-builder-dotnet-framework-1809 build-builder-dotnet-framework-2004
+
+build-builder-nanoserver-1809: build-windows-packages
 	@echo "> Building 'nanoserver-1809' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
 
-build-builder-dotnet-framework-1809: build-sample-root build-windows-packages
+build-builder-dotnet-framework-1809: build-windows-packages
 	@echo "> Building 'dotnet-framework-1809' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PACK_FLAGS)
 
-build-windows-buildpacks: build-buildpacks-nanoserver-1809 build-buildpacks-dotnet-framework-1809
+build-builder-dotnet-framework-2004: build-windows-packages
+	@echo "> Building 'dotnet-framework-2004' builder..."
+	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2004 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2004/builder.toml $(PACK_FLAGS)
+
+build-windows-buildpacks: build-buildpacks-nanoserver-1809 build-buildpacks-dotnet-framework-1809 build-buildpacks-dotnet-framework-2004
 
 build-buildpacks-nanoserver-1809: build-sample-root
 	@echo "> Creating 'hello-moon-windows' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-dotnet-framework-1809: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-1809 --builder cnbs/sample-builder:dotnet-framework-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-1809 -v --builder cnbs/sample-builder:dotnet-framework-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
+build-buildpacks-dotnet-framework-2004: build-sample-root
+	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-2004' builder..."
+	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2004 -v --builder cnbs/sample-builder:dotnet-framework-2004 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
@@ -247,34 +267,59 @@ build-windows-packages: build-sample-root
 
 build-windows-apps: build-sample-root
 	@echo "> Creating 'batch-script' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 --builder cnbs/sample-builder:nanoserver-1809 --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'aspnet' app using 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) build sample-aspnet-app:dotnet-framework-1809 --builder cnbs/sample-builder:dotnet-framework-1809 --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-aspnet-app:dotnet-framework-1809 -v --builder cnbs/sample-builder:dotnet-framework-1809 --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
-deploy-windows: deploy-windows-stacks deploy-windows-builders deploy-windows-packages
+deploy-windows: deploy-windows-1809 deploy-windows-2004 deploy-windows-packages
 
-deploy-windows-stacks:
+deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-builders-1809 deploy-windows-packages
+
+deploy-windows-2004: deploy-windows-stacks-2004 deploy-windows-builders-2004 deploy-windows-packages
+
+deploy-windows-stacks-1809: deploy-windows-stacks-nanoserver-1809 deploy-windows-stacks-dotnet-framework-1809
+
+deploy-windows-stacks-2004: deploy-windows-stacks-dotnet-framework-2004
+
+deploy-windows-stacks-nanoserver-1809:
 	@echo "> Deploying 'nanoserver-1809' stack..."
 	docker push cnbs/sample-stack-base:nanoserver-1809
 	docker push cnbs/sample-stack-run:nanoserver-1809
 	docker push cnbs/sample-stack-build:nanoserver-1809
 
+deploy-windows-stacks-dotnet-framework-1809:
 	@echo "> Deploying 'dotnet-framework-1809' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-1809
 	docker push cnbs/sample-stack-build:dotnet-framework-1809
+
+deploy-windows-stacks-dotnet-framework-2004:
+	@echo "> Deploying 'dotnet-framework-2004' stack..."
+	docker push cnbs/sample-stack-run:dotnet-framework-2004
+	docker push cnbs/sample-stack-build:dotnet-framework-2004
 
 deploy-windows-packages:
 	@echo "> Deploying windows packages..."
 	docker push cnbs/sample-package:hello-world-windows
 	docker push cnbs/sample-package:hello-universe-windows
 
-deploy-windows-builders:
+deploy-windows-builders: deploy-windows-builders-1809 deploy-windows-builders-2004
+
+deploy-windows-builders-1809: deploy-windows-builders-nanoserver-1809 deploy-windows-builders-dotnet-framework-1809
+
+deploy-windows-builders-2004: deploy-windows-builders-dotnet-framework-2004
+
+deploy-windows-builders-nanoserver-1809:
 	@echo "> Deploying 'nanoserver-1809' builder..."
 	docker push cnbs/sample-builder:nanoserver-1809
 
+deploy-windows-builders-dotnet-framework-1809:
 	@echo "> Deploying 'dotnet-framework-1809' builder..."
 	docker push cnbs/sample-builder:dotnet-framework-1809
+
+deploy-windows-builders-dotnet-framework-2004:
+	@echo "> Deploying 'dotnet-framework-2004' builder..."
+	docker push cnbs/sample-builder:dotnet-framework-2004
 
 clean-windows:
 	@echo "> Removing 'nanoserver-1809' stack..."
@@ -285,10 +330,15 @@ clean-windows:
 	@echo "> Removing 'dotnet-framework-1809' stack..."
 	docker rmi cnbs/sample-stack-run:dotnet-framework-1809 || true
 	docker rmi cnbs/sample-stack-build:dotnet-framework-1809 || true
+	
+	@echo "> Removing 'dotnet-framework-2004' stack..."
+	docker rmi cnbs/sample-stack-run:dotnet-framework-2004 || true
+	docker rmi cnbs/sample-stack-build:dotnet-framework-2004 || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:nanoserver-1809 || true
 	docker rmi cnbs/sample-builder:dotnet-framework-1809 || true
+	docker rmi cnbs/sample-builder:dotnet-framework-2004 || true
 
 	@echo "> Removing 'nanoserver-1809' apps..."
 	docker rmi sample-hello-moon-windows-app:nanoserver-1809 || true
@@ -297,6 +347,9 @@ clean-windows:
 
 	@echo "> Removing 'dotnet-framework-1809' apps..."
 	docker rmi sample-aspnet-app:dotnet-framework-1809 || true
+
+	@echo "> Removing 'dotnet-framework-2004' apps..."
+	docker rmi sample-aspnet-app:dotnet-framework-2004 || true
 
 	@echo "> Removing packages..."
 	docker rmi cnbs/sample-package:hello-world-windows || true
