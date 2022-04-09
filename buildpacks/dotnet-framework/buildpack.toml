@@ -10,3 +10,6 @@ api = "0.2"
 
 [[stacks]]
   id = "io.buildpacks.samples.stacks.dotnet-framework-2004"
+
+[[stacks]]
+  id = "io.buildpacks.samples.stacks.dotnet-framework-2022"

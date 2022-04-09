@@ -1,0 +1,17 @@
+# Buildpacks to include in builder
+[[buildpacks]]
+id = "samples/dotnet-framework"
+version = "0.0.1"
+uri = "../../buildpacks/dotnet-framework"
+
+# Order used for detection
+[[order]]
+[[order.group]]
+id = "samples/dotnet-framework"
+version = "0.0.1"
+
+# Stack that will be used by the builder
+[stack]
+id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
+run-image = "cnbs/sample-stack-run:dotnet-framework-2022"
+build-image = "cnbs/sample-stack-build:dotnet-framework-2022"

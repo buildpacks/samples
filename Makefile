@@ -201,19 +201,19 @@ clean-wine:
 ## Windows
 ####################
 
-build-windows: build-windows-1809 build-windows-2004
-
 build-windows-1809: build-windows-packages build-nanoserver-1809 build-dotnet-framework-1809
 
 build-windows-2004: build-windows-packages build-dotnet-framework-2004
 
-build-windows-stacks: build-stack-nanoserver-1809 build-stack-dotnet-framework-1809 build-stack-dotnet-framework-2004
+build-windows-2022: build-windows-packages build-dotnet-framework-2022
 
 build-nanoserver-1809: build-stack-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
 
 build-dotnet-framework-1809: build-stack-dotnet-framework-1809 build-builder-dotnet-framework-1809 build-buildpacks-dotnet-framework-1809
 
 build-dotnet-framework-2004: build-stack-dotnet-framework-2004 build-builder-dotnet-framework-2004 build-buildpacks-dotnet-framework-2004
+
+build-dotnet-framework-2022: build-stack-dotnet-framework-2022 build-builder-dotnet-framework-2022 build-buildpacks-dotnet-framework-2022
 
 build-stack-nanoserver-1809:
 	@echo "> Building 'nanoserver-1809' stack..."
@@ -227,7 +227,9 @@ build-stack-dotnet-framework-2004:
 	@echo "> Building 'dotnet-framework-2004' stack..."
 	bash stacks/build-stack.sh stacks/dotnet-framework-2004
 
-build-windows-builders: build-builder-nanoserver-1809 build-builder-dotnet-framework-1809 build-builder-dotnet-framework-2004
+build-stack-dotnet-framework-2022:
+	@echo "> Building 'dotnet-framework-2022' stack..."
+	bash stacks/build-stack.sh stacks/dotnet-framework-2022
 
 build-builder-nanoserver-1809: build-windows-packages
 	@echo "> Building 'nanoserver-1809' builder..."
@@ -241,7 +243,9 @@ build-builder-dotnet-framework-2004: build-windows-packages
 	@echo "> Building 'dotnet-framework-2004' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2004 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2004/builder.toml $(PACK_FLAGS)
 
-build-windows-buildpacks: build-buildpacks-nanoserver-1809 build-buildpacks-dotnet-framework-1809 build-buildpacks-dotnet-framework-2004
+build-builder-dotnet-framework-2022: build-windows-packages
+	@echo "> Building 'dotnet-framework-2022' builder..."
+	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2022 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2022/builder.toml $(PACK_FLAGS)
 
 build-buildpacks-nanoserver-1809: build-sample-root
 	@echo "> Creating 'hello-moon-windows' app using 'nanoserver-1809' builder..."
@@ -258,21 +262,16 @@ build-buildpacks-dotnet-framework-2004: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-2004' builder..."
 	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2004 -v --builder cnbs/sample-builder:dotnet-framework-2004 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
 
+build-buildpacks-dotnet-framework-2022: build-sample-root
+	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-2022' builder..."
+	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2022 -v --builder cnbs/sample-builder:dotnet-framework-2022 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
 	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PACK_FLAGS)
 
 	@echo "> Creating 'hello-universe-windows' buildpack package"
 	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PACK_FLAGS)
-
-build-windows-apps: build-sample-root
-	@echo "> Creating 'batch-script' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-batch-script-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
-
-	@echo "> Creating 'aspnet' app using 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) build sample-aspnet-app:dotnet-framework-1809 -v --builder cnbs/sample-builder:dotnet-framework-1809 --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
-
-deploy-windows: deploy-windows-1809 deploy-windows-2004 deploy-windows-packages
 
 deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-builders-1809 deploy-windows-packages
 
@@ -281,6 +280,8 @@ deploy-windows-2004: deploy-windows-stacks-2004 deploy-windows-builders-2004 dep
 deploy-windows-stacks-1809: deploy-windows-stacks-nanoserver-1809 deploy-windows-stacks-dotnet-framework-1809
 
 deploy-windows-stacks-2004: deploy-windows-stacks-dotnet-framework-2004
+
+deploy-windows-stacks-2022: deploy-windows-stacks-dotnet-framework-2022
 
 deploy-windows-stacks-nanoserver-1809:
 	@echo "> Deploying 'nanoserver-1809' stack..."
@@ -298,16 +299,21 @@ deploy-windows-stacks-dotnet-framework-2004:
 	docker push cnbs/sample-stack-run:dotnet-framework-2004
 	docker push cnbs/sample-stack-build:dotnet-framework-2004
 
+deploy-windows-stacks-dotnet-framework-2022:
+	@echo "> Deploying 'dotnet-framework-2022' stack..."
+	docker push cnbs/sample-stack-run:dotnet-framework-2022
+	docker push cnbs/sample-stack-build:dotnet-framework-2022
+
 deploy-windows-packages:
 	@echo "> Deploying windows packages..."
 	docker push cnbs/sample-package:hello-world-windows
 	docker push cnbs/sample-package:hello-universe-windows
 
-deploy-windows-builders: deploy-windows-builders-1809 deploy-windows-builders-2004
-
 deploy-windows-builders-1809: deploy-windows-builders-nanoserver-1809 deploy-windows-builders-dotnet-framework-1809
 
 deploy-windows-builders-2004: deploy-windows-builders-dotnet-framework-2004
+
+deploy-windows-builders-2022: deploy-windows-builders-dotnet-framework-2022
 
 deploy-windows-builders-nanoserver-1809:
 	@echo "> Deploying 'nanoserver-1809' builder..."
@@ -320,6 +326,10 @@ deploy-windows-builders-dotnet-framework-1809:
 deploy-windows-builders-dotnet-framework-2004:
 	@echo "> Deploying 'dotnet-framework-2004' builder..."
 	docker push cnbs/sample-builder:dotnet-framework-2004
+
+deploy-windows-builders-dotnet-framework-2022:
+	@echo "> Deploying 'dotnet-framework-2022' builder..."
+	docker push cnbs/sample-builder:dotnet-framework-2022
 
 clean-windows:
 	@echo "> Removing 'nanoserver-1809' stack..."
@@ -335,10 +345,15 @@ clean-windows:
 	docker rmi cnbs/sample-stack-run:dotnet-framework-2004 || true
 	docker rmi cnbs/sample-stack-build:dotnet-framework-2004 || true
 
+	@echo "> Removing 'dotnet-framework-2022' stack..."
+	docker rmi cnbs/sample-stack-run:dotnet-framework-2022 || true
+	docker rmi cnbs/sample-stack-build:dotnet-framework-2022 || true
+
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:nanoserver-1809 || true
 	docker rmi cnbs/sample-builder:dotnet-framework-1809 || true
 	docker rmi cnbs/sample-builder:dotnet-framework-2004 || true
+	docker rmi cnbs/sample-builder:dotnet-framework-2022 || true
 
 	@echo "> Removing 'nanoserver-1809' apps..."
 	docker rmi sample-hello-moon-windows-app:nanoserver-1809 || true
@@ -350,6 +365,9 @@ clean-windows:
 
 	@echo "> Removing 'dotnet-framework-2004' apps..."
 	docker rmi sample-aspnet-app:dotnet-framework-2004 || true
+
+	@echo "> Removing 'dotnet-framework-2022' apps..."
+	docker rmi sample-aspnet-app:dotnet-framework-2022 || true
 
 	@echo "> Removing packages..."
 	docker rmi cnbs/sample-package:hello-world-windows || true
