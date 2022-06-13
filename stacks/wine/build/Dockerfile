@@ -1,4 +1,4 @@
-FROM ubuntu:groovy
+FROM ubuntu:jammy
 
 # Install packages that we want to make available at build time
 # Base + Wine 32/64bit + dependencies
