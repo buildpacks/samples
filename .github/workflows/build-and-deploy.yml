@@ -28,7 +28,7 @@ jobs:
                 repo: "pack"
             }).then(result => {
                 return result.data.assets
-                  .filter(a => a.name.includes("linux"))
+                  .filter(a => a.name.includes("-linux.tgz"))
                   .map(a => a.browser_download_url)[0];
             })
       - name: Install pack
