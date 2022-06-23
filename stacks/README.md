@@ -7,10 +7,11 @@ Sample of stacks.
 To build the stack use the `./build-stack` script:
 
 ```text
-./build-stack.sh [-p <prefix> -v <version>] <dir>
-  -p    prefix to use for images      (default: sample/stack)
-  -v    version to tag images with    (default: latest)
-  <dir>  directory of stack to build
+Usage:
+  ./stacks/build-stack.sh [-f <prefix>] [-p <platform>] <dir>
+    -f    prefix to use for images      (default: cnbs/sample-stack)
+    -p    prefix to use for images      (default: amd64)
+   <dir>  directory of stack to build
 ```
 
 Example:

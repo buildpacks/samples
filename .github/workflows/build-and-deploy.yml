@@ -12,7 +12,7 @@ on:
       - pack-release
 
 jobs:
-  build-linux:
+  build-deploy-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
                 repo: "pack"
             }).then(result => {
                 return result.data.assets
-                  .filter(a => a.name.includes("linux"))
+                  .filter(a => a.name.includes("-linux.tgz"))
                   .map(a => a.browser_download_url)[0];
             })
       - name: Install pack
@@ -47,7 +47,7 @@ jobs:
         run: make deploy-linux deploy-wine
       - name: Clean up
         run: make clean-linux clean-wine
-  build-windows:
+  build-deploy-windows:
     strategy:
       matrix:
         include:
@@ -90,5 +90,39 @@ jobs:
       - name: Deploy
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: make deploy-windows-${{ matrix.version }}
-      - name: Clean up
-        run: make clean-windows
+  build-deploy-windows-packages:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v2
+      - name: Determine download URL for latest pack
+        id: pack-download-url
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            return github.repos.getLatestRelease({
+                owner: "buildpacks",
+                repo: "pack"
+            }).then(result => {
+                return result.data.assets
+                  .filter(a => a.name.includes("windows"))
+                  .map(a => a.browser_download_url)[0];
+            })
+      - name: Install pack
+        run: |
+          curl -s -L -o pack.zip ${{ steps.pack-download-url.outputs.result }}
+          tar -xvf pack.zip
+          mkdir ~\.pack
+      - name: Set Experimental
+        run: make set-experimental
+      - name: Build
+        run: make build-windows-packages
+      - uses: azure/docker-login@v1
+        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        with:
+          username: cnbs
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Deploy
+        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        run: make deploy-windows-packages
