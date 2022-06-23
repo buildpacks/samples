@@ -273,9 +273,16 @@ build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-universe-windows' buildpack package"
 	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PACK_FLAGS)
 
-deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-builders-1809 deploy-windows-packages
+deploy-windows-packages:
+	@echo "> Deploying windows packages..."
+	docker push cnbs/sample-package:hello-world-windows
+	docker push cnbs/sample-package:hello-universe-windows
 
-deploy-windows-2004: deploy-windows-stacks-2004 deploy-windows-builders-2004 deploy-windows-packages
+deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-builders-1809
+
+deploy-windows-2004: deploy-windows-stacks-2004 deploy-windows-builders-2004
+
+deploy-windows-2022: deploy-windows-stacks-2022 deploy-windows-builders-2022
 
 deploy-windows-stacks-1809: deploy-windows-stacks-nanoserver-1809 deploy-windows-stacks-dotnet-framework-1809
 
@@ -303,11 +310,6 @@ deploy-windows-stacks-dotnet-framework-2022:
 	@echo "> Deploying 'dotnet-framework-2022' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-2022
 	docker push cnbs/sample-stack-build:dotnet-framework-2022
-
-deploy-windows-packages:
-	@echo "> Deploying windows packages..."
-	docker push cnbs/sample-package:hello-world-windows
-	docker push cnbs/sample-package:hello-universe-windows
 
 deploy-windows-builders-1809: deploy-windows-builders-nanoserver-1809 deploy-windows-builders-dotnet-framework-1809
 
