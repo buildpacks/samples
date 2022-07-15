@@ -12,7 +12,23 @@ uri = "../../buildpacks/kotlin-gradle"
 [[buildpacks]]
 uri = "docker://cnbs/sample-package:hello-universe"
 
-# Order used for detection
+[[buildpacks]]
+id = "samples/hello-extensions"
+version = "0.0.1"
+uri = "../../buildpacks/hello-extensions"
+
+# Extensions to include in builder
+[[extensions]]
+id = "samples/curl"
+version = "0.0.1"
+uri = "../../extensions/curl"
+
+# Order used for detection (buildpacks)
+[[order]]
+[[order.group]]
+id = "samples/hello-extensions"
+version = "0.0.1"
+
 [[order]]
 [[order.group]]
 id = "samples/java-maven"
@@ -28,8 +44,17 @@ version = "0.0.1"
 id = "samples/hello-universe"
 version = "0.0.1"
 
+# Order used for detection (extensions)
+[[order-extensions]]
+[[order-extensions.group]]
+id = "samples/curl"
+version = "0.0.1"
+
 # Stack that will be used by the builder
 [stack]
 id = "io.buildpacks.samples.stacks.alpine"
 run-image = "cnbs/sample-stack-run:alpine"
 build-image = "cnbs/sample-stack-build:alpine"
+
+[lifecycle]
+uri = "replace-me"

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# 1. GET ARGS
+plan_path=$2
+
+# 2. DECLARE DEPENDENCIES (OPTIONAL)
+cat >> "${plan_path}" <<EOL
+# Buildpack requires this dependency
+[[requires]]
+name = "curl"
+EOL
