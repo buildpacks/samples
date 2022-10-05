@@ -1,9 +1,9 @@
 # Buildpack API version
-api = "0.9"
+api = "0.8"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "samples/hello-processes"
+id = "samples/hello-processes-old"
 version = "0.0.1"
 name = "Hello Processes Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-process"

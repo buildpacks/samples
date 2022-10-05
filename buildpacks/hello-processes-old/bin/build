@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> Hello processes buildpack"
+
+# INPUT ARGUMENTS
+env_dir=$2/env
+layers_dir=$1
+plan_path=$3
+
+cat >> "${layers_dir}/launch.toml" <<EOL
+[[processes]]
+type = "without-args"
+command = "echo"
+[[processes]]
+type = "with-args"
+command = "echo"
+args = ["some-arg"]
+EOL
+
+echo "---> Done"
