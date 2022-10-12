@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> Hello Extensions Buildpack"
+
+tree --version
+
+layers_dir=$1
+
+cat >> "${layers_dir}/launch.toml" <<EOL
+[[processes]]
+type = "curl"
+command = ["curl"]
+args = ["--version"]
+default = true
+EOL

@@ -1,0 +1,14 @@
+# Buildpack API version
+api = "0.9"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "samples/hello-extensions"
+version = "0.0.1"
+name = "Hello Extensions Buildpack"
+homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-extensions"
+description = "A simple buildpack that requires curl."
+
+# Stacks that the buildpack will work with
+[[stacks]]
+id = "*"
