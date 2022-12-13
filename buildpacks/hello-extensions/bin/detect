@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# 1. GET ARGS
+plan_path=$2
+
+# 2. DECLARE DEPENDENCIES (OPTIONAL)
+cat >> "${plan_path}" <<EOL
+# Uncomment first
+#[[requires]]
+#name = "tree"
+
+# Uncomment second
+#[[requires]]
+#name = "curl"
+EOL
