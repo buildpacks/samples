@@ -5,7 +5,7 @@ ARG cnb_gid=1000
 
 # Install packages that we want to make available at both build and run time
 RUN apt-get update && \
-  apt-get install -y xz-utils ca-certificates && \
+  apt-get install -y xz-utils ca-certificates libyaml-0-2 && \
   rm -rf /var/lib/apt/lists/*
 
 # Create user and group
