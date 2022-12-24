@@ -28,11 +28,7 @@ EOL
 export PATH="${ruby_layer_dir}/bin:${PATH}"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ruby_layer_dir}/lib"
 
-# 5. INSTALL BUNDLER
-echo "---> Installing bundler"
-gem install bundler --no-ri --no-rdoc
-
-# 6. INSTALL GEMS
+# 5. INSTALL GEMS
 
 # Compares previous Gemfile.lock checksum to the current Gemfile.lock
 bundler_layer_dir="${layers_dir}/bundler"
@@ -56,7 +52,7 @@ EOL
   bundle install --path "${bundler_layer_dir}" --binstubs "${bundler_layer_dir}/bin"
 fi
 
-# 7. SET DEFAULT START COMMAND
+# 6. SET DEFAULT START COMMAND
 cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
