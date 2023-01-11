@@ -18,11 +18,11 @@ build-bionic: build-stack-bionic build-builder-bionic build-buildpacks-bionic
 
 build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
-	bash stacks/build-stack.sh stacks/alpine
+	bash stacks/build-stack.sh -p $(shell uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) stacks/alpine
 
 build-stack-bionic:
 	@echo "> Building 'bionic' stack..."
-	bash stacks/build-stack.sh stacks/bionic
+	bash stacks/build-stack.sh -p $(shell uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) stacks/bionic
 
 build-linux-builders: build-builder-alpine build-builder-bionic
 

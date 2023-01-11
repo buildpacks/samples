@@ -61,14 +61,14 @@ RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
 BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
 
 if [[ -d "${IMAGE_DIR}/base" ]]; then
-  docker build --platform=${PLATFORM} -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
+  docker buildx build --platform=linux/${PLATFORM} -t "${BASE_IMAGE}" "${IMAGE_DIR}/base"
 fi
 
 echo "BUILDING ${BUILD_IMAGE}..."
-docker build --platform=${PLATFORM} --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${BUILD_IMAGE}"  "${IMAGE_DIR}/build"
+docker buildx build --platform=linux/${PLATFORM} --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${BUILD_IMAGE}"  "${IMAGE_DIR}/build"
 
 echo "BUILDING ${RUN_IMAGE}..."
-docker build --platform=${PLATFORM} --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${RUN_IMAGE}" "${IMAGE_DIR}/run"
+docker buildx build --platform=linux/${PLATFORM} --build-arg "base_image=${BASE_IMAGE}" --build-arg "stack_id=${STACK_ID}" -t "${RUN_IMAGE}" "${IMAGE_DIR}/run"
 
 echo
 echo "STACK BUILT!"

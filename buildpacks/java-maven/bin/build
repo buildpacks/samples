@@ -16,11 +16,12 @@ if compgen -G "${env_dir}/*" > /dev/null; then
 fi
 
 # 3. INSTALL JAVA
-jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_x64.tar.gz"
+HOST_PLATFORM=$(uname -m | sed s/aarch64/amd64/ | sed s/x86_64/x64/)
+jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_${HOST_PLATFORM}.tar.gz"
 jdk_version="1.8.0_222"
 
 if [[ -r /etc/alpine-release ]]; then
-  jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_musl_x64.tar.gz"
+  jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_musl_${HOST_PLATFORM}.tar.gz"
   jdk_version="1.8.0_222"
 fi
 
