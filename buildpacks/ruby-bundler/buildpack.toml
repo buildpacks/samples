@@ -13,5 +13,8 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/ruby-bund
 id = "io.buildpacks.samples.stacks.bionic"
 
 [[stacks]]
+id = "*"
+
+[[stacks]]
 id = "io.buildpacks.stacks.bionic"
 mixins = ["build:set=shell-utils"]

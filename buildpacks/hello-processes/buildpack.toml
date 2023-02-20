@@ -17,3 +17,6 @@ id = "io.buildpacks.samples.stacks.alpine"
 
 [[stacks]]
 id = "io.buildpacks.stacks.bionic"
+
+[[stacks]]
+id = "*"
