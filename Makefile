@@ -10,21 +10,21 @@ clean: clean-linux clean-windows
 
 build-linux: build-linux-stacks build-linux-packages build-linux-builders build-linux-buildpacks
 
-build-linux-stacks: build-stack-alpine build-stack-bionic
+build-linux-stacks: build-stack-alpine build-stack-jammy
 
 build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
 
-build-bionic: build-stack-bionic build-builder-bionic build-buildpacks-bionic
+build-jammy: build-stack-jammy build-builder-jammy build-buildpacks-jammy
 
 build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
 	bash stacks/build-stack.sh stacks/alpine
 
-build-stack-bionic:
-	@echo "> Building 'bionic' stack..."
-	bash stacks/build-stack.sh stacks/bionic
+build-stack-jammy:
+	@echo "> Building 'jammy' stack..."
+	bash stacks/build-stack.sh stacks/jammy
 
-build-linux-builders: build-builder-alpine build-builder-bionic
+build-linux-builders: build-builder-alpine build-builder-jammy
 
 build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
@@ -32,11 +32,11 @@ build-builder-alpine: build-linux-packages build-sample-root
 	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl
 	docker run cnbs/sample-builder:alpine cat /cnb/order.toml
 
-build-builder-bionic: build-linux-packages build-sample-root
-	@echo "> Building 'bionic' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:bionic --config $(SAMPLES_ROOT)/builders/bionic/builder.toml $(PULL_POLICY_NEVER)
+build-builder-jammy: build-linux-packages build-sample-root
+	@echo "> Building 'jammy' builder..."
+	$(PACK_CMD) builder create cnbs/sample-builder:jammy --config $(SAMPLES_ROOT)/builders/jammy/builder.toml $(PULL_POLICY_NEVER)
 
-build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
+build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-jammy
 
 build-buildpacks-alpine: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
@@ -54,24 +54,24 @@ build-buildpacks-alpine: build-sample-root
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_BUILD_FLAGS)
 
-build-buildpacks-bionic: build-sample-root
-	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+build-buildpacks-jammy: build-sample-root
+	@echo "> Creating 'hello-moon' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-hello-moon-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-processes' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-processes' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-hello-processes-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-world' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-world-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-world' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-hello-world-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'java-maven' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-java-maven-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/java-maven $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'java-maven' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-java-maven-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/java-maven $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'kotlin-gradle' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-kotlin-gradle-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/kotlin-gradle $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'ruby-bundler' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-ruby-bundler-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/ruby-bundler $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
@@ -88,10 +88,10 @@ deploy-linux-stacks:
 	docker push cnbs/sample-stack-run:alpine
 	docker push cnbs/sample-stack-build:alpine
 
-	@echo "> Deploying 'bionic' stack..."
-	docker push cnbs/sample-stack-base:bionic
-	docker push cnbs/sample-stack-run:bionic
-	docker push cnbs/sample-stack-build:bionic
+	@echo "> Deploying 'jammy' stack..."
+	docker push cnbs/sample-stack-base:jammy
+	docker push cnbs/sample-stack-run:jammy
+	docker push cnbs/sample-stack-build:jammy
 
 deploy-linux-packages:
 	@echo "> Deploying linux packages..."
@@ -104,8 +104,8 @@ deploy-linux-builders:
 	docker run cnbs/sample-builder:alpine cat /cnb/order.toml
 	docker push cnbs/sample-builder:alpine
 
-	@echo "> Deploying 'bionic' builder..."
-	docker push cnbs/sample-builder:bionic
+	@echo "> Deploying 'jammy' builder..."
+	docker push cnbs/sample-builder:jammy
 
 clean-linux:
 	@echo "> Removing 'alpine' stack..."
@@ -113,14 +113,14 @@ clean-linux:
 	docker rmi cnbs/sample-stack-run:alpine || true
 	docker rmi cnbs/sample-stack-build:alpine || true
 
-	@echo "> Removing 'bionic' stack..."
-	docker rmi cnbs/sample-stack-base:bionic || true
-	docker rmi cnbs/sample-stack-run:bionic || true
-	docker rmi cnbs/sample-stack-build:bionic || true
+	@echo "> Removing 'jammy' stack..."
+	docker rmi cnbs/sample-stack-base:jammy || true
+	docker rmi cnbs/sample-stack-run:jammy || true
+	docker rmi cnbs/sample-stack-build:jammy || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
-	docker rmi cnbs/sample-builder:bionic || true
+	docker rmi cnbs/sample-builder:jammy || true
 
 	@echo "> Removing 'alpine' apps..."
 	docker rmi sample-hello-moon-app:alpine || true
@@ -129,13 +129,13 @@ clean-linux:
 	docker rmi sample-java-maven-app:alpine || true
 	docker rmi sample-kotlin-gradle-app:alpine || true
 
-	@echo "> Removing 'bionic' apps..."
-	docker rmi sample-hello-moon-app:bionic || true
-	docker rmi sample-hello-processes-app:bionic || true
-	docker rmi sample-hello-world-app:bionic || true
-	docker rmi sample-java-maven-app:bionic || true
-	docker rmi sample-kotlin-gradle-app:bionic || true
-	docker rmi sample-ruby-bundler-app:bionic || true
+	@echo "> Removing 'jammy' apps..."
+	docker rmi sample-hello-moon-app:jammy || true
+	docker rmi sample-hello-processes-app:jammy || true
+	docker rmi sample-hello-world-app:jammy || true
+	docker rmi sample-java-maven-app:jammy || true
+	docker rmi sample-kotlin-gradle-app:jammy || true
+	docker rmi sample-ruby-bundler-app:jammy || true
 
 	@echo "> Removing packages..."
 	docker rmi cnbs/sample-package:hello-world || true

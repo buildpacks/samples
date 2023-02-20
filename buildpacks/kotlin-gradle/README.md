@@ -12,5 +12,5 @@ pack build sample-kotlin-gradle-app --builder cnbs/sample-builder:alpine --build
 OR
 
 ```bash
-pack build sample-kotlin-gradle-app --builder cnbs/sample-builder:bionic --buildpack . --path ../../apps/kotlin-gradle
+pack build sample-kotlin-gradle-app --builder cnbs/sample-builder:jammy --buildpack . --path ../../apps/kotlin-gradle
 ```

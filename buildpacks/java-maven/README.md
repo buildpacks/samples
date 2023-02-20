@@ -12,5 +12,5 @@ pack build sample-java-maven-app --builder cnbs/sample-builder:alpine --buildpac
 OR
 
 ```bash
-pack build sample-java-maven-app --builder cnbs/sample-builder:bionic --buildpack . --path ../../apps/java-maven
+pack build sample-java-maven-app --builder cnbs/sample-builder:jammy --buildpack . --path ../../apps/java-maven
 ```

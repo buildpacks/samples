@@ -3,10 +3,9 @@ FROM ${base_image}
 
 # Install packages that we want to make available at build time
 RUN apt-get update && \
-  apt-get install -y git wget && \
+  apt-get install -y git wget jq && \
   rm -rf /var/lib/apt/lists/*
 
-COPY ./bin/jq-linux64 /usr/local/bin/jq
 COPY ./bin/yj-linux /usr/local/bin/yj
 
 # Set required CNB information

@@ -4,7 +4,7 @@ A sample of builders that use the [stacks](../stacks/) in this repo.
 
 ### Contains:
 - [Alpine](alpine/)
-- [Bionic](bionic/)
+- [Jammy](jammy/)
 
 ### Additional Resources
 
