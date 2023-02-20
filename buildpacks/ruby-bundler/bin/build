@@ -12,7 +12,7 @@ ruby_layer_dir="${layers_dir}/ruby"
 mkdir -p "${ruby_layer_dir}"
 
 # determine ruby version provided during detection
-ruby_version=$(cat "${plan_path}" | yj -t | jq -r '.entries[] | select(.name == "ruby") | .version')
+ruby_version=$(cat "${plan_path}" | yj -t | jq -r '.entries[] | select(.name == "ruby") | .metadata.version')
 
 echo "---> Downloading and extracting Ruby ${ruby_version}"
 ruby_url=https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-22/ruby-${ruby_version}.tgz
@@ -20,6 +20,7 @@ wget -q -O - "${ruby_url}" | tar -xzf - -C "${ruby_layer_dir}"
 
 # 3. MAKE RUBY AVAILABLE DURING LAUNCH
 cat > "${ruby_layer_dir}.toml" <<EOL
+[types]
 launch = true
 metadata = "${ruby_version}"
 EOL
@@ -45,6 +46,7 @@ else
   echo "---> Installing gems"
   mkdir "${bundler_layer_dir}"
   cat > "${bundler_layer_dir}.toml" <<EOL
+[types]
 cache = true
 launch = true
 metadata = "${local_bundler_checksum}"
@@ -56,8 +58,8 @@ fi
 cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
-command = "bundle exec ruby app.rb"
+command = ["bundle", "exec", "ruby", "app.rb"]
 [[processes]]
 type = "worker"
-command = "bundle exec ruby worker.rb"
+command = ["bundle", "exec", "ruby", "worker.rb"]
 EOL

@@ -16,4 +16,4 @@ build-image = "cnbs/sample-stack-build:wine"
 
 # Requires explicit Windows lifecycle to override pack's Linux default
 [lifecycle]
-uri = "https://github.com/buildpacks/lifecycle/releases/download/v0.10.2/lifecycle-v0.10.2+windows.x86-64.tgz"
+uri = "https://github.com/buildpacks/lifecycle/releases/download/v0.16.0/lifecycle-v0.16.0+windows.x86-64.tgz"
