@@ -30,6 +30,7 @@ build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PULL_POLICY_NEVER)
 	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl
+	docker run cnbs/sample-builder:alpine cat /cnb/order.toml
 
 build-builder-bionic: build-linux-packages build-sample-root
 	@echo "> Building 'bionic' builder..."
@@ -99,6 +100,8 @@ deploy-linux-packages:
 
 deploy-linux-builders:
 	@echo "> Deploying 'alpine' builder..."
+	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl
+	docker run cnbs/sample-builder:alpine cat /cnb/order.toml
 	docker push cnbs/sample-builder:alpine
 
 	@echo "> Deploying 'bionic' builder..."
