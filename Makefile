@@ -29,7 +29,6 @@ build-linux-builders: build-builder-alpine build-builder-bionic
 build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PULL_POLICY_NEVER)
-	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl
 
 build-builder-bionic: build-linux-packages build-sample-root
 	@echo "> Building 'bionic' builder..."
@@ -38,20 +37,25 @@ build-builder-bionic: build-linux-packages build-sample-root
 build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
 build-buildpacks-alpine: build-sample-root
+	@echo "> Starting local registry to push alpine builder to (since builds with extensions require the builder to exist in a registry with --pull-policy=always and we don't want to override the locally built builder)"
+	docker run -d --rm -p 5000:5000 registry:2
+	docker tag cnbs/sample-builder:alpine localhost:5000/cnbs/sample-builder:alpine
+	docker push localhost:5000/cnbs/sample-builder:alpine
+
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-processes' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/java-maven $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_BUILD_FLAGS)
 
 build-buildpacks-bionic: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
