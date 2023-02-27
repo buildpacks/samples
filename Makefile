@@ -43,7 +43,8 @@ build-buildpacks-alpine: build-sample-root
 	docker tag cnbs/sample-builder:alpine localhost:5000/cnbs/sample-builder:alpine
 	docker push localhost:5000/cnbs/sample-builder:alpine
 	@echo "> Untrusting builder so that we can use the 5 phases (necessary when builder contains extensions)"
-	$(PACK_CMD) config trusted-builders remove cnbs/sample-builder:alpine
+	$(PACK_CMD) config trusted-builders
+	$(PACK_CMD) config trusted-builders remove localhost:5000/cnbs/sample-builder:alpine
 
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_BUILD_FLAGS)
