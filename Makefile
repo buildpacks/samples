@@ -37,10 +37,12 @@ build-builder-bionic: build-linux-packages build-sample-root
 build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 
 build-buildpacks-alpine: build-sample-root
-	@echo "> Starting local registry to push alpine builder to (since builds with extensions require the builder to exist in a registry with --pull-policy=always and we don't want to override the locally built builder)"
+	@echo "> Starting local registry to store alpine builder (when builder contains extensions it must exist in a registry so that builds can use --pull-policy=always and we don't want to override the locally built builder)"
 	docker run -d --rm -p 5000:5000 registry:2
 	docker tag cnbs/sample-builder:alpine localhost:5000/cnbs/sample-builder:alpine
 	docker push localhost:5000/cnbs/sample-builder:alpine
+	@echo "> Untrusting builder so that we can use the 5 phases (necessary when builder contains extensions)"
+	pack config trusted-builders remove cnbs/sample-builder:alpine
 
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_BUILD_FLAGS)
