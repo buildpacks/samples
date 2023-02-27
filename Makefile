@@ -39,6 +39,7 @@ build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
 build-buildpacks-alpine: build-sample-root
 	@echo "> Starting local registry to store alpine builder (when builder contains extensions it must exist in a registry so that builds can use --pull-policy=always and we don't want to override the locally built builder)"
 	docker run -d --rm -p 5000:5000 registry:2
+	sleep 2
 	docker tag cnbs/sample-builder:alpine localhost:5000/cnbs/sample-builder:alpine
 	docker push localhost:5000/cnbs/sample-builder:alpine
 	@echo "> Untrusting builder so that we can use the 5 phases (necessary when builder contains extensions)"
