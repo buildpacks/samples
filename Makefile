@@ -53,10 +53,10 @@ build-buildpacks-alpine: build-sample-root
 	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --network=host
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/java-maven --network=host
+	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/java-maven --path apps/java-maven --network=host
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/kotlin-gradle --network=host
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/kotlin-gradle --path apps/kotlin-gradle --network=host
 
 build-buildpacks-bionic: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
