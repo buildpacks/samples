@@ -42,24 +42,21 @@ build-buildpacks-alpine: build-sample-root
 	sleep 2
 	docker tag cnbs/sample-builder:alpine localhost:5000/cnbs/sample-builder:alpine
 	docker push localhost:5000/cnbs/sample-builder:alpine
-	@echo "> Untrusting builder so that we can use the 5 phases (necessary when builder contains extensions)"
-	$(PACK_CMD) config trusted-builders
-	$(PACK_CMD) config trusted-builders remove localhost:5000/cnbs/sample-builder:alpine
 
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon
 
 	@echo "> Creating 'hello-processes' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes
 
 	@echo "> Creating 'hello-world' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/java-maven $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/java-maven
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/kotlin-gradle
 
 build-buildpacks-bionic: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
