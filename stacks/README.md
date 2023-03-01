@@ -17,7 +17,7 @@ Usage:
 Example:
 
 ```bash
-./build-stack.sh bionic
+./build-stack.sh jammy
 ```
 
 To use this stack see the [sample builders](../builders)

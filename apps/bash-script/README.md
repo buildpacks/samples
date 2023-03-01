@@ -11,7 +11,7 @@ pack build sample-bash-script-app --builder cnbs/sample-builder:alpine
 OR
 
 ```bash
-pack build sample-bash-script-app --builder cnbs/sample-builder:bionic
+pack build sample-bash-script-app --builder cnbs/sample-builder:jammy
 ```
 
 ### Extended Functionality

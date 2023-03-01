@@ -10,13 +10,13 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-moo
 
 # Stacks that the buildpack will work with
 [[stacks]]
-id = "io.buildpacks.samples.stacks.bionic"
+id = "io.buildpacks.samples.stacks.jammy"
 
 [[stacks]]
 id = "io.buildpacks.samples.stacks.alpine"
 
 [[stacks]]
-id = "io.buildpacks.stacks.bionic"
+id = "io.buildpacks.stacks.jammy"
 
 [[stacks]]
 id = "*"

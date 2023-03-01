@@ -15,7 +15,7 @@ mkdir -p "${ruby_layer_dir}"
 ruby_version=$(cat "${plan_path}" | yj -t | jq -r '.entries[] | select(.name == "ruby") | .version')
 
 echo "---> Downloading and extracting Ruby ${ruby_version}"
-ruby_url=https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-${ruby_version}.tgz
+ruby_url=https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-22/ruby-${ruby_version}.tgz
 wget -q -O - "${ruby_url}" | tar -xzf - -C "${ruby_layer_dir}"
 
 # 3. MAKE RUBY AVAILABLE DURING LAUNCH

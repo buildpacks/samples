@@ -6,5 +6,5 @@ Compatible apps:
 ### Usage
 
 ```bash
-pack build sample-ruby-bundler-app --builder cnbs/sample-builder:bionic --buildpack . --path ../../apps/ruby-bundler
+pack build sample-ruby-bundler-app --builder cnbs/sample-builder:jammy --buildpack . --path ../../apps/ruby-bundler
 ```

@@ -11,7 +11,7 @@ pack build sample-hello-world-app --builder cnbs/sample-builder:alpine --buildpa
 OR
 
 ```bash
-pack build sample-hello-world-app --builder cnbs/sample-builder:bionic --buildpack .
+pack build sample-hello-world-app --builder cnbs/sample-builder:jammy --buildpack .
 ```
 
 THEN
