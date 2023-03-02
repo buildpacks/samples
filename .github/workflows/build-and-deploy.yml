@@ -131,3 +131,15 @@ jobs:
       - name: Deploy
         if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: make deploy-windows-packages
+  update-lifecycle-version:
+    name: Update lifecycle version of sample builders
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Update lifecycle version
+        run: echo ${{ github.event.client_payload.version }}
+      - name: Check event event_name
+        run: echo ${{ github.event_name }}
+
+
