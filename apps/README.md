@@ -10,7 +10,7 @@
 To build images for most of these apps, simply execute:
 
 ```bash
-pack build -p apps/<APP> --builder cnbs/sample-builder:<bionic OR alpine> sample-app
+pack build -p apps/<APP> --builder cnbs/sample-builder:<jammy OR alpine> sample-app
 ```
 
 _After building the app you should be able to simply run it via `docker run -it -p 8080:8080 sample-app`.

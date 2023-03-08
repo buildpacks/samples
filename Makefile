@@ -1,4 +1,4 @@
-PACK_FLAGS?=--pull-policy=never
+PULL_POLICY_NEVER?=--pull-policy=never
 PACK_BUILD_FLAGS?=--trust-builder
 PACK_CMD?=pack
 
@@ -10,73 +10,75 @@ clean: clean-linux clean-windows
 
 build-linux: build-linux-stacks build-linux-packages build-linux-builders build-linux-buildpacks
 
-build-linux-stacks: build-stack-alpine build-stack-bionic
+build-linux-stacks: build-stack-alpine build-stack-jammy
 
 build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
 
-build-bionic: build-stack-bionic build-builder-bionic build-buildpacks-bionic
+build-jammy: build-stack-jammy build-builder-jammy build-buildpacks-jammy
 
 build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
 	bash stacks/build-stack.sh stacks/alpine
 
-build-stack-bionic:
-	@echo "> Building 'bionic' stack..."
-	bash stacks/build-stack.sh stacks/bionic
+build-stack-jammy:
+	@echo "> Building 'jammy' stack..."
+	bash stacks/build-stack.sh stacks/jammy
 
-build-linux-builders: build-builder-alpine build-builder-bionic
+build-linux-builders: build-builder-alpine build-builder-jammy
 
 build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PULL_POLICY_NEVER)
+	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl
+	docker run cnbs/sample-builder:alpine cat /cnb/order.toml
 
-build-builder-bionic: build-linux-packages build-sample-root
-	@echo "> Building 'bionic' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:bionic --config $(SAMPLES_ROOT)/builders/bionic/builder.toml $(PACK_FLAGS)
+build-builder-jammy: build-linux-packages build-sample-root
+	@echo "> Building 'jammy' builder..."
+	$(PACK_CMD) builder create cnbs/sample-builder:jammy --config $(SAMPLES_ROOT)/builders/jammy/builder.toml $(PULL_POLICY_NEVER)
 
-build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-bionic
+build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-jammy
 
 build-buildpacks-alpine: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-processes' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-processes-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-app:alpine -v --builder cnbs/sample-builder:alpine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'java-maven' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-java-maven-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/java-maven $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder cnbs/sample-builder:alpine --path apps/kotlin-gradle $(PACK_BUILD_FLAGS)
 
-build-buildpacks-bionic: build-sample-root
-	@echo "> Creating 'hello-moon' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+build-buildpacks-jammy: build-sample-root
+	@echo "> Creating 'hello-moon' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-hello-moon-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-processes' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-processes' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-hello-processes-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-world' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-hello-world-app:bionic -v --builder cnbs/sample-builder:bionic --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-world' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-hello-world-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'java-maven' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-java-maven-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/java-maven $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'java-maven' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-java-maven-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/java-maven $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'kotlin-gradle' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/kotlin-gradle $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'kotlin-gradle' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-kotlin-gradle-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/kotlin-gradle $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'ruby-bundler' app using 'bionic' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app:bionic -v --builder cnbs/sample-builder:bionic --path apps/ruby-bundler $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'ruby-bundler' app using 'jammy' builder..."
+	$(PACK_CMD) build sample-ruby-bundler-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/ruby-bundler $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PULL_POLICY_NEVER)
 
 deploy-linux: deploy-linux-stacks deploy-linux-packages deploy-linux-builders
 
@@ -86,10 +88,10 @@ deploy-linux-stacks:
 	docker push cnbs/sample-stack-run:alpine
 	docker push cnbs/sample-stack-build:alpine
 
-	@echo "> Deploying 'bionic' stack..."
-	docker push cnbs/sample-stack-base:bionic
-	docker push cnbs/sample-stack-run:bionic
-	docker push cnbs/sample-stack-build:bionic
+	@echo "> Deploying 'jammy' stack..."
+	docker push cnbs/sample-stack-base:jammy
+	docker push cnbs/sample-stack-run:jammy
+	docker push cnbs/sample-stack-build:jammy
 
 deploy-linux-packages:
 	@echo "> Deploying linux packages..."
@@ -98,10 +100,12 @@ deploy-linux-packages:
 
 deploy-linux-builders:
 	@echo "> Deploying 'alpine' builder..."
+	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl
+	docker run cnbs/sample-builder:alpine cat /cnb/order.toml
 	docker push cnbs/sample-builder:alpine
 
-	@echo "> Deploying 'bionic' builder..."
-	docker push cnbs/sample-builder:bionic
+	@echo "> Deploying 'jammy' builder..."
+	docker push cnbs/sample-builder:jammy
 
 clean-linux:
 	@echo "> Removing 'alpine' stack..."
@@ -109,14 +113,14 @@ clean-linux:
 	docker rmi cnbs/sample-stack-run:alpine || true
 	docker rmi cnbs/sample-stack-build:alpine || true
 
-	@echo "> Removing 'bionic' stack..."
-	docker rmi cnbs/sample-stack-base:bionic || true
-	docker rmi cnbs/sample-stack-run:bionic || true
-	docker rmi cnbs/sample-stack-build:bionic || true
+	@echo "> Removing 'jammy' stack..."
+	docker rmi cnbs/sample-stack-base:jammy || true
+	docker rmi cnbs/sample-stack-run:jammy || true
+	docker rmi cnbs/sample-stack-build:jammy || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
-	docker rmi cnbs/sample-builder:bionic || true
+	docker rmi cnbs/sample-builder:jammy || true
 
 	@echo "> Removing 'alpine' apps..."
 	docker rmi sample-hello-moon-app:alpine || true
@@ -125,13 +129,13 @@ clean-linux:
 	docker rmi sample-java-maven-app:alpine || true
 	docker rmi sample-kotlin-gradle-app:alpine || true
 
-	@echo "> Removing 'bionic' apps..."
-	docker rmi sample-hello-moon-app:bionic || true
-	docker rmi sample-hello-processes-app:bionic || true
-	docker rmi sample-hello-world-app:bionic || true
-	docker rmi sample-java-maven-app:bionic || true
-	docker rmi sample-kotlin-gradle-app:bionic || true
-	docker rmi sample-ruby-bundler-app:bionic || true
+	@echo "> Removing 'jammy' apps..."
+	docker rmi sample-hello-moon-app:jammy || true
+	docker rmi sample-hello-processes-app:jammy || true
+	docker rmi sample-hello-world-app:jammy || true
+	docker rmi sample-java-maven-app:jammy || true
+	docker rmi sample-kotlin-gradle-app:jammy || true
+	docker rmi sample-ruby-bundler-app:jammy || true
 
 	@echo "> Removing packages..."
 	docker rmi cnbs/sample-package:hello-world || true
@@ -156,18 +160,18 @@ build-stack-wine:
 
 build-builder-wine: build-sample-root
 	@echo "> Building 'wine' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:wine --config $(SAMPLES_ROOT)/builders/wine/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) create-builder cnbs/sample-builder:wine --config $(SAMPLES_ROOT)/builders/wine/builder.toml $(PULL_POLICY_NEVER)
 
 build-wine-apps: build-sample-root
 	@echo "> Creating 'batch-script' app using 'wine' builder..."
-	$(PACK_CMD) build sample-batch-script-app:wine -v --builder cnbs/sample-builder:wine --path apps/batch-script $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-batch-script-app:wine -v --builder cnbs/sample-builder:wine --path apps/batch-script $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-wine: build-sample-root
 	@echo "> Creating 'hello-moon-windows' app using 'wine' builder..."
-	$(PACK_CMD) build sample-hello-moon-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world-windows' app using 'wine' builder..."
-	$(PACK_CMD) build sample-hello-world-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 deploy-wine: deploy-wine-stacks deploy-wine-builders
 
@@ -233,45 +237,45 @@ build-stack-dotnet-framework-2022:
 
 build-builder-nanoserver-1809: build-windows-packages
 	@echo "> Building 'nanoserver-1809' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PULL_POLICY_NEVER)
 
 build-builder-dotnet-framework-1809: build-windows-packages
 	@echo "> Building 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PULL_POLICY_NEVER)
 
 build-builder-dotnet-framework-2004: build-windows-packages
 	@echo "> Building 'dotnet-framework-2004' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2004 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2004/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2004 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2004/builder.toml $(PULL_POLICY_NEVER)
 
 build-builder-dotnet-framework-2022: build-windows-packages
 	@echo "> Building 'dotnet-framework-2022' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2022 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2022/builder.toml $(PACK_FLAGS)
+	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2022 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2022/builder.toml $(PULL_POLICY_NEVER)
 
 build-buildpacks-nanoserver-1809: build-sample-root
 	@echo "> Creating 'hello-moon-windows' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-dotnet-framework-1809: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-1809 -v --builder cnbs/sample-builder:dotnet-framework-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-1809 -v --builder cnbs/sample-builder:dotnet-framework-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-dotnet-framework-2004: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-2004' builder..."
-	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2004 -v --builder cnbs/sample-builder:dotnet-framework-2004 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2004 -v --builder cnbs/sample-builder:dotnet-framework-2004 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-dotnet-framework-2022: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-2022' builder..."
-	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2022 -v --builder cnbs/sample-builder:dotnet-framework-2022 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PACK_FLAGS) $(PACK_BUILD_FLAGS)
+	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-2022 -v --builder cnbs/sample-builder:dotnet-framework-2022 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PACK_FLAGS)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
 
 deploy-windows-packages:
 	@echo "> Deploying windows packages..."

@@ -35,6 +35,10 @@ jobs:
         run: |
           curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.tgz
+      - name: Set config needed for image extensions
+        run: |
+          ./pack config experimental true
+          ./pack config pull-policy always
       - name: Build
         run: PACK_CMD=./pack make build-linux build-wine
       - uses: azure/docker-login@v1

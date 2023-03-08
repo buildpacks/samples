@@ -1,0 +1,10 @@
+# Buildpack API version
+api = "0.9"
+
+# Extension ID and metadata
+[extension]
+id = "samples/tree"
+version = "0.0.1"
+name = "Tree Extension"
+homepage = "https://github.com/buildpacks/samples/tree/main/extensions/tree"
+description = "A simple extension that installs tree at build time"

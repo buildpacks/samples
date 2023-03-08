@@ -15,7 +15,7 @@ mkdir -p "${ruby_layer_dir}"
 ruby_version=$(cat "${plan_path}" | yj -t | jq -r '.entries[] | select(.name == "ruby") | .version')
 
 echo "---> Downloading and extracting Ruby ${ruby_version}"
-ruby_url=https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-${ruby_version}.tgz
+ruby_url=https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-22/ruby-${ruby_version}.tgz
 wget -q -O - "${ruby_url}" | tar -xzf - -C "${ruby_layer_dir}"
 
 # 3. MAKE RUBY AVAILABLE DURING LAUNCH
@@ -28,11 +28,7 @@ EOL
 export PATH="${ruby_layer_dir}/bin:${PATH}"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ruby_layer_dir}/lib"
 
-# 5. INSTALL BUNDLER
-echo "---> Installing bundler"
-gem install bundler --no-ri --no-rdoc
-
-# 6. INSTALL GEMS
+# 5. INSTALL GEMS
 
 # Compares previous Gemfile.lock checksum to the current Gemfile.lock
 bundler_layer_dir="${layers_dir}/bundler"
@@ -56,7 +52,7 @@ EOL
   bundle install --path "${bundler_layer_dir}" --binstubs "${bundler_layer_dir}/bin"
 fi
 
-# 7. SET DEFAULT START COMMAND
+# 6. SET DEFAULT START COMMAND
 cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
