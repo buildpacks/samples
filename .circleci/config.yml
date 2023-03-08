@@ -9,7 +9,7 @@ workflows:
       - pack/build:
           working-directory: apps/java-maven
           image-name: cnbs/circleci-sample
-          builder: 'cnbs/sample-builder:bionic'
+          builder: 'cnbs/sample-builder:jammy'
       - test:
           requires:
             - pack/build

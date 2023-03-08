@@ -40,6 +40,6 @@ version = "0.0.1"
 
 # Stack that will be used by the builder
 [stack]
-id = "io.buildpacks.samples.stacks.bionic"
-run-image = "cnbs/sample-stack-run:bionic"
-build-image = "cnbs/sample-stack-build:bionic"
+id = "io.buildpacks.samples.stacks.jammy"
+run-image = "cnbs/sample-stack-run:jammy"
+build-image = "cnbs/sample-stack-build:jammy"

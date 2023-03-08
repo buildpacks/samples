@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3
 
 ARG cnb_uid=1000
 ARG cnb_gid=1001

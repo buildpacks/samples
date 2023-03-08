@@ -10,11 +10,11 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/ruby-bund
 
 # Stacks that the buildpack will work with
 [[stacks]]
-id = "io.buildpacks.samples.stacks.bionic"
+id = "io.buildpacks.samples.stacks.jammy"
 
 [[stacks]]
 id = "*"
 
 [[stacks]]
-id = "io.buildpacks.stacks.bionic"
+id = "io.buildpacks.stacks.jammy"
 mixins = ["build:set=shell-utils"]
