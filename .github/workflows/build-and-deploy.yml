@@ -42,12 +42,12 @@ jobs:
       - name: Build
         run: PACK_CMD=./pack make build-linux build-wine
       - uses: azure/docker-login@v1
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: (github.event_name == 'repository_dispatch') || (github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: (github.event_name == 'repository_dispatch') || (github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
         run: make deploy-linux deploy-wine
       - name: Clean up
         run: make clean-linux clean-wine
@@ -87,12 +87,12 @@ jobs:
       - name: Build
         run: make build-windows-${{ matrix.version }}
       - uses: azure/docker-login@v1
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: (github.event_name == 'repository_dispatch') || (github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: (github.event_name == 'repository_dispatch') || (github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
         run: make deploy-windows-${{ matrix.version }}
   build-deploy-windows-packages:
     runs-on: windows-2022
@@ -123,10 +123,10 @@ jobs:
       - name: Build
         run: make build-windows-packages
       - uses: azure/docker-login@v1
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: (github.event_name == 'repository_dispatch') || (github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: (github.event_name == 'repository_dispatch') || (github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
         run: make deploy-windows-packages
