@@ -15,10 +15,10 @@ jobs:
   build-deploy-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Determine download URL for latest pack
         id: pack-download-url
-        uses: actions/github-script@0.4.0
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
@@ -42,12 +42,12 @@ jobs:
       - name: Build
         run: PACK_CMD=./pack make build-linux build-wine
       - uses: azure/docker-login@v1
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: make deploy-linux deploy-wine
       - name: Clean up
         run: make clean-linux clean-wine
@@ -61,10 +61,10 @@ jobs:
             version: 2022
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Determine download URL for latest pack
         id: pack-download-url
-        uses: actions/github-script@0.4.0
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
@@ -87,20 +87,20 @@ jobs:
       - name: Build
         run: make build-windows-${{ matrix.version }}
       - uses: azure/docker-login@v1
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: make deploy-windows-${{ matrix.version }}
   build-deploy-windows-packages:
     runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Determine download URL for latest pack
         id: pack-download-url
-        uses: actions/github-script@0.4.0
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
@@ -123,10 +123,10 @@ jobs:
       - name: Build
         run: make build-windows-packages
       - uses: azure/docker-login@v1
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           username: cnbs
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
-        if: (github.event_name == 'repository_dispatch') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: make deploy-windows-packages
