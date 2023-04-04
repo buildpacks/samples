@@ -13,4 +13,9 @@ type = "curl"
 command = ["curl"]
 args = ["--version"]
 default = true
+
+[[processes]]
+type = "cowsay"
+command = ["cowsay"]
+args = ["MOOOO!"]
 EOL

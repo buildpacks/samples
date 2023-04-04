@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# 1. GET ARGS
+output_dir=$CNB_OUTPUT_DIR
+
+# 2. GENERATE run.Dockerfile
+cat >>"${output_dir}/run.Dockerfile" <<EOL
+ARG base_image
+FROM \${base_image}
+
+USER root
+RUN apk update && \
+    apk add --no-cache git perl && \
+    cd /tmp && \
+    git clone https://github.com/schacon/cowsay.git  && \
+    cd cowsay ; ./install.sh /usr/local && \
+    rm -rf /var/cache/apk/* /var/tmp/* /tmp/* && \
+    apk del git
+EOL

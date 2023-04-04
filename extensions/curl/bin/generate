@@ -8,10 +8,3 @@ output_dir=$CNB_OUTPUT_DIR
 cat >>"${output_dir}/run.Dockerfile" <<EOL
 FROM run-image-curl
 EOL
-
-if [[ "${BP_REQUIRES}" == *"dep"* ]]; then
-  cat >>"${output_dir}/run.Dockerfile" <<EOL
-USER root
-RUN echo "Dependency from curl extension" > /from-curl.txt
-EOL
-fi

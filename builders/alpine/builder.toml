@@ -28,6 +28,11 @@ id = "samples/curl"
 version = "0.0.1"
 uri = "../../extensions/curl"
 
+[[extensions]]
+id = "samples/cowsay"
+version = "0.0.1"
+uri = "../../extensions/cowsay"
+
 # Order used for detection (buildpacks)
 [[order]]
 [[order.group]]
@@ -57,6 +62,10 @@ version = "0.0.1"
 
 [[order-extensions.group]]
 id = "samples/curl"
+version = "0.0.1"
+
+[[order-extensions.group]]
+id = "samples/cowsay"
 version = "0.0.1"
 
 # Stack that will be used by the builder
