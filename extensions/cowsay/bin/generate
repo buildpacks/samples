@@ -9,6 +9,8 @@ cat >>"${output_dir}/run.Dockerfile" <<EOL
 ARG base_image
 FROM \${base_image}
 
+RUN curl --version
+
 USER root
 RUN apk update && \
     apk add --no-cache git perl && \

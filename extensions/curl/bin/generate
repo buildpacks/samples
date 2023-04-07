@@ -6,5 +6,5 @@ output_dir=$CNB_OUTPUT_DIR
 
 # 2. GENERATE run.Dockerfile
 cat >>"${output_dir}/run.Dockerfile" <<EOL
-FROM run-image-curl
+FROM localhost:5000/run-image-curl
 EOL
