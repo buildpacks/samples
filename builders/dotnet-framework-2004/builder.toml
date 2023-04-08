@@ -10,6 +10,10 @@ uri = "../../buildpacks/dotnet-framework"
 id = "samples/dotnet-framework"
 version = "0.0.1"
 
+# Requires explicit Windows lifecycle to override pack's Linux default
+[lifecycle]
+uri = "https://github.com/buildpacks/lifecycle/releases/download/v0.16.1/lifecycle-v0.16.1+windows.x86-64.tgz"
+
 # Stack that will be used by the builder
 [stack]
 id = "io.buildpacks.samples.stacks.dotnet-framework-2004"

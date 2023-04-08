@@ -38,6 +38,9 @@ version = "0.0.1"
 id = "samples/hello-universe"
 version = "0.0.1"
 
+[lifecycle]
+uri = "https://github.com/buildpacks/lifecycle/releases/download/v0.16.1/lifecycle-v0.16.1+linux.x86-64.tgz"
+
 # Stack that will be used by the builder
 [stack]
 id = "io.buildpacks.samples.stacks.jammy"
