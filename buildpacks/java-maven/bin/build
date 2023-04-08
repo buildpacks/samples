@@ -37,6 +37,7 @@ if [[ -f ${jdk_layer_dir}.toml ]]; then
 fi
 
 if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
+  echo "     JDK cache not found, creating new layer"
   rm -rf "$layers_dir"/jdk
   mkdir -p "$layers_dir"/jdk/env
   wget -q -O - "$jdk_url" | tar pxz -C "${jdk_layer_dir}" --strip-components=1
@@ -51,20 +52,20 @@ version = "${jdk_version}"
 url = "${jdk_url}"
 EOF
 
-  echo "$layers_dir"/jdk > "$layers_dir"/jdk/env/JAVA_HOME
+  echo "$jdk_layer_dir" > "$jdk_layer_dir"/env/JAVA_HOME
   if [[ -z ${LD_LIBRARY_PATH} ]]; then
     echo "${JAVA_HOME}/jre/lib/amd64/server" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
   else
     echo "${JAVA_HOME}/jre/lib/amd64/server:${LD_LIBRARY_PATH}" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
   fi
 
-  mkdir -p ${jdk_layer_dir}/profile.d
-  cat > "${jdk_layer_dir}/profile.d/jdk.sh" << EOF
-export JAVA_HOME=${jdk_layer_dir}
+  mkdir -p ${jdk_layer_dir}/exec.d
+  cat > "${jdk_layer_dir}/exec.d/jdk.sh" << EOF
+echo JAVA_HOME=${jdk_layer_dir} > \$1
 if [[ -z \$LD_LIBRARY_PATH ]]; then
-  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
+  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server" >> \$1
 else
-  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
+  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}" >> \$1
 fi
 EOF
 fi
