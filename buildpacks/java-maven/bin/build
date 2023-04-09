@@ -98,6 +98,7 @@ else
   fi
   if [[ ${maven_url} != ${cached_maven_url} ]] ; then
     echo "---> Installing Maven"
+    echo "     Using JAVA_HOME ${JAVA_HOME}"
     rm -rf "${maven_layer_dir}"
     mkdir -p "${maven_layer_dir}"
     wget -q -O - "${maven_url}" | tar pxz -C "${maven_layer_dir}" --strip-components=1
