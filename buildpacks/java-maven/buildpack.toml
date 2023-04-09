@@ -4,7 +4,7 @@ api = "0.2"
 # Buildpack ID and metadata
 [buildpack]
 id = "samples/java-maven"
-version = "0.0.1"
+version = "0.0.2"
 name = "Sample Java Maven Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/java-maven"
 
