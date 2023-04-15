@@ -20,6 +20,10 @@ build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
 	bash stacks/build-stack.sh stacks/alpine
 
+build-images-alpine:
+	@echo "> Building 'alpine' images..."
+	bash buildimages/build-img.sh buildimages/alpine
+
 build-stack-jammy:
 	@echo "> Building 'jammy' stack..."
 	bash stacks/build-stack.sh stacks/jammy
