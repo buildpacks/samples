@@ -8,13 +8,15 @@ clean: clean-linux clean-windows
 ## Linux
 ####################
 
-build-linux: build-linux-stacks build-linux-packages build-linux-builders build-linux-buildpacks
+build-linux: build-linux-stacks build-linux-images build-linux-packages build-linux-builders build-linux-buildpacks
+
+build-linux-images: build-images-alpine build-images-jammy
 
 build-linux-stacks: build-stack-alpine build-stack-jammy
 
-build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
+build-alpine: build-stack-alpine build-images-alpine build-builder-alpine build-buildpacks-alpine
 
-build-jammy: build-stack-jammy build-builder-jammy build-buildpacks-jammy
+build-jammy: build-stack-jammy build-images-alpine build-builder-jammy build-buildpacks-jammy
 
 build-stack-alpine:
 	@echo "> Building 'alpine' stack..."
@@ -22,11 +24,15 @@ build-stack-alpine:
 
 build-images-alpine:
 	@echo "> Building 'alpine' images..."
-	bash buildimages/build-img.sh buildimages/alpine
+	bash images/build-img.sh images/alpine
 
 build-stack-jammy:
 	@echo "> Building 'jammy' stack..."
 	bash stacks/build-stack.sh stacks/jammy
+
+build-images-jammy:
+	@echo "> Building 'jammy' images..."
+	bash images/build-img.sh images/jammy
 
 build-linux-builders: build-builder-alpine build-builder-jammy
 
@@ -82,7 +88,7 @@ build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-universe' buildpack package"
 	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PULL_POLICY_NEVER)
 
-deploy-linux: deploy-linux-stacks deploy-linux-packages deploy-linux-builders
+deploy-linux: deploy-linux-stacks deploy-linux-images deploy-linux-packages deploy-linux-builders
 
 deploy-linux-stacks:
 	@echo "> Deploying 'alpine' stack..."
@@ -94,6 +100,18 @@ deploy-linux-stacks:
 	docker push cnbs/sample-stack-base:jammy
 	docker push cnbs/sample-stack-run:jammy
 	docker push cnbs/sample-stack-build:jammy
+
+deploy-linux-images:
+	@echo "> Deploying 'alpine' images..."
+	docker push cnbs/sample-img-base:alpine
+	docker push cnbs/sample-img-run:alpine
+	docker push cnbs/sample-img-build:alpine
+
+	@echo "> Deploying 'jammy' images..."
+	docker push cnbs/sample-img-base:jammy
+	docker push cnbs/sample-img-run:jammy
+	docker push cnbs/sample-img-build:jammy
+
 
 deploy-linux-packages:
 	@echo "> Deploying linux packages..."
@@ -118,6 +136,17 @@ clean-linux:
 	docker rmi cnbs/sample-stack-base:jammy || true
 	docker rmi cnbs/sample-stack-run:jammy || true
 	docker rmi cnbs/sample-stack-build:jammy || true
+
+	@echo "> Removing 'alpine' images..."
+	docker rmi cnbs/sample-img-base:alpine || true
+	docker rmi cnbs/sample-img-run:alpine || true
+	docker rmi cnbs/sample-img-build:alpine || true
+
+	@echo "> Removing 'jammy' images..."
+	docker rmi cnbs/sample-img-base:jammy || true
+	docker rmi cnbs/sample-img-run:jammy || true
+	docker rmi cnbs/sample-img-build:jammy || true
+
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
@@ -153,11 +182,15 @@ set-experimental:
 ## Wine
 ####################
 
-build-wine: build-stack-wine build-builder-wine build-buildpacks-wine
+build-wine: build-stack-wine build-images-wine build-builder-wine build-buildpacks-wine
 
 build-stack-wine:
 	@echo "> Building 'wine' stack..."
 	bash stacks/build-stack.sh stacks/wine
+
+build-images-wine:
+	@echo "> Building 'wine' images..."
+	bash images/build-img.sh images/wine
 
 build-builder-wine: build-sample-root
 	@echo "> Building 'wine' builder..."
@@ -174,12 +207,17 @@ build-buildpacks-wine: build-sample-root
 	@echo "> Creating 'hello-world-windows' app using 'wine' builder..."
 	$(PACK_CMD) build sample-hello-world-windows-app:wine -v --builder cnbs/sample-builder:wine --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-deploy-wine: deploy-wine-stacks deploy-wine-builders
+deploy-wine: deploy-wine-stacks deploy-wine-images deploy-wine-builders
 
 deploy-wine-stacks:
 	@echo "> Deploying 'wine' stack..."
 	docker push cnbs/sample-stack-run:wine
 	docker push cnbs/sample-stack-build:wine
+
+deploy-wine-images:
+	@echo "> Deploying 'wine' images..."
+	docker push cnbs/sample-img-run:wine
+	docker push cnbs/sample-img-build:wine
 
 deploy-wine-builders:
 	@echo "> Deploying 'wine' builder..."
@@ -190,6 +228,11 @@ clean-wine:
 	docker rmi cnbs/sample-stack-base:wine || true
 	docker rmi cnbs/sample-stack-run:wine || true
 	docker rmi cnbs/sample-stack-build:wine || true
+
+	@echo "> Removing 'wine' images..."
+	docker rmi cnbs/sample-img-base:wine || true
+	docker rmi cnbs/sample-img-run:wine || true
+	docker rmi cnbs/sample-img-build:wine || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:wine || true
@@ -212,29 +255,45 @@ build-windows-2004: build-windows-packages build-dotnet-framework-2004
 
 build-windows-2022: build-windows-packages build-dotnet-framework-2022
 
-build-nanoserver-1809: build-stack-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
+build-nanoserver-1809: build-stack-nanoserver-1809 build-images-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
 
-build-dotnet-framework-1809: build-stack-dotnet-framework-1809 build-builder-dotnet-framework-1809 build-buildpacks-dotnet-framework-1809
+build-dotnet-framework-1809: build-stack-dotnet-framework-1809 build-images-dotnet-framework-1809 build-builder-dotnet-framework-1809 build-buildpacks-dotnet-framework-1809
 
-build-dotnet-framework-2004: build-stack-dotnet-framework-2004 build-builder-dotnet-framework-2004 build-buildpacks-dotnet-framework-2004
+build-dotnet-framework-2004: build-stack-dotnet-framework-2004 build-images-dotnet-framework-2004 build-builder-dotnet-framework-2004 build-buildpacks-dotnet-framework-2004
 
-build-dotnet-framework-2022: build-stack-dotnet-framework-2022 build-builder-dotnet-framework-2022 build-buildpacks-dotnet-framework-2022
+build-dotnet-framework-2022: build-stack-dotnet-framework-2022 build-images-dotnet-framework-2022 build-builder-dotnet-framework-2022 build-buildpacks-dotnet-framework-2022
 
 build-stack-nanoserver-1809:
 	@echo "> Building 'nanoserver-1809' stack..."
 	bash stacks/build-stack.sh stacks/nanoserver-1809
 
+build-images-nanoserver-1809:
+	@echo "> Building 'nanoserver-1809' images..."
+	bash images/build-img.sh images/nanoserver-1809
+
 build-stack-dotnet-framework-1809:
 	@echo "> Building 'dotnet-framework-1809' stack..."
 	bash stacks/build-stack.sh stacks/dotnet-framework-1809
+
+build-images-dotnet-framework-1809:
+	@echo "> Building 'dotnet-framework-1809' images..."
+	bash images/build-img.sh images/dotnet-framework-1809
 
 build-stack-dotnet-framework-2004:
 	@echo "> Building 'dotnet-framework-2004' stack..."
 	bash stacks/build-stack.sh stacks/dotnet-framework-2004
 
+build-images-dotnet-framework-2004:
+	@echo "> Building 'dotnet-framework-2004' images..."
+	bash images/build-img.sh images/dotnet-framework-2004
+
 build-stack-dotnet-framework-2022:
 	@echo "> Building 'dotnet-framework-2022' stack..."
 	bash stacks/build-stack.sh stacks/dotnet-framework-2022
+
+build-images-dotnet-framework-2022:
+	@echo "> Building 'dotnet-framework-2022' images..."
+	bash images/build-img.sh images/dotnet-framework-2022
 
 build-builder-nanoserver-1809: build-windows-packages
 	@echo "> Building 'nanoserver-1809' builder..."
@@ -283,17 +342,17 @@ deploy-windows-packages:
 	docker push cnbs/sample-package:hello-world-windows
 	docker push cnbs/sample-package:hello-universe-windows
 
-deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-builders-1809
+deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-images-1809 deploy-windows-builders-1809
 
-deploy-windows-2004: deploy-windows-stacks-2004 deploy-windows-builders-2004
+deploy-windows-2004: deploy-windows-stacks-2004 deploy-windows-images-2004 deploy-windows-builders-2004
 
-deploy-windows-2022: deploy-windows-stacks-2022 deploy-windows-builders-2022
+deploy-windows-2022: deploy-windows-stacks-2022 deploy-windows-images-2022 deploy-windows-builders-2022
 
-deploy-windows-stacks-1809: deploy-windows-stacks-nanoserver-1809 deploy-windows-stacks-dotnet-framework-1809
+deploy-windows-stacks-1809: deploy-windows-stacks-nanoserver-1809 deploy-windows-images-nanoserver-1809 deploy-windows-stacks-dotnet-framework-1809 deploy-windows-images-dotnet-framework-1809
 
-deploy-windows-stacks-2004: deploy-windows-stacks-dotnet-framework-2004
+deploy-windows-stacks-2004: deploy-windows-stacks-dotnet-framework-2004 deploy-windows-images-dotnet-framework-2004
 
-deploy-windows-stacks-2022: deploy-windows-stacks-dotnet-framework-2022
+deploy-windows-stacks-2022: deploy-windows-stacks-dotnet-framework-2022 deploy-windows-images-dotnet-framwork-2022
 
 deploy-windows-stacks-nanoserver-1809:
 	@echo "> Deploying 'nanoserver-1809' stack..."
@@ -301,20 +360,41 @@ deploy-windows-stacks-nanoserver-1809:
 	docker push cnbs/sample-stack-run:nanoserver-1809
 	docker push cnbs/sample-stack-build:nanoserver-1809
 
+deploy-windows-images-nanoserver-1809:
+	@echo "> Deploying 'nanoserver-1809' images..."
+	docker push cnbs/sample-img-base:nanoserver-1809
+	docker push cnbs/sample-img-run:nanoserver-1809
+	docker push cnbs/sample-img-build:nanoserver-1809
+
 deploy-windows-stacks-dotnet-framework-1809:
 	@echo "> Deploying 'dotnet-framework-1809' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-1809
 	docker push cnbs/sample-stack-build:dotnet-framework-1809
+
+deploy-windows-images-dotnet-framework-1809:
+	@echo "> Deploying 'dotnet-framework-1809' images..."
+	docker push cnbs/sample-img-run:dotnet-framework-1809
+	docker push cnbs/sample-img-build:dotnet-framework-1809
 
 deploy-windows-stacks-dotnet-framework-2004:
 	@echo "> Deploying 'dotnet-framework-2004' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-2004
 	docker push cnbs/sample-stack-build:dotnet-framework-2004
 
+deploy-windows-images-dotnet-framework-2004:
+	@echo "> Deploying 'dotnet-framework-2004' images..."
+	docker push cnbs/sample-images-run:dotnet-framework-2004
+	docker push cnbs/sample-images-build:dotnet-framework-2004
+
 deploy-windows-stacks-dotnet-framework-2022:
 	@echo "> Deploying 'dotnet-framework-2022' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-2022
 	docker push cnbs/sample-stack-build:dotnet-framework-2022
+
+deploy-windows-images-dotnet-framework-2022:
+	@echo "> Deploying 'dotnet-framework-2022' images..."
+	docker push cnbs/sample-img-run:dotnet-framework-2022
+	docker push cnbs/sample-img-build:dotnet-framework-2022
 
 deploy-windows-builders-1809: deploy-windows-builders-nanoserver-1809 deploy-windows-builders-dotnet-framework-1809
 
@@ -344,17 +424,34 @@ clean-windows:
 	docker rmi cnbs/sample-stack-run:nanoserver-1809 || true
 	docker rmi cnbs/sample-stack-build:nanoserver-1809 || true
 
+	@echo "> Removing 'nanoserver-1809' images..."
+	docker rmi cnbs/sample-img-base:nanoserver-1809 || true
+	docker rmi cnbs/sample-img-run:nanoserver-1809 || true
+	docker rmi cnbs/sample-img-build:nanoserver-1809 || true
+
 	@echo "> Removing 'dotnet-framework-1809' stack..."
 	docker rmi cnbs/sample-stack-run:dotnet-framework-1809 || true
 	docker rmi cnbs/sample-stack-build:dotnet-framework-1809 || true
+	
+	@echo "> Removing 'dotnet-framework-1809' img..."
+	docker rmi cnbs/sample-img-run:dotnet-framework-1809 || true
+	docker rmi cnbs/sample-img-build:dotnet-framework-1809 || true
 	
 	@echo "> Removing 'dotnet-framework-2004' stack..."
 	docker rmi cnbs/sample-stack-run:dotnet-framework-2004 || true
 	docker rmi cnbs/sample-stack-build:dotnet-framework-2004 || true
 
+	@echo "> Removing 'dotnet-framework-2004' img..."
+	docker rmi cnbs/sample-img-run:dotnet-framework-2004 || true
+	docker rmi cnbs/sample-img-build:dotnet-framework-2004 || true
+
 	@echo "> Removing 'dotnet-framework-2022' stack..."
 	docker rmi cnbs/sample-stack-run:dotnet-framework-2022 || true
 	docker rmi cnbs/sample-stack-build:dotnet-framework-2022 || true
+
+	@echo "> Removing 'dotnet-framework-2022' img..."
+	docker rmi cnbs/sample-img-run:dotnet-framework-2022 || true
+	docker rmi cnbs/sample-img-build:dotnet-framework-2022 || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:nanoserver-1809 || true
