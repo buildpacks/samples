@@ -33,7 +33,7 @@ jobs:
             })
       - name: Install pack
         run: |
-          curl -s -L -o pack.tgz ${{ steps.pack-download-url.outputs.result }}
+          curl -s -L -o pack.tgz https://github.com/buildpacks/pack/releases/download/v0.30.0-pre1/pack-v0.30.0-pre1-linux.tgz # TODO (the getLatestRelease endpoint doesn't support preleases so we'll need to undo this hardcoded usage of the pre-release...) ${{ steps.pack-download-url.outputs.result }}
           tar -xvf pack.tgz
       - name: Set config needed for image extensions
         run: |
