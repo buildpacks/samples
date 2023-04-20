@@ -59,8 +59,12 @@ version = "0.0.1"
 id = "samples/curl"
 version = "0.0.1"
 
-# Stack that will be used by the builder
-[stack]
-id = "io.buildpacks.samples.stacks.alpine"
-run-image = "cnbs/sample-stack-run:alpine"
-build-image = "cnbs/sample-stack-build:alpine"
+# Images that will be used by the builder
+[build]
+image = "cnbs/sample-img-build:alpine"
+
+
+[run]
+[[run.images]]
+image = "cnbs/sample-img-run:alpine"
+
