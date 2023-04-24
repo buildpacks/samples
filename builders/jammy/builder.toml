@@ -38,7 +38,16 @@ version = "0.0.1"
 id = "samples/hello-universe"
 version = "0.0.1"
 
-# Stack that will be used by the builder
+#This samples shows how to retain backwards compatibility by including both images and stacks
+# Images that will be used the builder 
+[build]
+image = "cnbs/sample-img-build:jammy"
+
+[run]
+[run.images]
+image = "cnbs/sample-img-run:jammy"
+
+# Stack that will be used by the builder on older platforms that do not recognize the images
 [stack]
 id = "io.buildpacks.samples.stacks.jammy"
 run-image = "cnbs/sample-stack-run:jammy"

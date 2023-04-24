@@ -12,10 +12,10 @@ version = "0.0.1"
 
 # Images that will be used by the builder
 [build]
-image = "cnbs/sample-img-build:dotnet-framework-2022""
+image = "cnbs/sample-img-build:dotnet-framework-2022"
 
 
 [run]
 [[run.images]]
-image = "cnbs/sample-img-run:dotnet-framework-2022""
+image = "cnbs/sample-img-run:dotnet-framework-2022"
 

@@ -8,11 +8,12 @@ uri = "../../buildpacks/hello-world-windows"
 id = "samples/hello-world-windows"
 version = "0.0.1"
 
-# Stack that will be used by the builder
-[stack]
-id = "io.buildpacks.samples.stacks.wine"
-run-image = "cnbs/sample-stack-run:wine"
-build-image = "cnbs/sample-stack-build:wine"
+[build]
+image = "cnbs/sample-img-build:wine"
+
+[run]
+[[run.images]]
+image = "cnbs/sample-img-run:wine"
 
 # Requires explicit Windows lifecycle to override pack's Linux default
 [lifecycle]
