@@ -12,12 +12,12 @@ version = "0.0.1"
 
 # Images that will be used by the builder
 [build]
-image = "cnbs/sample-img-build:dotnet-framework-1809""
+image = "cnbs/sample-img-build:dotnet-framework-1809"
 
 
 [run]
 [[run.images]]
-image = "cnbs/sample-img-run:dotnet-framework-1809""
+image = "cnbs/sample-img-run:dotnet-framework-1809"
 
 # Note: This sample still includes the stack as an example of backwards compatibility.
 # While stacks are now deprecated, you may wish to include both stacks and images during a migratory process or to ensure compatibility with older platforms

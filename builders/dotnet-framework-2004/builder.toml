@@ -12,12 +12,12 @@ version = "0.0.1"
 
 # Images that will be used by the builder
 [build]
-image = "cnbs/sample-img-build:dotnet-framework-2004""
+image = "cnbs/sample-img-build:dotnet-framework-2004"
 
 
 [run]
 [[run.images]]
-image = "cnbs/sample-img-run:dotnet-framework-2004""
+image = "cnbs/sample-img-run:dotnet-framework-2004"
 
 # Stack that will be used by the builder
 [stack]
