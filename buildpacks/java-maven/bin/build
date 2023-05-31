@@ -17,11 +17,11 @@ fi
 
 # 3. INSTALL JAVA
 jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_x64.tar.gz"
-jdk_version="1.8.0_222"
+jdk_version="1.8.0_222-rc"
 
 if [[ -r /etc/alpine-release ]]; then
   jdk_url="https://cdn.azul.com/zulu/bin/zulu8.40.0.25-ca-jdk8.0.222-linux_musl_x64.tar.gz"
-  jdk_version="1.8.0_222"
+  jdk_version="1.8.0_222-rc"
 fi
 
 maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
