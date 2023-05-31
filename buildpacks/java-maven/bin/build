@@ -68,6 +68,7 @@ else
 fi
 EOF
 fi
+export JAVA_HOME=${jdk_layer_dir}
 
 # Set env variables to make jdk accessible
 for var in "$layers_dir"/jdk/env/*; do
