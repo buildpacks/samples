@@ -7,7 +7,7 @@ workflows:
   main:
     jobs:
       - pack/build:
-          executor-image: ubuntu-2204
+          executor-image: ubuntu-2204:2023.04.2
           working-directory: apps/ruby-bundler
           image-name: cnbs/circleci-sample
           builder: 'cnbs/sample-builder:jammy'
