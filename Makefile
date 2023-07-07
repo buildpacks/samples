@@ -104,6 +104,7 @@ deploy-linux-packages:
 
 deploy-linux-builders:
 	@echo "> Deploying 'alpine' builder..."
+	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl || true
 	docker push cnbs/sample-builder:alpine
 
 	@echo "> Deploying 'jammy' builder..."

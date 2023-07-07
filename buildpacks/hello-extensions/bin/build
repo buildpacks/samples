@@ -7,7 +7,7 @@ tree --version
 
 layers_dir=$1
 
-cat >>"${layers_dir}/launch.toml" <<EOL
+cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "curl"
 command = ["curl"]
