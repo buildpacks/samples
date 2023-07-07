@@ -11,4 +11,8 @@ FROM \${base_image}
 
 USER root
 RUN apk update && apk add tree
+
+ARG user_id
+USER \${user_id}
 EOL
+

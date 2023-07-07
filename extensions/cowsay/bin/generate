@@ -18,4 +18,7 @@ RUN apk update && \
     git clone https://github.com/schacon/cowsay.git  && \
     cd cowsay ; ./install.sh /usr/local && \
     rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
+
+ARG user_id
+USER \${user_id}
 EOL
