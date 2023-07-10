@@ -3,8 +3,8 @@ FROM ubuntu:jammy
 # Install packages that we want to make available at build time
 # Base + Wine 32/64bit + dependencies
 RUN dpkg --add-architecture i386 && \
-  apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  apt update && \
+  DEBIAN_FRONTEND=noninteractive apt install -y \
   xz-utils ca-certificates \
   git wget wine64 wine32 xvfb x11-apps socat && \
   rm -rf /var/lib/apt/lists/*

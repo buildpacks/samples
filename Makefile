@@ -157,7 +157,7 @@ build-stack-wine:
 
 build-builder-wine: build-sample-root
 	@echo "> Building 'wine' builder..."
-	$(PACK_CMD) create-builder cnbs/sample-builder:wine --config $(SAMPLES_ROOT)/builders/wine/builder.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) builder create cnbs/sample-builder:wine --config $(SAMPLES_ROOT)/builders/wine/builder.toml $(PULL_POLICY_NEVER)
 
 build-wine-apps: build-sample-root
 	@echo "> Creating 'batch-script' app using 'wine' builder..."
