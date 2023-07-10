@@ -12,12 +12,7 @@ FROM \${base_image}
 RUN curl --version
 
 USER root
-RUN apk update && \
-    apk add --no-cache git perl && \
-    cd /tmp && \
-    git clone https://github.com/schacon/cowsay.git  && \
-    cd cowsay ; ./install.sh /usr/local && \
-    rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
+RUN apk update && apk add cowsay
 
 ARG user_id
 USER \${user_id}
