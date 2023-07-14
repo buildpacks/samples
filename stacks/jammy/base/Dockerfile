@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM --platform=linux/amd64 ubuntu:jammy
 
 ARG cnb_uid=1000
 ARG cnb_gid=1000
