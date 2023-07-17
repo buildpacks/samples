@@ -21,12 +21,12 @@ uri = "docker://cnbs/sample-package:hello-universe"
 [[order]]
 [[order.group]]
 id = "samples/java-maven"
-version = "0.0.1"
+version = "0.0.2"
 
 [[order]]
 [[order.group]]
 id = "samples/kotlin-gradle"
-version = "0.0.1"
+version = "0.0.2"
 
 [[order]]
 [[order.group]]
