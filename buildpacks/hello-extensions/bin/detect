@@ -23,3 +23,10 @@ if [[ "${BP_REQUIRES}" == *"curl"* ]]; then
 name = "curl"
 EOL
 fi
+
+if [[ "${BP_REQUIRES}" == *"cowsay"* ]]; then
+  cat >>"${plan_path}" <<EOL
+[[requires]]
+name = "cowsay"
+EOL
+fi

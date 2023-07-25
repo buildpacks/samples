@@ -1,0 +1,10 @@
+# Buildpack API version
+api = "0.10"
+
+# Extension ID and metadata
+[extension]
+id = "samples/cowsay"
+version = "0.0.1"
+name = "Cowsay Extension"
+homepage = "https://github.com/buildpacks/samples/tree/main/extensions/cowsay"
+description = "A simple extension that installs cowsay on the runtime base image"
