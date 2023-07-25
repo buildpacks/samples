@@ -22,7 +22,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
-          # FIXME: Revert back to 'getLatestRelease' when pack 0.30.0 is released
+          # FIXME: Revert back to 'getLatestRelease' when pack v0.30.0 is released
           script: |
             return github.rest.repos.getReleaseByTag({
                 owner: "buildpacks",
