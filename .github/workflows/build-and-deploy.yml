@@ -40,7 +40,7 @@ jobs:
           ./pack config experimental true
           ./pack config pull-policy always
       - name: Build
-        run: PACK_CMD=./pack make build-linux build-wine
+        run: PACK_CMD=./pack make build-linux
       - uses: azure/docker-login@v1
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
@@ -48,9 +48,9 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: make deploy-linux deploy-wine
+        run: make deploy-linux
       - name: Clean up
-        run: make clean-linux clean-wine
+        run: make clean-linux
   build-deploy-windows:
     strategy:
       matrix:

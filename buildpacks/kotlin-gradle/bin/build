@@ -39,6 +39,7 @@ if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
   wget -q -O - "$jdk_url" | tar pxz -C "${jdk_layer_dir}" --strip-components=1
 
   cat > "${jdk_layer_dir}.toml" << EOF
+[types]
 launch = true
 build = true
 cache = true
@@ -77,13 +78,16 @@ gradle_layer_dir="${layers_dir}/gradle"
 
 if [[ ! -d ${gradle_layer_dir} ]]; then
   mkdir -p ${gradle_layer_dir}
-  echo "cache = true" > ${gradle_layer_dir}.toml
+  cat >> ${gradle_layer_dir}.toml <<EOF
+[types]
+cache = true
+EOF
 fi
 ln -s ${gradle_layer_dir} $HOME/.gradle
 
 # 5. RUN BUILD
 echo "---> Running Gradle Wrapper"
-./gradlew clean build -x test --no-daemon
+GRADLE_OPTS=-Dorg.gradle.daemon=false ./gradlew clean build -x test
 
 # 6. SET DEFAULT START COMMAND
 target_dir="build/libs"
@@ -91,7 +95,7 @@ for jar_file in $(find "$target_dir" -maxdepth 1 -name "*.jar" -type f); do
   cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
-command = "java -jar ${jar_file}"
+command = ["java", "-jar", "${jar_file}"]
 EOL
   break;
 done
