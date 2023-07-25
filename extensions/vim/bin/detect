@@ -8,5 +8,5 @@ plan_path=$CNB_BUILD_PLAN_PATH
 cat >> "${plan_path}" <<EOL
 # Extension provides this dependency
 [[provides]]
-name = "tree"
+name = "vim"
 EOL

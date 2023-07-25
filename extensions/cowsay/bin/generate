@@ -12,7 +12,7 @@ FROM \${base_image}
 RUN curl --version
 
 USER root
-RUN apk update && apk add cowsay
+RUN apk update && apk add --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing cowsay
 
 ARG user_id
 USER \${user_id}
