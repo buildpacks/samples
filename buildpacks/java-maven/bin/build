@@ -128,6 +128,7 @@ for jar_file in $(find "$target_dir" -maxdepth 1 -name "*.jar" -type f); do
 [[processes]]
 type = "web"
 command = ["java", "-jar", "${jar_file}"]
+default = true
 EOL
   break;
 done
