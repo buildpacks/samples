@@ -1,5 +1,7 @@
 FROM curlimages/curl
 
+RUN curl --version
+
 ARG cnb_uid=1000
 ARG cnb_gid=1001
 

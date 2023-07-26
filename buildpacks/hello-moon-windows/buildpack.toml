@@ -1,5 +1,5 @@
 # Buildpack API version
-api = "0.2"
+api = "0.9"
 
 # Buildpack ID and metadata
 [buildpack]
@@ -20,6 +20,3 @@ id = "io.buildpacks.samples.stacks.dotnet-framework-1809"
 
 [[stacks]]
   id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
-
-[[stacks]]
-id = "io.buildpacks.samples.stacks.wine"
