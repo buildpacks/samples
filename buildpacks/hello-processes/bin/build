@@ -4,9 +4,8 @@ set -eo pipefail
 echo "---> Hello processes buildpack"
 
 # INPUT ARGUMENTS
-env_dir=$2/env
 layers_dir=$1
-plan_path=$3
+env_dir=$2/env
 
 # ADD SYS-INFO PROCESS
 echo "---> Adding sys-info process"
@@ -14,6 +13,7 @@ sysinfo_layer_dir="${layers_dir}/sys-info"
 mkdir -p ${sysinfo_layer_dir}
 
 cat > "${sysinfo_layer_dir}.toml" << EOF
+[types]
 launch = true
 EOF
 
@@ -30,7 +30,7 @@ chmod +x ${sysinfo_script}
 cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "sys-info"
-command = "${sysinfo_script}"
+command = ["${sysinfo_script}"]
 EOL
 
 echo "---> Done"

@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM --platform=linux/amd64 alpine:3
 
 ARG cnb_uid=1000
 ARG cnb_gid=1001

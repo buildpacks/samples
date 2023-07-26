@@ -42,6 +42,7 @@ if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
   wget -q -O - "$jdk_url" | tar pxz -C "${jdk_layer_dir}" --strip-components=1
 
   cat > "${jdk_layer_dir}.toml" << EOF
+[types]
 launch = true
 build = true
 cache = true
@@ -80,7 +81,10 @@ export PATH=${jdk_layer_dir}/bin:$PATH
 m2_layer_dir="${layers_dir}/maven_m2"
 if [[ ! -d ${m2_layer_dir} ]]; then
   mkdir -p ${m2_layer_dir}
-  echo "cache = true" > ${m2_layer_dir}.toml
+  cat > ${m2_layer_dir}.toml << EOF
+[types]
+cache = true
+EOF
 fi
 ln -s ${m2_layer_dir} $HOME/.m2
 
@@ -101,6 +105,7 @@ else
     mkdir -p "${maven_layer_dir}"
     wget -q -O - "${maven_url}" | tar pxz -C "${maven_layer_dir}" --strip-components=1
     cat > "${maven_layer_dir}.toml" << EOF
+[types]
 launch = true
 build = true
 cache = true
@@ -122,7 +127,8 @@ for jar_file in $(find "$target_dir" -maxdepth 1 -name "*.jar" -type f); do
   cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
-command = "java -jar ${jar_file}"
+command = ["java", "-jar", "${jar_file}"]
+default = true
 EOL
   break;
 done
