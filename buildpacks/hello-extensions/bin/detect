@@ -10,10 +10,10 @@ plan_path=$2
 
 # 2. DECLARE DEPENDENCIES (OPTIONAL)
 
-if [[ "${BP_REQUIRES}" == *"tree"* ]]; then
+if [[ "${BP_REQUIRES}" == *"vim"* ]]; then
   cat >>"${plan_path}" <<EOL
 [[requires]]
-name = "tree"
+name = "vim"
 EOL
 fi
 
