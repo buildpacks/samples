@@ -73,3 +73,6 @@ version = "0.0.1"
 id = "io.buildpacks.samples.stacks.alpine"
 run-image = "cnbs/sample-stack-run:alpine"
 build-image = "cnbs/sample-stack-build:alpine"
+
+[lifecycle]
+version = "0.17.0-rc.3"
