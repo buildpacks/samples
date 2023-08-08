@@ -27,7 +27,7 @@ jobs:
             return github.rest.repos.getReleaseByTag({
                 owner: "buildpacks",
                 repo: "pack",
-                tag: "v0.30.0-pre3"
+                tag: "v0.30.0-rc1"
             }).then(result => {
                 return result.data.assets
                   .filter(a => a.name.includes("-linux.tgz"))
