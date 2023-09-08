@@ -9,7 +9,4 @@ api = "0.9"
   id = "io.buildpacks.samples.stacks.dotnet-framework-1809"
 
 [[stacks]]
-  id = "io.buildpacks.samples.stacks.dotnet-framework-2004"
-
-[[stacks]]
   id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
