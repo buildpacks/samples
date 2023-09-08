@@ -6,7 +6,7 @@ api = "0.9"
   name = "Sample .NET Framework Buildpack"
 
 [[stacks]]
-  id = "io.buildpacks.samples.stacks.dotnet-framework-1809"
+  id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
 
 [[stacks]]
   id = "io.buildpacks.samples.stacks.dotnet-framework-2022"

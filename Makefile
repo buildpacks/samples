@@ -155,50 +155,34 @@ set-experimental:
 ## Windows
 ####################
 
-build-windows-1809: build-windows-packages build-nanoserver-1809 build-dotnet-framework-1809
-
 build-windows-2022: build-windows-packages build-dotnet-framework-2022
 
-build-nanoserver-1809: build-stack-nanoserver-1809 build-builder-nanoserver-1809 build-buildpacks-nanoserver-1809
-
-build-dotnet-framework-1809: build-stack-dotnet-framework-1809 build-builder-dotnet-framework-1809 build-buildpacks-dotnet-framework-1809
+build-nanoserver-2022: build-stack-nanoserver-2022 build-builder-nanoserver-2022 build-buildpacks-nanoserver-2022
 
 build-dotnet-framework-2022: build-stack-dotnet-framework-2022 build-builder-dotnet-framework-2022 build-buildpacks-dotnet-framework-2022
 
-build-stack-nanoserver-1809:
-	@echo "> Building 'nanoserver-1809' stack..."
-	bash stacks/build-stack.sh stacks/nanoserver-1809
-
-build-stack-dotnet-framework-1809:
-	@echo "> Building 'dotnet-framework-1809' stack..."
-	bash stacks/build-stack.sh stacks/dotnet-framework-1809
+build-stack-nanoserver-2022:
+	@echo "> Building 'nanoserver-2022' stack..."
+	bash stacks/build-stack.sh stacks/nanoserver-2022
 
 build-stack-dotnet-framework-2022:
 	@echo "> Building 'dotnet-framework-2022' stack..."
 	bash stacks/build-stack.sh stacks/dotnet-framework-2022
 
-build-builder-nanoserver-1809: build-windows-packages
-	@echo "> Building 'nanoserver-1809' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:nanoserver-1809 --config $(SAMPLES_ROOT)/builders/nanoserver-1809/builder.toml $(PULL_POLICY_NEVER)
-
-build-builder-dotnet-framework-1809: build-windows-packages
-	@echo "> Building 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-1809 --config $(SAMPLES_ROOT)/builders/dotnet-framework-1809/builder.toml $(PULL_POLICY_NEVER)
+build-builder-nanoserver-2022: build-windows-packages
+	@echo "> Building 'nanoserver-2022' builder..."
+	$(PACK_CMD) builder create cnbs/sample-builder:nanoserver-2022 --config $(SAMPLES_ROOT)/builders/nanoserver-2022/builder.toml $(PULL_POLICY_NEVER)
 
 build-builder-dotnet-framework-2022: build-windows-packages
 	@echo "> Building 'dotnet-framework-2022' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:dotnet-framework-2022 --config $(SAMPLES_ROOT)/builders/dotnet-framework-2022/builder.toml $(PULL_POLICY_NEVER)
 
-build-buildpacks-nanoserver-1809: build-sample-root
-	@echo "> Creating 'hello-moon-windows' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+build-buildpacks-nanoserver-2022: build-sample-root
+	@echo "> Creating 'hello-moon-windows' app using 'nanoserver-2022' builder..."
+	$(PACK_CMD) build sample-hello-moon-windows-app:nanoserver-2022 -v --builder cnbs/sample-builder:nanoserver-2022 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-world-windows' app using 'nanoserver-1809' builder..."
-	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-1809 -v --builder cnbs/sample-builder:nanoserver-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
-
-build-buildpacks-dotnet-framework-1809: build-sample-root
-	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-1809' builder..."
-	$(PACK_CMD) build sample-dotnet-framework-app:dotnet-framework-1809 -v --builder cnbs/sample-builder:dotnet-framework-1809 --buildpack $(SAMPLES_ROOT)/buildpacks/dotnet-framework --path apps/aspnet $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-world-windows' app using 'nanoserver-2022' builder..."
+	$(PACK_CMD) build sample-hello-world-windows-app:nanoserver-2022 -v --builder cnbs/sample-builder:nanoserver-2022 --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world-windows $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-buildpacks-dotnet-framework-2022: build-sample-root
 	@echo "> Creating 'dotnet-framework' app using 'dotnet-framework-2022' builder..."
@@ -216,72 +200,49 @@ deploy-windows-packages:
 	docker push cnbs/sample-package:hello-world-windows
 	docker push cnbs/sample-package:hello-universe-windows
 
-deploy-windows-1809: deploy-windows-stacks-1809 deploy-windows-builders-1809
-
 deploy-windows-2022: deploy-windows-stacks-2022 deploy-windows-builders-2022
 
-deploy-windows-stacks-1809: deploy-windows-stacks-nanoserver-1809 deploy-windows-stacks-dotnet-framework-1809
+deploy-windows-stacks-2022: deploy-windows-stacks-dotnet-framework-2022 deploy-windows-stacks-nanoserver-2022
 
-deploy-windows-stacks-2022: deploy-windows-stacks-dotnet-framework-2022
-
-deploy-windows-stacks-nanoserver-1809:
-	@echo "> Deploying 'nanoserver-1809' stack..."
-	docker push cnbs/sample-stack-base:nanoserver-1809
-	docker push cnbs/sample-stack-run:nanoserver-1809
-	docker push cnbs/sample-stack-build:nanoserver-1809
-
-deploy-windows-stacks-dotnet-framework-1809:
-	@echo "> Deploying 'dotnet-framework-1809' stack..."
-	docker push cnbs/sample-stack-run:dotnet-framework-1809
-	docker push cnbs/sample-stack-build:dotnet-framework-1809
+deploy-windows-stacks-nanoserver-2022:
+	@echo "> Deploying 'nanoserver-2022' stack..."
+	docker push cnbs/sample-stack-base:nanoserver-2022
+	docker push cnbs/sample-stack-run:nanoserver-2022
+	docker push cnbs/sample-stack-build:nanoserver-2022
 
 deploy-windows-stacks-dotnet-framework-2022:
 	@echo "> Deploying 'dotnet-framework-2022' stack..."
 	docker push cnbs/sample-stack-run:dotnet-framework-2022
 	docker push cnbs/sample-stack-build:dotnet-framework-2022
 
-deploy-windows-builders-1809: deploy-windows-builders-nanoserver-1809 deploy-windows-builders-dotnet-framework-1809
+deploy-windows-builders-2022: deploy-windows-builders-dotnet-framework-2022 deploy-windows-builders-nanoserver-2022
 
-deploy-windows-builders-2022: deploy-windows-builders-dotnet-framework-2022
-
-deploy-windows-builders-nanoserver-1809:
-	@echo "> Deploying 'nanoserver-1809' builder..."
-	docker push cnbs/sample-builder:nanoserver-1809
-
-deploy-windows-builders-dotnet-framework-1809:
-	@echo "> Deploying 'dotnet-framework-1809' builder..."
-	docker push cnbs/sample-builder:dotnet-framework-1809
+deploy-windows-builders-nanoserver-2022:
+	@echo "> Deploying 'nanoserver-2022' builder..."
+	docker push cnbs/sample-builder:nanoserver-2022
 
 deploy-windows-builders-dotnet-framework-2022:
 	@echo "> Deploying 'dotnet-framework-2022' builder..."
 	docker push cnbs/sample-builder:dotnet-framework-2022
 
 clean-windows:
-	@echo "> Removing 'nanoserver-1809' stack..."
-	docker rmi cnbs/sample-stack-base:nanoserver-1809 || true
-	docker rmi cnbs/sample-stack-run:nanoserver-1809 || true
-	docker rmi cnbs/sample-stack-build:nanoserver-1809 || true
-
-	@echo "> Removing 'dotnet-framework-1809' stack..."
-	docker rmi cnbs/sample-stack-run:dotnet-framework-1809 || true
-	docker rmi cnbs/sample-stack-build:dotnet-framework-1809 || true
+	@echo "> Removing 'nanoserver-2022' stack..."
+	docker rmi cnbs/sample-stack-base:nanoserver-2022 || true
+	docker rmi cnbs/sample-stack-run:nanoserver-2022 || true
+	docker rmi cnbs/sample-stack-build:nanoserver-2022 || true
 
 	@echo "> Removing 'dotnet-framework-2022' stack..."
 	docker rmi cnbs/sample-stack-run:dotnet-framework-2022 || true
 	docker rmi cnbs/sample-stack-build:dotnet-framework-2022 || true
 
 	@echo "> Removing builders..."
-	docker rmi cnbs/sample-builder:nanoserver-1809 || true
-	docker rmi cnbs/sample-builder:dotnet-framework-1809 || true
+	docker rmi cnbs/sample-builder:nanoserver-2022 || true
 	docker rmi cnbs/sample-builder:dotnet-framework-2022 || true
 
-	@echo "> Removing 'nanoserver-1809' apps..."
-	docker rmi sample-hello-moon-windows-app:nanoserver-1809 || true
-	docker rmi sample-hello-world-windows-app:nanoserver-1809 || true
-	docker rmi sample-batch-script-app:nanoserver-1809 || true
-
-	@echo "> Removing 'dotnet-framework-1809' apps..."
-	docker rmi sample-aspnet-app:dotnet-framework-1809 || true
+	@echo "> Removing 'nanoserver-2022' apps..."
+	docker rmi sample-hello-moon-windows-app:nanoserver-2022 || true
+	docker rmi sample-hello-world-windows-app:nanoserver-2022 || true
+	docker rmi sample-batch-script-app:nanoserver-2022 || true
 
 	@echo "> Removing 'dotnet-framework-2022' apps..."
 	docker rmi sample-aspnet-app:dotnet-framework-2022 || true
