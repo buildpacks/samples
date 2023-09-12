@@ -13,7 +13,6 @@ cat >> "${plan_path}" <<EOL
 #
 [[requires]]
 name = "some-world"
-version = "0.1"     # Optional
 
 [requires.metadata]
 world = "Earth-616" # Optional
