@@ -1,10 +1,23 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# 1. GET ARGS
-plan_path=$2
+echo "---> Hello Moon Buildpack"
 
-# 2. DECLARE DEPENDENCIES (OPTIONAL)
+# 1. View inputs
+echo "     Working directory:         $(pwd)"
+echo "     CNB_BUILDPACK_DIR:         ${CNB_BUILDPACK_DIR}"
+echo "     CNB_BUILD_PLAN_PATH:       ${CNB_BUILD_PLAN_PATH}"
+echo "     CNB_PLATFORM_DIR:          ${CNB_PLATFORM_DIR}"
+echo "     CNB_TARGET_ARCH:           ${CNB_TARGET_ARCH}"
+echo "     CNB_TARGET_ARCH_VARIANT:   ${CNB_TARGET_ARCH_VARIANT}"
+echo "     CNB_TARGET_DISTRO_NAME:    ${CNB_TARGET_DISTRO_NAME}"
+echo "     CNB_TARGET_DISTRO_VERSION: ${CNB_TARGET_DISTRO_VERSION}"
+echo "     CNB_TARGET_OS:             ${CNB_TARGET_OS}"
+echo "     HOME:                      ${HOME}"
+echo "     PATH:                      ${PATH}"
+echo
+
+# 2. Declare dependencies (optional)
 cat >> "${plan_path}" <<EOL
 # Buildpack requires this dependency
 #
@@ -17,3 +30,6 @@ name = "some-world"
 [requires.metadata]
 world = "Earth-616" # Optional
 EOL
+
+# 3. Exit without error to opt-in to the build
+echo "---> Done"

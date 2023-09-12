@@ -1,6 +1,7 @@
 # Sample: Hello Moon Buildpack
 
-A no-op buildpack whose intent is to show how buildpack dependencies work. This buildpack depends on [hello-world](../hello-world).
+A minimal buildpack whose intent is to demonstrate buildpack functionality.
+This buildpack depends on [hello-world](../hello-world).
 
 ### Usage
 

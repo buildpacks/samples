@@ -1,35 +1,41 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-echo "---> Hello World buildpack"
+echo "---> Hello World Buildpack"
 
-# INPUT ARGUMENTS
-platform_dir=$2
-env_dir=${platform_dir}/env
-layers_dir=$1
-plan_path=$3
+# 1. View inputs
+echo "     Working directory:         $(pwd)"
+echo "     CNB_BP_PLAN_PATH:          ${CNB_BP_PLAN_PATH}"
+echo "     CNB_BUILDPACK_DIR:         ${CNB_BUILDPACK_DIR}"
+echo "     CNB_LAYERS_DIR:            ${CNB_LAYERS_DIR}"
+echo "     CNB_PLATFORM_DIR:          ${CNB_PLATFORM_DIR}"
+echo "     CNB_TARGET_ARCH:           ${CNB_TARGET_ARCH}"
+echo "     CNB_TARGET_ARCH_VARIANT:   ${CNB_TARGET_ARCH_VARIANT}"
+echo "     CNB_TARGET_DISTRO_NAME:    ${CNB_TARGET_DISTRO_NAME}"
+echo "     CNB_TARGET_DISTRO_VERSION: ${CNB_TARGET_DISTRO_VERSION}"
+echo "     CNB_TARGET_OS:             ${CNB_TARGET_OS}"
+echo "     HOME:                      ${HOME}"
+echo "     PATH:                      ${PATH}"
+echo
 
-# PLATFORM DIR
-echo "     platform_dir files:"
-ls -alR "${platform_dir}" | sed 's/^/       /'
+# 2. View platform directory
+echo "     Platform files:"
+ls -alR "${CNB_PLATFORM_DIR}" | sed 's/^/       /'
+echo
 
-# ENV VARS
-echo "     env_dir: ${env_dir}"
-echo "     env vars:"
+env_dir=${CNB_PLATFORM_DIR}/env
+echo "     User-provided environment variables:"
 if compgen -G "${env_dir}/*" > /dev/null; then
   for var in ${env_dir}/*; do
     declare "$(basename ${var})=$(<${var})"
   done
 fi
 export | sed 's/^/       /'
+echo
 
-# LAYERS
-echo "     layers_dir: ${layers_dir}"
-
-# PLAN
-echo "     plan_path: ${plan_path}"
-echo "     plan contents:"
-cat ${plan_path} | sed 's/^/       /'
+# 3. View buildpack plan
+echo "     Plan contents:"
+cat "${CNB_BP_PLAN_PATH}" | sed 's/^/       /'
 echo
 
 echo "---> Done"

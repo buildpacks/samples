@@ -1,25 +1,85 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-echo "---> Hello Moon buildpack"
+echo "---> Hello Moon Buildpack"
 
-env_dir=$2/env
-layers_dir=$1
-plan_path=$3
+# 1. View inputs
+echo "     Working directory:         $(pwd)"
+echo "     CNB_BP_PLAN_PATH:          ${CNB_BP_PLAN_PATH}"
+echo "     CNB_BUILDPACK_DIR:         ${CNB_BUILDPACK_DIR}"
+echo "     CNB_LAYERS_DIR:            ${CNB_LAYERS_DIR}"
+echo "     CNB_PLATFORM_DIR:          ${CNB_PLATFORM_DIR}"
+echo "     CNB_TARGET_ARCH:           ${CNB_TARGET_ARCH}"
+echo "     CNB_TARGET_ARCH_VARIANT:   ${CNB_TARGET_ARCH_VARIANT}"
+echo "     CNB_TARGET_DISTRO_NAME:    ${CNB_TARGET_DISTRO_NAME}"
+echo "     CNB_TARGET_DISTRO_VERSION: ${CNB_TARGET_DISTRO_VERSION}"
+echo "     CNB_TARGET_OS:             ${CNB_TARGET_OS}"
+echo "     HOME:                      ${HOME}"
+echo "     PATH:                      ${PATH}"
+echo
 
-echo "     env_dir: ${env_dir}"
-echo "     env vars:"
+# 2. View platform directory
+echo "     Platform files:"
+ls -alR "${CNB_PLATFORM_DIR}" | sed 's/^/       /'
+echo
+
+env_dir=${CNB_PLATFORM_DIR}/env
+echo "     User-provided environment variables:"
 if compgen -G "${env_dir}/*" > /dev/null; then
   for var in ${env_dir}/*; do
     declare "$(basename ${var})=$(<${var})"
   done
 fi
 export | sed 's/^/       /'
-
-echo "     layers_dir: ${layers_dir}"
-echo "     plan_path: ${plan_path}"
-echo "     plan contents:"
-cat ${plan_path} | sed 's/^/     /'
-
 echo
+
+# 3. View buildpack plan
+echo "     Plan contents:"
+cat "${CNB_BP_PLAN_PATH}" | sed 's/^/       /'
+echo
+
+# 4. Create a layer
+foo_layer_dir="${CNB_LAYERS_DIR}/foo"
+
+cat > "${foo_layer_dir}.toml" <<EOL
+[types]
+launch = true
+build = true
+EOL
+
+## Add a binary to the path
+mkdir -p "${foo_layer_dir}/bin" # lib, include, pkgconfig can also be used for libraries, header files, and pc files, respectively
+cat > "${foo_layer_dir}/bin/foo" <<EOL
+#!/usr/bin/env bash
+echo FOO!
+EOL
+chmod +x "${foo_layer_dir}/bin/foo"
+
+## Set an environment variable
+mkdir -p "${foo_layer_dir}/env" # env.build, env.launch, and env.launch/<process> can also be used to more specifically target variables
+
+### Example 1
+echo -n "foo-val" > "${foo_layer_dir}/env/FOO_VAR"
+
+### Example 2
+echo -n "/from-hello-moon" > "${foo_layer_dir}/env/PATH.prepend" # .append, .default, .override, and .prepend can also be used
+echo -n ":" > "${foo_layer_dir}/env/PATH.delim" # needed when .append or .prepend are used
+
+# 5. Add a label to the application image
+cat > "${CNB_LAYERS_DIR}/launch.toml" <<EOL
+[[labels]]
+key = "io.buildpacks.samples.buildpacks.hello-moon"
+value = "Label from Hello Moon Buildpack"
+EOL
+
+# 6. Define a process type
+cat >> "${CNB_LAYERS_DIR}/launch.toml" <<EOL
+[[processes]]
+type = "foobar"
+command = ["foo"]
+EOL
+
+# 7. Create an SBOM file
+echo -n "{}" > "${foo_layer_dir}.sbom.cdx.json" # .spdx.json and/or .syft.json files can also be used
+
 echo "---> Done"
