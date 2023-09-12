@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/nanoserver:1809
+FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
 
 # non-zero sets all user-owned directories to BUILTIN\Users
 ARG cnb_uid=1

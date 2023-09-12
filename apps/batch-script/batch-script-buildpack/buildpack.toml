@@ -9,4 +9,4 @@ name = "Batch Script Buildpack"
 
 # Stacks that the buildpack will work with
 [[stacks]]
-id = "io.buildpacks.samples.stacks.nanoserver-1809"
+id = "io.buildpacks.samples.stacks.nanoserver-2022"
