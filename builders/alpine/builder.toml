@@ -19,9 +19,9 @@ uri = "../../buildpacks/hello-extensions"
 
 # Extensions to include in builder
 [[extensions]]
-id = "samples/tree"
+id = "samples/vim"
 version = "0.0.1"
-uri = "../../extensions/tree"
+uri = "../../extensions/vim"
 
 [[extensions]]
 id = "samples/curl"
@@ -57,7 +57,7 @@ version = "0.0.1"
 # Order used for detection (extensions)
 [[order-extensions]]
 [[order-extensions.group]]
-id = "samples/tree"
+id = "samples/vim"
 version = "0.0.1"
 
 [[order-extensions.group]]

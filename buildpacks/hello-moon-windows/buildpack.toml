@@ -16,7 +16,4 @@ id = "io.buildpacks.samples.stacks.nanoserver-1809"
 id = "io.buildpacks.samples.stacks.dotnet-framework-1809"
 
 [[stacks]]
-  id = "io.buildpacks.samples.stacks.dotnet-framework-2004"
-
-[[stacks]]
   id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
