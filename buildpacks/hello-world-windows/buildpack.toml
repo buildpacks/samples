@@ -9,7 +9,7 @@ name = "Hello World Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-world-windows"
 
 [[stacks]]
-id = "io.buildpacks.samples.stacks.nanoserver-1809"
+id = "io.buildpacks.samples.stacks.nanoserver-2022"
 
 [[stacks]]
   id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
