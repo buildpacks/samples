@@ -55,8 +55,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: windows-2019
-            version: 1809
           - os: windows-2022
             version: 2022
     runs-on: ${{ matrix.os }}
