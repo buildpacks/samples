@@ -8,8 +8,15 @@ version = "0.0.1"
 name = "Hello World Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-world-windows"
 
+# Targets the buildpack will work with
+[[targets]]
+os = "windows"
+[[targets.distros]]
+version = "10.0.20348.1906"
+
+# Stacks (deprecated) the buildpack will work with
 [[stacks]]
 id = "io.buildpacks.samples.stacks.nanoserver-2022"
 
 [[stacks]]
-  id = "io.buildpacks.samples.stacks.dotnet-framework-2022"
+id = "io.buildpacks.samples.stacks.dotnet-framework-2022"

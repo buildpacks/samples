@@ -8,15 +8,10 @@ version = "0.0.1"
 name = "Hello Processes Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-process"
 
-# Stacks that the buildpack will work with
-[[stacks]]
-id = "io.buildpacks.samples.stacks.jammy"
+# Targets the buildpack will work with
+[[targets]]
+os = "linux"
 
-[[stacks]]
-id = "io.buildpacks.samples.stacks.alpine"
-
-[[stacks]]
-id = "io.buildpacks.stacks.jammy"
-
+# Stacks (deprecated) the buildpack will work with
 [[stacks]]
 id = "*"
