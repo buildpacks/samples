@@ -155,7 +155,7 @@ set-experimental:
 ## Windows
 ####################
 
-build-windows-2022: build-windows-packages build-dotnet-framework-2022
+build-windows-2022: build-windows-packages build-dotnet-framework-2022 build-nanoserver-2022
 
 build-nanoserver-2022: build-base-nanoserver-2022 build-builder-nanoserver-2022 build-buildpacks-nanoserver-2022
 
