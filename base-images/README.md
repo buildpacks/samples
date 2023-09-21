@@ -9,7 +9,7 @@ To build the stack use the `./build-stack` script:
 ```text
 Usage:
   ./stacks/build-stack.sh [-f <prefix>] [-p <platform>] <dir>
-    -f    prefix to use for images      (default: cnbs/sample-stack)
+    -f    prefix to use for images      (default: cnbs/sample-base)
     -p    prefix to use for images      (default: amd64)
    <dir>  directory of stack to build
 ```

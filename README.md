@@ -8,7 +8,7 @@ Includes:
 - [Apps](apps/)
 - [Buildpacks](buildpacks/)
 - [Builders](builders/)
-- [Stacks](stacks/)
+- [Base Images](base-images/)
 - [Packages](packages/)
 
 
