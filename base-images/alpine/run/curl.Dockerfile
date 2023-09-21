@@ -1,7 +1,5 @@
 FROM curlimages/curl
 
-COPY ./Dockerfile /home/curl_user/Dockerfile
-
 RUN curl --version
 
 # Create user and group
