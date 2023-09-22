@@ -79,10 +79,10 @@ build-buildpacks-jammy: build-sample-root
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/buildpacks/hello-world/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/buildpacks/hello-universe/package.toml $(PULL_POLICY_NEVER)
 
 deploy-linux: deploy-linux-bases deploy-linux-packages deploy-linux-builders
 
@@ -190,10 +190,10 @@ build-buildpacks-dotnet-framework-2022: build-sample-root
 
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/buildpacks/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/buildpacks/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
 
 deploy-windows-packages:
 	@echo "> Deploying windows packages..."
