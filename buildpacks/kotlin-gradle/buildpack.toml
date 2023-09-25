@@ -8,16 +8,10 @@ version = "0.0.2"
 name = "Sample Kotlin Gradle Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/kotlin-gradle"
 
-# Stacks that the buildpack will work with
-[[stacks]]
-id = "io.buildpacks.samples.stacks.jammy"
+# Targets the buildpack will work with
+[[targets]]
+os = "linux"
 
-[[stacks]]
-id = "io.buildpacks.samples.stacks.alpine"
-
+# Stacks (deprecated) the buildpack will work with
 [[stacks]]
 id = "*"
-
-[[stacks]]
-id = "io.buildpacks.stacks.jammy"
-mixins = ["build:set=shell-utils"]

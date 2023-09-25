@@ -22,12 +22,12 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
-          # FIXME: Revert back to 'getLatestRelease' when pack v0.30.0 is released
+          # FIXME: Revert back to 'getLatestRelease' when pack v0.31.0 is released
           script: |
             return github.rest.repos.getReleaseByTag({
                 owner: "buildpacks",
                 repo: "pack",
-                tag: "v0.30.0-rc1"
+                tag: "v0.31.0-rc1"
             }).then(result => {
                 return result.data.assets
                   .filter(a => a.name.includes("-linux.tgz"))
@@ -57,8 +57,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: windows-2019
-            version: 1809
           - os: windows-2022
             version: 2022
     runs-on: ${{ matrix.os }}
@@ -70,10 +68,12 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
+          # FIXME: Revert back to 'getLatestRelease' when pack v0.31.0 is released
           script: |
-            return github.rest.repos.getLatestRelease({
+            return github.rest.repos.getReleaseByTag({
                 owner: "buildpacks",
-                repo: "pack"
+                repo: "pack",
+                tag: "v0.31.0-rc1"
             }).then(result => {
                 return result.data.assets
                   .filter(a => a.name.includes("windows"))

@@ -9,6 +9,10 @@ name = "Hello Extensions Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-extensions"
 description = "A simple buildpack that requires curl."
 
-# Stacks that the buildpack will work with
+# Targets the buildpack will work with
+[[targets]]
+os = "linux"
+
+# Stacks (deprecated) the buildpack will work with
 [[stacks]]
 id = "*"
