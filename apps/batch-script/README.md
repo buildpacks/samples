@@ -5,7 +5,7 @@ A runnable sample app demonstrating the usage of [project descriptor](https://gi
 ### Usage
 
 ```bash
-pack build sample-batch-script-app --builder cnbs/sample-builder:nanoserver-1809 --trust-builder
+pack build sample-batch-script-app --builder cnbs/sample-builder:nanoserver-2022 --trust-builder
 ```
 
 ### Extended Functionality
