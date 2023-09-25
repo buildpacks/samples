@@ -1,5 +1,0 @@
-[buildpack]
-uri = "../../buildpacks/hello-world-windows"
-
-[platform]
-os = "windows"
