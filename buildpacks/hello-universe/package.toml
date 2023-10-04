@@ -1,0 +1,10 @@
+[buildpack]
+uri = "."
+
+[[dependencies]]
+uri = "../hello-moon"
+
+[[dependencies]]
+uri = "../hello-world"
+# Alternatively, to use an image while packaging, you can use:
+# uri = "docker://cnbs/sample-package:hello-world"

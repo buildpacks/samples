@@ -8,21 +8,21 @@ clean: clean-linux clean-windows
 ## Linux
 ####################
 
-build-linux: build-linux-stacks build-linux-packages build-linux-builders build-linux-buildpacks
+build-linux: build-linux-bases build-linux-packages build-linux-builders build-linux-buildpacks
 
-build-linux-stacks: build-stack-alpine build-stack-jammy
+build-linux-bases: build-base-alpine build-base-jammy
 
-build-alpine: build-stack-alpine build-builder-alpine build-buildpacks-alpine
+build-alpine: build-base-alpine build-builder-alpine build-buildpacks-alpine
 
-build-jammy: build-stack-jammy build-builder-jammy build-buildpacks-jammy
+build-jammy: build-base-jammy build-builder-jammy build-buildpacks-jammy
 
-build-stack-alpine:
-	@echo "> Building 'alpine' stack..."
-	bash stacks/build-stack.sh stacks/alpine
+build-base-alpine:
+	@echo "> Building 'alpine' base images..."
+	bash base-images/build.sh alpine
 
-build-stack-jammy:
-	@echo "> Building 'jammy' stack..."
-	bash stacks/build-stack.sh stacks/jammy
+build-base-jammy:
+	@echo "> Building 'jammy' base images..."
+	bash base-images/build.sh jammy
 
 build-linux-builders: build-builder-alpine build-builder-jammy
 
@@ -79,23 +79,23 @@ build-buildpacks-jammy: build-sample-root
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-world/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-universe/package.toml $(PULL_POLICY_NEVER)
 
-deploy-linux: deploy-linux-stacks deploy-linux-packages deploy-linux-builders
+deploy-linux: deploy-linux-bases deploy-linux-packages deploy-linux-builders
 
-deploy-linux-stacks:
-	@echo "> Deploying 'alpine' stack..."
-	docker push cnbs/sample-stack-base:alpine
-	docker push cnbs/sample-stack-run:alpine
-	docker push cnbs/sample-stack-build:alpine
+deploy-linux-bases:
+	@echo "> Deploying 'alpine' base images..."
+	docker push cnbs/sample-base:alpine
+	docker push cnbs/sample-base-run:alpine
+	docker push cnbs/sample-base-build:alpine
 
-	@echo "> Deploying 'jammy' stack..."
-	docker push cnbs/sample-stack-base:jammy
-	docker push cnbs/sample-stack-run:jammy
-	docker push cnbs/sample-stack-build:jammy
+	@echo "> Deploying 'jammy' base images..."
+	docker push cnbs/sample-base:jammy
+	docker push cnbs/sample-base-run:jammy
+	docker push cnbs/sample-base-build:jammy
 
 deploy-linux-packages:
 	@echo "> Deploying linux packages..."
@@ -111,15 +111,15 @@ deploy-linux-builders:
 	docker push cnbs/sample-builder:jammy
 
 clean-linux:
-	@echo "> Removing 'alpine' stack..."
-	docker rmi cnbs/sample-stack-base:alpine || true
-	docker rmi cnbs/sample-stack-run:alpine || true
-	docker rmi cnbs/sample-stack-build:alpine || true
+	@echo "> Removing 'alpine' base images..."
+	docker rmi cnbs/sample-base:alpine || true
+	docker rmi cnbs/sample-base-run:alpine || true
+	docker rmi cnbs/sample-base-build:alpine || true
 
-	@echo "> Removing 'jammy' stack..."
-	docker rmi cnbs/sample-stack-base:jammy || true
-	docker rmi cnbs/sample-stack-run:jammy || true
-	docker rmi cnbs/sample-stack-build:jammy || true
+	@echo "> Removing 'jammy' base images..."
+	docker rmi cnbs/sample-base:jammy || true
+	docker rmi cnbs/sample-base-run:jammy || true
+	docker rmi cnbs/sample-base-build:jammy || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
@@ -155,19 +155,19 @@ set-experimental:
 ## Windows
 ####################
 
-build-windows-2022: build-windows-packages build-dotnet-framework-2022
+build-windows-2022: build-windows-packages build-dotnet-framework-2022 build-nanoserver-2022
 
-build-nanoserver-2022: build-stack-nanoserver-2022 build-builder-nanoserver-2022 build-buildpacks-nanoserver-2022
+build-nanoserver-2022: build-base-nanoserver-2022 build-builder-nanoserver-2022 build-buildpacks-nanoserver-2022
 
-build-dotnet-framework-2022: build-stack-dotnet-framework-2022 build-builder-dotnet-framework-2022 build-buildpacks-dotnet-framework-2022
+build-dotnet-framework-2022: build-base-dotnet-framework-2022 build-builder-dotnet-framework-2022 build-buildpacks-dotnet-framework-2022
 
-build-stack-nanoserver-2022:
-	@echo "> Building 'nanoserver-2022' stack..."
-	bash stacks/build-stack.sh stacks/nanoserver-2022
+build-base-nanoserver-2022:
+	@echo "> Building 'nanoserver-2022' base images..."
+	bash base-images/build.sh nanoserver-2022
 
-build-stack-dotnet-framework-2022:
-	@echo "> Building 'dotnet-framework-2022' stack..."
-	bash stacks/build-stack.sh stacks/dotnet-framework-2022
+build-base-dotnet-framework-2022:
+	@echo "> Building 'dotnet-framework-2022' base images..."
+	bash base-images/build.sh dotnet-framework-2022
 
 build-builder-nanoserver-2022: build-windows-packages
 	@echo "> Building 'nanoserver-2022' builder..."
@@ -190,30 +190,30 @@ build-buildpacks-dotnet-framework-2022: build-sample-root
 
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
 
 deploy-windows-packages:
 	@echo "> Deploying windows packages..."
 	docker push cnbs/sample-package:hello-world-windows
 	docker push cnbs/sample-package:hello-universe-windows
 
-deploy-windows-2022: deploy-windows-stacks-2022 deploy-windows-builders-2022
+deploy-windows-2022: deploy-windows-bases-2022 deploy-windows-builders-2022
 
-deploy-windows-stacks-2022: deploy-windows-stacks-dotnet-framework-2022 deploy-windows-stacks-nanoserver-2022
+deploy-windows-bases-2022: deploy-windows-bases-dotnet-framework-2022 deploy-windows-bases-nanoserver-2022
 
-deploy-windows-stacks-nanoserver-2022:
-	@echo "> Deploying 'nanoserver-2022' stack..."
-	docker push cnbs/sample-stack-base:nanoserver-2022
-	docker push cnbs/sample-stack-run:nanoserver-2022
-	docker push cnbs/sample-stack-build:nanoserver-2022
+deploy-windows-bases-nanoserver-2022:
+	@echo "> Deploying 'nanoserver-2022' base images..."
+	docker push cnbs/sample-base:nanoserver-2022
+	docker push cnbs/sample-base-run:nanoserver-2022
+	docker push cnbs/sample-base-build:nanoserver-2022
 
-deploy-windows-stacks-dotnet-framework-2022:
-	@echo "> Deploying 'dotnet-framework-2022' stack..."
-	docker push cnbs/sample-stack-run:dotnet-framework-2022
-	docker push cnbs/sample-stack-build:dotnet-framework-2022
+deploy-windows-bases-dotnet-framework-2022:
+	@echo "> Deploying 'dotnet-framework-2022' base images..."
+	docker push cnbs/sample-base-run:dotnet-framework-2022
+	docker push cnbs/sample-base-build:dotnet-framework-2022
 
 deploy-windows-builders-2022: deploy-windows-builders-dotnet-framework-2022 deploy-windows-builders-nanoserver-2022
 
@@ -226,14 +226,14 @@ deploy-windows-builders-dotnet-framework-2022:
 	docker push cnbs/sample-builder:dotnet-framework-2022
 
 clean-windows:
-	@echo "> Removing 'nanoserver-2022' stack..."
-	docker rmi cnbs/sample-stack-base:nanoserver-2022 || true
-	docker rmi cnbs/sample-stack-run:nanoserver-2022 || true
-	docker rmi cnbs/sample-stack-build:nanoserver-2022 || true
+	@echo "> Removing 'nanoserver-2022' base images..."
+	docker rmi cnbs/sample-base:nanoserver-2022 || true
+	docker rmi cnbs/sample-base-run:nanoserver-2022 || true
+	docker rmi cnbs/sample-base-build:nanoserver-2022 || true
 
-	@echo "> Removing 'dotnet-framework-2022' stack..."
-	docker rmi cnbs/sample-stack-run:dotnet-framework-2022 || true
-	docker rmi cnbs/sample-stack-build:dotnet-framework-2022 || true
+	@echo "> Removing 'dotnet-framework-2022' base images..."
+	docker rmi cnbs/sample-base-run:dotnet-framework-2022 || true
+	docker rmi cnbs/sample-base-build:dotnet-framework-2022 || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:nanoserver-2022 || true
@@ -262,6 +262,7 @@ clean-windows:
 # workaround by pivoting samples-root to tmp path with tgz-buildpacks of the same name
 ifeq ($(OS),Windows_NT)
 SAMPLES_ROOT:=$(shell mkdir -p .tmp && mktemp --directory -p . .tmp/samples-XXX)
+PACKAGES_DIR:=packages
 build-sample-root:
 	@mkdir -p $(SAMPLES_ROOT)/buildpacks/
 
@@ -269,10 +270,12 @@ build-sample-root:
 		tar -czf $(SAMPLES_ROOT)/buildpacks/$$(basename $$bp_dir) -C $$bp_dir . ; \
 	done
 
-	@cp -r builders packages $(SAMPLES_ROOT)/
+	@cp -r builders $(SAMPLES_ROOT)/
+	@cp -r buildpacks $(SAMPLES_ROOT)/$(PACKAGES_DIR)
 else
 # No-op for posix pack
 SAMPLES_ROOT:=.
+PACKAGES_DIR:=buildpacks
 build-sample-root:
 endif
 
