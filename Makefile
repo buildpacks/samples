@@ -79,10 +79,10 @@ build-buildpacks-jammy: build-sample-root
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/packages/hello-world/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-world/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/packages/hello-universe/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-universe/package.toml $(PULL_POLICY_NEVER)
 
 deploy-linux: deploy-linux-bases deploy-linux-packages deploy-linux-builders
 
@@ -190,10 +190,10 @@ build-buildpacks-dotnet-framework-2022: build-sample-root
 
 build-windows-packages: build-sample-root
 	@echo "> Creating 'hello-world-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/packages/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-world-windows --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-world-windows/package.toml $(PULL_POLICY_NEVER)
 
 	@echo "> Creating 'hello-universe-windows' buildpack package"
-	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/packages/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
+	$(PACK_CMD) buildpack package cnbs/sample-package:hello-universe-windows --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-universe-windows/package.toml $(PULL_POLICY_NEVER)
 
 deploy-windows-packages:
 	@echo "> Deploying windows packages..."
@@ -262,6 +262,7 @@ clean-windows:
 # workaround by pivoting samples-root to tmp path with tgz-buildpacks of the same name
 ifeq ($(OS),Windows_NT)
 SAMPLES_ROOT:=$(shell mkdir -p .tmp && mktemp --directory -p . .tmp/samples-XXX)
+PACKAGES_DIR:=packages
 build-sample-root:
 	@mkdir -p $(SAMPLES_ROOT)/buildpacks/
 
@@ -269,10 +270,12 @@ build-sample-root:
 		tar -czf $(SAMPLES_ROOT)/buildpacks/$$(basename $$bp_dir) -C $$bp_dir . ; \
 	done
 
-	@cp -r builders packages $(SAMPLES_ROOT)/
+	@cp -r builders $(SAMPLES_ROOT)/
+	@cp -r buildpacks $(SAMPLES_ROOT)/$(PACKAGES_DIR)
 else
 # No-op for posix pack
 SAMPLES_ROOT:=.
+PACKAGES_DIR:=buildpacks
 build-sample-root:
 endif
 
