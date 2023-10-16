@@ -4,7 +4,7 @@ api = "0.9"
 # Buildpack ID and metadata
 [buildpack]
 id = "samples/kotlin-gradle"
-version = "0.0.1"
+version = "0.0.2"
 name = "Sample Kotlin Gradle Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/kotlin-gradle"
 
