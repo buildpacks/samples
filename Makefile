@@ -28,6 +28,7 @@ build-linux-builders: build-builder-alpine build-builder-jammy
 
 build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
+	${PACK_CMD} config experimental true
 	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PULL_POLICY_NEVER)
 
 build-builder-jammy: build-linux-packages build-sample-root
