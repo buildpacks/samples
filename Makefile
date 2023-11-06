@@ -18,10 +18,12 @@ build-jammy: build-base-jammy build-builder-jammy build-buildpacks-jammy
 
 build-base-alpine:
 	@echo "> Building 'alpine' base images..."
+	${PACK_CMD} config experimental true
 	bash base-images/build.sh alpine
 
 build-base-jammy:
 	@echo "> Building 'jammy' base images..."
+	${PACK_CMD} config experimental true
 	bash base-images/build.sh jammy
 
 build-linux-builders: build-builder-alpine build-builder-jammy
