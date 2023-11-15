@@ -11,7 +11,7 @@ workflows:
           working-directory: apps/java-maven
           image-name: cnbs/circleci-sample
           builder: 'cnbs/sample-builder:jammy'
-          version: '0.30.0'
+          version: '0.32.1'
       - test:
           requires:
             - pack/build
