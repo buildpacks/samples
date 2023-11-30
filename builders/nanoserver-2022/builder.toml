@@ -8,8 +8,15 @@ uri = "docker://cnbs/sample-package:hello-universe-windows"
 id = "samples/hello-universe-windows"
 version = "0.0.1"
 
-# Stack that will be used by the builder
+# Base images used to create the builder
+[build]
+image = "cnbs/sample-base-build:nanoserver-2022"
+[run]
+[[run.images]]
+image = "cnbs/sample-base-run:nanoserver-2022"
+
+# Stack (deprecated) used to create the builder
 [stack]
 id = "io.buildpacks.samples.stacks.nanoserver-2022"
-run-image = "cnbs/sample-stack-run:nanoserver-2022"
-build-image = "cnbs/sample-stack-build:nanoserver-2022"
+build-image = "cnbs/sample-base-build:nanoserver-2022"
+run-image = "cnbs/sample-base-run:nanoserver-2022"

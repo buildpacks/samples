@@ -56,14 +56,15 @@ EOF
     echo "${JAVA_HOME}/jre/lib/amd64/server:${LD_LIBRARY_PATH}" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
   fi
 
-  mkdir -p ${jdk_layer_dir}/profile.d
-  cat > "${jdk_layer_dir}/profile.d/jdk.sh" << EOF
-export JAVA_HOME=${jdk_layer_dir}
+  mkdir -p ${jdk_layer_dir}/exec.d
+  cat > "${jdk_layer_dir}/exec.d/jdk.sh" << EOF
+echo JAVA_HOME=${jdk_layer_dir}
 if [[ -z \$LD_LIBRARY_PATH ]]; then
-  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
+  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
 else
-  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
+  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
 fi
+echo PATH="\${PATH}:\${JAVA_HOME}/bin"
 EOF
 fi
 

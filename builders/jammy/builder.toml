@@ -1,12 +1,12 @@
 # Buildpacks to include in builder
 [[buildpacks]]
 id = "samples/java-maven"
-version = "0.0.1"
+version = "0.0.2"
 uri = "../../buildpacks/java-maven"
 
 [[buildpacks]]
 id = "samples/kotlin-gradle"
-version = "0.0.1"
+version = "0.0.2"
 uri = "../../buildpacks/kotlin-gradle"
 
 [[buildpacks]]
@@ -21,12 +21,12 @@ uri = "docker://cnbs/sample-package:hello-universe"
 [[order]]
 [[order.group]]
 id = "samples/java-maven"
-version = "0.0.1"
+version = "0.0.2"
 
 [[order]]
 [[order.group]]
 id = "samples/kotlin-gradle"
-version = "0.0.1"
+version = "0.0.2"
 
 [[order]]
 [[order.group]]
@@ -38,8 +38,15 @@ version = "0.0.1"
 id = "samples/hello-universe"
 version = "0.0.1"
 
-# Stack that will be used by the builder
+# Base images used to create the builder
+[build]
+image = "cnbs/sample-base-build:jammy"
+[run]
+[[run.images]]
+image = "cnbs/sample-base-run:jammy"
+
+# Stack (deprecated) used to create the builder
 [stack]
 id = "io.buildpacks.samples.stacks.jammy"
-run-image = "cnbs/sample-stack-run:jammy"
-build-image = "cnbs/sample-stack-build:jammy"
+build-image = "cnbs/sample-base-build:jammy"
+run-image = "cnbs/sample-base-run:jammy"
