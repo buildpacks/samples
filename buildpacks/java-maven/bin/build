@@ -52,31 +52,21 @@ version = "${jdk_version}"
 url = "${jdk_url}"
 EOF
 
-  echo "$layers_dir"/jdk > "$layers_dir"/jdk/env/JAVA_HOME
-  if [[ -z ${LD_LIBRARY_PATH} ]]; then
-    echo "${JAVA_HOME}/jre/lib/amd64/server" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
-  else
-    echo "${JAVA_HOME}/jre/lib/amd64/server:${LD_LIBRARY_PATH}" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
-  fi
+  # Set the environment variables used at launch time
+  mkdir -p ${jdk_layer_dir}/env
+  echo ${jdk_layer_dir} > ${jdk_layer_dir}/env/JAVA_HOME.default
+  echo ${jdk_layer_dir}/jre/lib/amd64/server > ${jdk_layer_dir}/env/LD_LIBRARY_PATH.append
+fi
 
-  mkdir -p ${jdk_layer_dir}/exec.d
-  cat > "${jdk_layer_dir}/exec.d/jdk.sh" << EOF
-echo JAVA_HOME=${jdk_layer_dir}
-if [[ -z \$LD_LIBRARY_PATH ]]; then
-  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
-else
-  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
-fi
-echo PATH="\${PATH}:\${JAVA_HOME}/bin"
-EOF
-  chmod u+x,g+x "${jdk_layer_dir}/exec.d/jdk.sh"
-fi
+# Set env variables to make jdk accessible for the maven invocation below
+# This is the same logic as setting JAVA_HOME.default or LD_LIBRAY_PATH.append,
+# which suggests that we should factor out the mvn usage into its own buildpack.
 export JAVA_HOME=${jdk_layer_dir}
-
-# Set env variables to make jdk accessible
-for var in "$layers_dir"/jdk/env/*; do
-  declare "$(basename "$var")=$(<"$var")"
-done
+if [[ -z \$LD_LIBRARY_PATH ]]; then
+  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
+else
+  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
+fi
 export PATH=${jdk_layer_dir}/bin:$PATH
 
 # 4. MAKE MAVEN M2 CACHE LAYER
