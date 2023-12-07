@@ -56,22 +56,21 @@ EOF
     echo "${JAVA_HOME}/jre/lib/amd64/server:${LD_LIBRARY_PATH}" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
   fi
 
-  mkdir -p ${jdk_layer_dir}/exec.d
-  cat > "${jdk_layer_dir}/exec.d/jdk.sh" << EOF
-echo JAVA_HOME=${jdk_layer_dir}
-if [[ -z \$LD_LIBRARY_PATH ]]; then
-  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
-else
-  echo LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
-fi
-echo PATH="\${PATH}:\${JAVA_HOME}/bin"
-EOF
+  # Set the environment variables used at launch time
+  mkdir -p ${jdk_layer_dir}/env
+  echo ${jdk_layer_dir} > ${jdk_layer_dir}/env/JAVA_HOME.default
+  echo ${jdk_layer_dir}/jre/lib/amd64/server > ${jdk_layer_dir}/env/LD_LIBRARY_PATH.append
 fi
 
-# Set env variables to make jdk accessible
-for var in "$layers_dir"/jdk/env/*; do
-  declare "$(basename "$var")=$(<"$var")"
-done
+# Set env variables to make jdk accessible for the gradle invocation below
+# This is the same logic as setting JAVA_HOME.default or LD_LIBRAY_PATH.append,
+# which suggests that we should factor out the gradle usage into its own buildpack.
+export JAVA_HOME=${jdk_layer_dir}
+if [[ -z \$LD_LIBRARY_PATH ]]; then
+  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server"
+else
+  export LD_LIBRARY_PATH="\$JAVA_HOME/jre/lib/amd64/server:${LD_LIBRARY_PATH}"
+fi
 export PATH=${jdk_layer_dir}/bin:$PATH
 
 # 4. MAKE GRADLE CACHE LAYER
