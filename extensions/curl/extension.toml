@@ -1,5 +1,5 @@
 # Buildpack API version
-api = "0.9"
+api = "0.10"
 
 # Extension ID and metadata
 [extension]
