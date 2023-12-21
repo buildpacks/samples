@@ -4,7 +4,7 @@ set -e
 ID_PREFIX="io.buildpacks.samples.stacks"
 
 DEFAULT_PREFIX=cnbs/sample-base
-DEFAULT_PLATFORM=linux/amd64
+DEFAULT_PLATFORM=amd64
 
 REPO_PREFIX=${DEFAULT_PREFIX}
 PLATFORM=${DEFAULT_PLATFORM}
