@@ -9,6 +9,8 @@ cat >> "${output_dir}/build.Dockerfile" <<EOL
 ARG base_image
 FROM \${base_image}
 
+COPY ./mvnw .
+
 USER root
 RUN apk update && apk add vim
 
