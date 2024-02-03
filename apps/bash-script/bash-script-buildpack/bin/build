@@ -11,7 +11,7 @@ cat >> "${layers_dir}/launch.toml" <<EOL
 [[processes]]
 type = "web"
 command = ["./app.sh"]
-default = "true"
+default = true
 EOL
 
 # LIST CONTENTS
