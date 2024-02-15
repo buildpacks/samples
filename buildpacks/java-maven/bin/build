@@ -24,8 +24,8 @@ if [[ -r /etc/alpine-release ]]; then
   jdk_version="1.8.0_222"
 fi
 
-maven_url="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
-maven_version="3.5.4"
+maven_url="https://apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz"
+maven_version="3.9.6"
 
 echo "---> Installing JDK"
 
