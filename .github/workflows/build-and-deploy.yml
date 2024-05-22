@@ -22,12 +22,10 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
-          # FIXME: Revert back to 'getLatestRelease' when pack v0.31.0 is released
           script: |
-            return github.rest.repos.getReleaseByTag({
+            return github.rest.repos.getLatestRelease({
                 owner: "buildpacks",
-                repo: "pack",
-                tag: "v0.31.0-rc1"
+                repo: "pack"
             }).then(result => {
                 return result.data.assets
                   .filter(a => a.name.includes("-linux.tgz"))
