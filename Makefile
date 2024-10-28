@@ -10,33 +10,33 @@ clean: clean-linux clean-windows
 
 build-linux: build-linux-bases build-linux-packages build-linux-builders build-linux-buildpacks
 
-build-linux-bases: build-base-alpine build-base-jammy
+build-linux-bases: build-base-alpine build-base-noble
 
 build-alpine: build-base-alpine build-builder-alpine build-buildpacks-alpine
 
-build-jammy: build-base-jammy build-builder-jammy build-buildpacks-jammy
+build-noble: build-base-noble build-builder-noble build-buildpacks-noble
 
 build-base-alpine:
 	@echo "> Building 'alpine' base images..."
 	${PACK_CMD} config experimental true
 	bash base-images/build.sh alpine
 
-build-base-jammy:
-	@echo "> Building 'jammy' base images..."
+build-base-noble:
+	@echo "> Building 'noble' base images..."
 	${PACK_CMD} config experimental true
-	bash base-images/build.sh jammy
+	bash base-images/build.sh noble
 
-build-linux-builders: build-builder-alpine build-builder-jammy
+build-linux-builders: build-builder-alpine build-builder-noble
 
 build-builder-alpine: build-linux-packages build-sample-root
 	@echo "> Building 'alpine' builder..."
 	$(PACK_CMD) builder create cnbs/sample-builder:alpine --config $(SAMPLES_ROOT)/builders/alpine/builder.toml $(PULL_POLICY_NEVER)
 
-build-builder-jammy: build-linux-packages build-sample-root
-	@echo "> Building 'jammy' builder..."
-	$(PACK_CMD) builder create cnbs/sample-builder:jammy --config $(SAMPLES_ROOT)/builders/jammy/builder.toml $(PULL_POLICY_NEVER)
+build-builder-noble: build-linux-packages build-sample-root
+	@echo "> Building 'noble' builder..."
+	$(PACK_CMD) builder create cnbs/sample-builder:noble --config $(SAMPLES_ROOT)/builders/noble/builder.toml $(PULL_POLICY_NEVER)
 
-build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-jammy
+build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-noble
 
 build-buildpacks-alpine: build-sample-root
 	@echo "> Starting local registry to store alpine builder (when builder contains extensions it must exist in a registry so that builds can use --pull-policy=always and we don't want to override the locally built builder)"
@@ -60,24 +60,24 @@ build-buildpacks-alpine: build-sample-root
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/kotlin-gradle --network=host
 
-build-buildpacks-jammy: build-sample-root
-	@echo "> Creating 'hello-moon' app using 'jammy' builder..."
-	$(PACK_CMD) build sample-hello-moon-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+build-buildpacks-noble: build-sample-root
+	@echo "> Creating 'hello-moon' app using 'noble' builder..."
+	$(PACK_CMD) build sample-hello-moon-app:noble -v --builder cnbs/sample-builder:noble --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world --buildpack $(SAMPLES_ROOT)/buildpacks/hello-moon $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-processes' app using 'jammy' builder..."
-	$(PACK_CMD) build sample-hello-processes-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-processes' app using 'noble' builder..."
+	$(PACK_CMD) build sample-hello-processes-app:noble -v --builder cnbs/sample-builder:noble --buildpack $(SAMPLES_ROOT)/buildpacks/hello-processes $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'hello-world' app using 'jammy' builder..."
-	$(PACK_CMD) build sample-hello-world-app:jammy -v --builder cnbs/sample-builder:jammy --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'hello-world' app using 'noble' builder..."
+	$(PACK_CMD) build sample-hello-world-app:noble -v --builder cnbs/sample-builder:noble --buildpack $(SAMPLES_ROOT)/buildpacks/hello-world $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'java-maven' app using 'jammy' builder..."
-	$(PACK_CMD) build sample-java-maven-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/java-maven $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'java-maven' app using 'noble' builder..."
+	$(PACK_CMD) build sample-java-maven-app:noble -v --builder cnbs/sample-builder:noble --path apps/java-maven $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'kotlin-gradle' app using 'jammy' builder..."
-	$(PACK_CMD) build sample-kotlin-gradle-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/kotlin-gradle $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'kotlin-gradle' app using 'noble' builder..."
+	$(PACK_CMD) build sample-kotlin-gradle-app:noble -v --builder cnbs/sample-builder:noble --path apps/kotlin-gradle $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
-	@echo "> Creating 'ruby-bundler' app using 'jammy' builder..."
-	$(PACK_CMD) build sample-ruby-bundler-app:jammy -v --builder cnbs/sample-builder:jammy --path apps/ruby-bundler $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
+	@echo "> Creating 'ruby-bundler' app using 'noble' builder..."
+	$(PACK_CMD) build sample-ruby-bundler-app:noble -v --builder cnbs/sample-builder:noble --path apps/ruby-bundler $(PULL_POLICY_NEVER) $(PACK_BUILD_FLAGS)
 
 build-linux-packages: build-sample-root
 	@echo "> Creating 'hello-world' buildpack package"
@@ -94,10 +94,10 @@ deploy-linux-bases:
 	docker push cnbs/sample-base-run:alpine
 	docker push cnbs/sample-base-build:alpine
 
-	@echo "> Deploying 'jammy' base images..."
-	docker push cnbs/sample-base:jammy
-	docker push cnbs/sample-base-run:jammy
-	docker push cnbs/sample-base-build:jammy
+	@echo "> Deploying 'noble' base images..."
+	docker push cnbs/sample-base:noble
+	docker push cnbs/sample-base-run:noble
+	docker push cnbs/sample-base-build:noble
 
 deploy-linux-packages:
 	@echo "> Deploying linux packages..."
@@ -109,8 +109,8 @@ deploy-linux-builders:
 	docker run cnbs/sample-builder:alpine ls /cnb/extensions/samples_curl || true
 	docker push cnbs/sample-builder:alpine
 
-	@echo "> Deploying 'jammy' builder..."
-	docker push cnbs/sample-builder:jammy
+	@echo "> Deploying 'noble' builder..."
+	docker push cnbs/sample-builder:noble
 
 clean-linux:
 	@echo "> Removing 'alpine' base images..."
@@ -118,14 +118,14 @@ clean-linux:
 	docker rmi cnbs/sample-base-run:alpine || true
 	docker rmi cnbs/sample-base-build:alpine || true
 
-	@echo "> Removing 'jammy' base images..."
-	docker rmi cnbs/sample-base:jammy || true
-	docker rmi cnbs/sample-base-run:jammy || true
-	docker rmi cnbs/sample-base-build:jammy || true
+	@echo "> Removing 'noble' base images..."
+	docker rmi cnbs/sample-base:noble || true
+	docker rmi cnbs/sample-base-run:noble || true
+	docker rmi cnbs/sample-base-build:noble || true
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
-	docker rmi cnbs/sample-builder:jammy || true
+	docker rmi cnbs/sample-builder:noble || true
 
 	@echo "> Removing 'alpine' apps..."
 	docker rmi sample-hello-moon-app:alpine || true
@@ -134,13 +134,13 @@ clean-linux:
 	docker rmi sample-java-maven-app:alpine || true
 	docker rmi sample-kotlin-gradle-app:alpine || true
 
-	@echo "> Removing 'jammy' apps..."
-	docker rmi sample-hello-moon-app:jammy || true
-	docker rmi sample-hello-processes-app:jammy || true
-	docker rmi sample-hello-world-app:jammy || true
-	docker rmi sample-java-maven-app:jammy || true
-	docker rmi sample-kotlin-gradle-app:jammy || true
-	docker rmi sample-ruby-bundler-app:jammy || true
+	@echo "> Removing 'noble' apps..."
+	docker rmi sample-hello-moon-app:noble || true
+	docker rmi sample-hello-processes-app:noble || true
+	docker rmi sample-hello-world-app:noble || true
+	docker rmi sample-java-maven-app:noble || true
+	docker rmi sample-kotlin-gradle-app:noble || true
+	docker rmi sample-ruby-bundler-app:noble || true
 
 	@echo "> Removing packages..."
 	docker rmi cnbs/sample-package:hello-world || true

@@ -14,7 +14,7 @@ pack build sample-hello-processes-app --builder cnbs/sample-builder:alpine  --bu
 OR
 
 ```bash
-pack build sample-hello-processes-app --builder cnbs/sample-builder:jammy --buildpack ../java-maven --buildpack . --path ../../apps/java-maven
+pack build sample-hello-processes-app --builder cnbs/sample-builder:noble --buildpack ../java-maven --buildpack . --path ../../apps/java-maven
 ```
 
 #### Run

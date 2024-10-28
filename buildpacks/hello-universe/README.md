@@ -16,7 +16,7 @@ OR
 
 ```bash
 pack build sample-hello-universe-app \
-    --builder cnbs/sample-builder:jammy \
+    --builder cnbs/sample-builder:noble \
     --buildpack . \
     --buildpack ../hello-world/ \
     --buildpack ../hello-moon/

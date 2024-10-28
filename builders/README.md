@@ -4,7 +4,7 @@ A sample of builders that use the [base images](../base-images/) in this repo.
 
 ### Contains:
 - [Alpine](alpine/)
-- [Jammy](jammy/)
+- [noble](noble/)
 
 ### Additional Resources
 

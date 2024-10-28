@@ -10,7 +10,7 @@ workflows:
           executor-image: ubuntu-2204:2023.04.2
           working-directory: apps/java-maven
           image-name: cnbs/circleci-sample
-          builder: 'cnbs/sample-builder:jammy'
+          builder: 'cnbs/sample-builder:noble'
           version: '0.32.1'
       - test:
           requires:
