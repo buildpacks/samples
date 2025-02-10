@@ -1,5 +1,0 @@
-[buildpack]
-uri = "."
-
-[platform]
-os = "windows"
