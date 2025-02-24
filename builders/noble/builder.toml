@@ -45,8 +45,10 @@ image = "cnbs/sample-base-build:noble"
 [[run.images]]
 image = "cnbs/sample-base-run:noble"
 
-# Stack (deprecated) used to create the builder
-[stack]
-id = "io.buildpacks.samples.stacks.noble"
-build-image = "cnbs/sample-base-build:noble"
-run-image = "cnbs/sample-base-run:noble"
+[[targets]]
+arch = "amd64"
+os = "linux"
+
+[[targets]]
+arch = "arm64"
+os = "linux"
