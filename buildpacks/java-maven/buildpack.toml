@@ -1,17 +1,14 @@
 # Buildpack API version
-api = "0.10"
+api = "0.14"
 
 # Buildpack ID and metadata
 [buildpack]
 id = "samples/java-maven"
-version = "0.0.2"
+version = "0.0.3"
 name = "Sample Java Maven Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/java-maven"
 
 # Targets the buildpack will work with
 [[targets]]
+arch = "amd64"
 os = "linux"
-
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "*"

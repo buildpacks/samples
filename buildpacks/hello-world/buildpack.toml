@@ -1,17 +1,13 @@
 # Buildpack API version
-api = "0.10"
+api = "0.14"
 
 # Buildpack ID and metadata
 [buildpack]
 id = "samples/hello-world"
-version = "0.0.1"
+version = "0.0.2"
 name = "Hello World Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-world"
 
 # Targets the buildpack will work with
 [[targets]]
 os = "linux"
-
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "*"
