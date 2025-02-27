@@ -1,10 +1,10 @@
 # Buildpack API version
-api = "0.10"
+api = "0.11"
 
 # Buildpack ID and metadata
 [buildpack]
 id = "samples/hello-universe"
-version = "0.0.1"
+version = "0.0.2"
 name = "Hello Universe Buildpack"
 homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-universe"
 
@@ -12,8 +12,8 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-uni
 [[order]]
 [[order.group]]
 id = "samples/hello-world"
-version = "0.0.1"
+version = "0.0.2"
 
 [[order.group]]
 id = "samples/hello-moon"
-version = "0.0.1"
+version = "0.0.2"

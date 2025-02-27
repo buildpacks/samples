@@ -1,17 +1,17 @@
 # Buildpacks to include in builder
 [[buildpacks]]
 id = "samples/java-maven"
-version = "0.0.2"
+version = "0.0.3"
 uri = "../../buildpacks/java-maven"
 
 [[buildpacks]]
 id = "samples/kotlin-gradle"
-version = "0.0.2"
+version = "0.0.3"
 uri = "../../buildpacks/kotlin-gradle"
 
 [[buildpacks]]
 id = "samples/ruby-bundler"
-version = "0.0.1"
+version = "0.0.2"
 uri = "../../buildpacks/ruby-bundler"
 
 [[buildpacks]]
@@ -21,22 +21,22 @@ uri = "docker://cnbs/sample-package:hello-universe"
 [[order]]
 [[order.group]]
 id = "samples/java-maven"
-version = "0.0.2"
+version = "0.0.3"
 
 [[order]]
 [[order.group]]
 id = "samples/kotlin-gradle"
-version = "0.0.2"
+version = "0.0.3"
 
 [[order]]
 [[order.group]]
 id = "samples/ruby-bundler"
-version = "0.0.1"
+version = "0.0.2"
 
 [[order]]
 [[order.group]]
 id = "samples/hello-universe"
-version = "0.0.1"
+version = "0.0.2"
 
 # Base images used to create the builder
 [build]
@@ -45,8 +45,10 @@ image = "cnbs/sample-base-build:noble"
 [[run.images]]
 image = "cnbs/sample-base-run:noble"
 
-# Stack (deprecated) used to create the builder
-[stack]
-id = "io.buildpacks.samples.stacks.noble"
-build-image = "cnbs/sample-base-build:noble"
-run-image = "cnbs/sample-base-run:noble"
+[[targets]]
+arch = "amd64"
+os = "linux"
+
+[[targets]]
+arch = "arm64"
+os = "linux"
