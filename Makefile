@@ -154,6 +154,31 @@ set-experimental:
 	$(PACK_CMD) config experimental true
 
 ####################
+## FreeBSD pack with podman
+####################
+
+build-freebsd: build-freebsd-bases build-freebsd-packages build-freebsd-builders
+
+build-freebsd-bases: build-base-freebsd150
+
+build-freebsd150: build-base-freebsd150 build-builder-freebsd150
+
+build-base-freebsd150:
+	@echo "> Building 'freebsd150' base images..."
+	${PACK_CMD} config experimental true
+	bash base-images/build.sh -f docker.io/gogolok/freebsdcnbs-base -p freebsd/amd64 freebsd150
+
+build-freebsd-builders: build-builder-freebsd150
+
+build-builder-freebsd150: build-freebsd-packages build-sample-root
+	@echo "> Building 'freebsd150' builder..."
+	$(PACK_CMD) builder create docker.io/gogolok/freebsdcnbs-sample-builder:freebsd150 --config $(SAMPLES_ROOT)/builders/freebsd150/builder.toml $(PULL_POLICY_NEVER)
+
+build-freebsd-packages: build-sample-root
+	@echo "> Creating 'hello-world' buildpack package"
+	$(PACK_CMD) buildpack package docker.io/gogolok/freebsdcnbs-sample-package:hello-world --config $(SAMPLES_ROOT)/$(PACKAGES_DIR)/hello-world/package.toml $(PULL_POLICY_NEVER) --target "freebsd/amd64"
+
+####################
 ## Windows pack for any daemon OS
 ####################
 
