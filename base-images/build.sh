@@ -18,7 +18,7 @@ usage() {
   exit 1; 
 }
 
-while getopts "v:p:" o; do
+while getopts ":f:p:" o; do
   case "${o}" in
     f)
       REPO_PREFIX=${OPTARG}
