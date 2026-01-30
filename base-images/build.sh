@@ -62,14 +62,16 @@ RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
 BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
 FROM_IMAGE=$(head -n1 "${IMAGE_DIR}"/base/Dockerfile | cut -d' ' -f2)
 
+CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-docker}
+
 # Get target distro information
-DISTRO_NAME=$(docker run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^ID=' | cut -d'=' -f2)
+DISTRO_NAME=$(${CONTAINER_RUNTIME} run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^ID=' | cut -d'=' -f2)
 echo "DISTRO_NAME: ${DISTRO_NAME}"
-DISTRO_VERSION=$(docker run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^VERSION_ID=' | cut -d'=' -f2)
+DISTRO_VERSION=$(${CONTAINER_RUNTIME} run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^VERSION_ID=' | cut -d'=' -f2)
 echo "DISTRO_VERSION: ${DISTRO_VERSION}"
 
 if [[ -d "${IMAGE_DIR}/base" ]]; then
-  docker build --platform=${PLATFORM} \
+  ${CONTAINER_RUNTIME} build --platform=${PLATFORM} \
   --build-arg "distro_name=${DISTRO_NAME}" \
   --build-arg "distro_version=${DISTRO_VERSION}" \
   --build-arg "stack_id=${STACK_ID}" \
@@ -78,14 +80,14 @@ if [[ -d "${IMAGE_DIR}/base" ]]; then
 fi
 
 echo "BUILDING ${BUILD_IMAGE}..."
-docker build --platform=${PLATFORM} \
+${CONTAINER_RUNTIME} build --platform=${PLATFORM} \
   --build-arg "base_image=${BASE_IMAGE}" \
   --build-arg "stack_id=${STACK_ID}" \
   -t "${BUILD_IMAGE}" \
   "${IMAGE_DIR}/build"
 
 echo "BUILDING ${RUN_IMAGE}..."
-docker build --platform=${PLATFORM} \
+${CONTAINER_RUNTIME} build --platform=${PLATFORM} \
   --build-arg "base_image=${BASE_IMAGE}" \
   -t "${RUN_IMAGE}" \
   "${IMAGE_DIR}/run"
