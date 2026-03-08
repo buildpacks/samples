@@ -11,3 +11,6 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-wor
 # Targets the buildpack will work with
 [[targets]]
 os = "linux"
+
+[[targets]]
+os = "freebsd"
