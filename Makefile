@@ -16,14 +16,12 @@ build-alpine: build-base-alpine build-builder-alpine build-buildpacks-alpine
 
 build-noble: build-base-noble build-builder-noble build-buildpacks-noble
 
-build-base-alpine:
+build-base-alpine: set-experimental
 	@echo "> Building 'alpine' base images..."
-	${PACK_CMD} config experimental true
 	bash base-images/build.sh alpine
 
-build-base-noble:
+build-base-noble: set-experimental
 	@echo "> Building 'noble' base images..."
-	${PACK_CMD} config experimental true
 	bash base-images/build.sh noble
 
 build-linux-builders: build-builder-alpine build-builder-noble
