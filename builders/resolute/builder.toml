@@ -40,10 +40,10 @@ version = "0.0.2"
 
 # Base images used to create the builder
 [build]
-image = "cnbs/sample-base-build:noble"
+image = "cnbs/sample-base-build:resolute"
 [run]
 [[run.images]]
-image = "cnbs/sample-base-run:noble"
+image = "cnbs/sample-base-run:resolute"
 
 [[targets]]
 arch = "amd64"
