@@ -1,0 +1,26 @@
+# Buildpacks to include in builder
+[[buildpacks]]
+uri = "docker.io/gogolok/freebsdcnbs-sample-package:hello-world"
+
+[[order]]
+[[order.group]]
+id = "samples/hello-world"
+
+# Base images used to create the builder
+[build]
+image = "docker.io/gogolok/freebsdcnbs-base-build:freebsd150"
+[run]
+[[run.images]]
+image = "docker.io/gogolok/freebsdcnbs-base-run:freebsd150"
+
+# WIP
+[lifecycle]
+uri = "./lifecycle-freebsd.amd64.tgz"
+
+[[targets]]
+arch = "amd64"
+os = "freebsd"
+
+[[targets]]
+arch = "arm64"
+os = "freebsd"
