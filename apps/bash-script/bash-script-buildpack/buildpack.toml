@@ -7,6 +7,6 @@ id = "samples/bash-script"
 version = "0.0.1"
 name = "Bash Script Buildpack"
 
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "*"
+# Targets the buildpack will work with
+[[targets]]
+os = "linux"

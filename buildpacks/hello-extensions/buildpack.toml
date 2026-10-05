@@ -12,7 +12,3 @@ description = "A simple buildpack that requires curl."
 # Targets the buildpack will work with
 [[targets]]
 os = "linux"
-
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "*"

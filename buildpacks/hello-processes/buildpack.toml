@@ -11,7 +11,3 @@ homepage = "https://github.com/buildpacks/samples/tree/main/buildpacks/hello-pro
 # Targets the buildpack will work with
 [[targets]]
 os = "linux"
-
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "*"
