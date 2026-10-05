@@ -1,5 +1,5 @@
 # Buildpack API version
-api = "0.11"
+api = "0.12"
 
 # Buildpack ID and metadata
 [buildpack]
