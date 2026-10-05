@@ -1,5 +1,6 @@
 # Buildpack Samples 
 [![Build Status](https://github.com/buildpacks/samples/workflows/Build%20and%20Deploy/badge.svg?branch=main)](https://github.com/buildpacks/samples/actions) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/buildpacks/samples)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbuildpacks%2Fsamples.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbuildpacks%2Fsamples?ref=badge_shield)
 
 This repository contains sample implementations of the core components of the [Cloud Native Buildpacks](https://buildpacks.io/) (CNB) project for learning and testing purposes.
 
@@ -63,3 +64,7 @@ make build-windows
 #### Contributing
 - Samples are maintained by https://github.com/orgs/buildpacks/teams/learning-maintainers
 - Buildpacks Slack [#learning-team](https://buildpacks.slack.com/archives/CST4A3ECV)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbuildpacks%2Fsamples.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbuildpacks%2Fsamples?ref=badge_large)
