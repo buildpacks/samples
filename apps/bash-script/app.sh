@@ -11,6 +11,10 @@ echo "
                                               |_|
 "
 
+echo
+echo "System environment:"
+uname -sr
+
 echo 
 echo "Here are the contents of the current working directory:"
 ls -alHR
