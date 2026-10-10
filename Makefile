@@ -16,14 +16,12 @@ build-alpine: build-base-alpine build-builder-alpine build-buildpacks-alpine
 
 build-resolute: build-base-resolute build-builder-resolute build-buildpacks-resolute
 
-build-base-alpine:
+build-base-alpine: set-experimental
 	@echo "> Building 'alpine' base images..."
-	${PACK_CMD} config experimental true
 	bash base-images/build.sh alpine
 
-build-base-resolute:
+build-base-resolute: set-experimental
 	@echo "> Building 'resolute' base images..."
-	${PACK_CMD} config experimental true
 	bash base-images/build.sh resolute
 
 build-linux-builders: build-builder-alpine build-builder-resolute
