@@ -1,5 +1,5 @@
 # Buildpack API version
-api = "0.11"
+api = "0.12"
 
 # Buildpack ID and metadata
 [buildpack]
@@ -12,7 +12,3 @@ description = "A simple buildpack that requires curl."
 # Targets the buildpack will work with
 [[targets]]
 os = "linux"
-
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "*"
