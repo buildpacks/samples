@@ -31,5 +31,7 @@ name = "ruby"
 #
 [[requires]]
 name = "ruby"
+
+[requires.metadata]
 version = "${version}"
 EOL
