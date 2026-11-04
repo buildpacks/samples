@@ -1,6 +1,7 @@
 PULL_POLICY_NEVER?=--pull-policy=never
 PACK_BUILD_FLAGS?=--trust-builder
 PACK_CMD?=pack
+REGISTRY_CONTAINER?=samples-registry
 
 clean: clean-linux
 
@@ -38,7 +39,8 @@ build-linux-buildpacks: build-buildpacks-alpine build-buildpacks-resolute
 
 build-buildpacks-alpine: build-sample-root
 	@echo "> Starting local registry to store alpine builder (when builder contains extensions it must exist in a registry so that builds can use --pull-policy=always and we don't want to override the locally built builder)"
-	docker run -d --rm -p 5000:5000 registry:2
+	docker rm -f $(REGISTRY_CONTAINER) 2>/dev/null || true
+	docker run -d --rm --name $(REGISTRY_CONTAINER) -p 5000:5000 registry:2
 	sleep 2
 	docker tag cnbs/sample-builder:alpine localhost:5000/cnbs/sample-builder:alpine
 	docker push localhost:5000/cnbs/sample-builder:alpine
@@ -57,6 +59,9 @@ build-buildpacks-alpine: build-sample-root
 
 	@echo "> Creating 'kotlin-gradle' app using 'alpine' builder..."
 	$(PACK_CMD) build sample-kotlin-gradle-app:alpine -v --builder localhost:5000/cnbs/sample-builder:alpine --path apps/kotlin-gradle --network=host
+
+	@echo "> Stopping local registry..."
+	docker stop $(REGISTRY_CONTAINER)
 
 build-buildpacks-resolute: build-sample-root
 	@echo "> Creating 'hello-moon' app using 'resolute' builder..."
@@ -123,6 +128,7 @@ clean-linux:
 
 	@echo "> Removing builders..."
 	docker rmi cnbs/sample-builder:alpine || true
+	docker rmi localhost:5000/cnbs/sample-builder:alpine || true
 	docker rmi cnbs/sample-builder:resolute || true
 
 	@echo "> Removing 'alpine' apps..."
@@ -143,6 +149,9 @@ clean-linux:
 	@echo "> Removing packages..."
 	docker rmi cnbs/sample-package:hello-world || true
 	docker rmi cnbs/sample-package:hello-universe || true
+
+	@echo "> Stopping local registry..."
+	docker stop $(REGISTRY_CONTAINER) || true
 
 	@echo "> Removing '.tmp'"
 	rm -rf .tmp
