@@ -1,5 +1,5 @@
 # Buildpack API version
-api = "0.10"
+api = "0.12"
 
 # Buildpack ID and metadata
 [buildpack]
@@ -12,7 +12,3 @@ name = "Batch Script Buildpack"
 os = "windows"
 [[targets.distros]]
 version = "10.0.20348.1906"
-
-# Stacks (deprecated) the buildpack will work with
-[[stacks]]
-id = "io.buildpacks.samples.stacks.nanoserver-2022"
