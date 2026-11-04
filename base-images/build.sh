@@ -61,10 +61,10 @@ FROM_IMAGE=$(head -n1 "${IMAGE_DIR}"/base/Dockerfile | cut -d' ' -f2)
 
 CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-docker}
 
-# Get target distro information
-DISTRO_NAME=$(${CONTAINER_RUNTIME} run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^ID=' | cut -d'=' -f2)
+# Get target distro information (values in os-release may be quoted, e.g. VERSION_ID="26.04")
+DISTRO_NAME=$(${CONTAINER_RUNTIME} run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^ID=' | cut -d'=' -f2 | tr -d "'\"")
 echo "DISTRO_NAME: ${DISTRO_NAME}"
-DISTRO_VERSION=$(${CONTAINER_RUNTIME} run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^VERSION_ID=' | cut -d'=' -f2)
+DISTRO_VERSION=$(${CONTAINER_RUNTIME} run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^VERSION_ID=' | cut -d'=' -f2 | tr -d "'\"")
 echo "DISTRO_VERSION: ${DISTRO_VERSION}"
 
 if [[ -d "${IMAGE_DIR}/base" ]]; then
