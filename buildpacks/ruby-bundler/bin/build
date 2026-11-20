@@ -22,7 +22,9 @@ wget -q -O - "${ruby_url}" | tar -xzf - -C "${ruby_layer_dir}"
 cat > "${ruby_layer_dir}.toml" <<EOL
 [types]
 launch = true
-metadata = "${ruby_version}"
+
+[metadata]
+version = "${ruby_version}"
 EOL
 
 # 4. MAKE RUBY AVAILABLE TO THIS SCRIPT
@@ -33,10 +35,13 @@ export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ruby_layer_dir}/lib"
 
 # Compares previous Gemfile.lock checksum to the current Gemfile.lock
 bundler_layer_dir="${layers_dir}/bundler"
-local_bundler_checksum=$(sha256sum Gemfile.lock | cut -d ' ' -f 1) 
-remote_bundler_checksum=$(cat "${bundler_layer_dir}.toml" | yj -t | jq -r .metadata 2>/dev/null || echo 'not found')
+local_bundler_checksum=""
+if [[ -f Gemfile.lock ]]; then
+  local_bundler_checksum=$(sha256sum Gemfile.lock | cut -d ' ' -f 1)
+fi
+remote_bundler_checksum=$(cat "${bundler_layer_dir}.toml" 2>/dev/null | yj -t | jq -r .metadata.checksum 2>/dev/null || echo 'not found')
 
-if [[ -f Gemfile.lock && ${local_bundler_checksum} == ${remote_bundler_checksum} ]] ; then
+if [[ -n ${local_bundler_checksum} && ${local_bundler_checksum} == ${remote_bundler_checksum} ]] ; then
   # Determine if no gem dependencies have changed, so it can reuse existing gems without running bundle install
   echo "---> Reusing gems"
   bundle config --local path "${bundler_layer_dir}" >/dev/null
@@ -45,14 +50,19 @@ else
   # Determine if there has been a gem dependency change and install new gems to the bundler layer; re-using existing and un-changed gems
   echo "---> Installing gems"
   mkdir -p "${bundler_layer_dir}"
-  cat > "${bundler_layer_dir}.toml" <<EOL
+  bundle install --path "${bundler_layer_dir}" --binstubs "${bundler_layer_dir}/bin"
+fi
+
+# The restored layer metadata never contains the [types] table, so it must be
+# written on every build, including when the gems are reused from the cache
+cat > "${bundler_layer_dir}.toml" <<EOL
 [types]
 cache = true
 launch = true
-metadata = "${local_bundler_checksum}"
+
+[metadata]
+checksum = "${local_bundler_checksum}"
 EOL
-  bundle install --path "${bundler_layer_dir}" --binstubs "${bundler_layer_dir}/bin"
-fi
 
 # 6. SET DEFAULT START COMMAND
 cat >> "${layers_dir}/launch.toml" <<EOL
