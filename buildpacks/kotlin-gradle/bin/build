@@ -38,17 +38,6 @@ if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
   mkdir -p "$layers_dir"/jdk/env
   wget -q -O - "$jdk_url" | tar pxz -C "${jdk_layer_dir}" --strip-components=1
 
-  cat > "${jdk_layer_dir}.toml" << EOF
-[types]
-launch = true
-build = true
-cache = true
-
-[metadata]
-version = "${jdk_version}"
-url = "${jdk_url}"
-EOF
-
   echo "$layers_dir"/jdk > "$layers_dir"/jdk/env/JAVA_HOME
   if [[ -z ${LD_LIBRARY_PATH} ]]; then
     echo "${JAVA_HOME}/jre/lib/amd64/server" > ${jdk_layer_dir}/env/LD_LIBRARY_PATH
@@ -61,6 +50,19 @@ EOF
   echo ${jdk_layer_dir} > ${jdk_layer_dir}/env/JAVA_HOME.default
   echo ${jdk_layer_dir}/jre/lib/amd64/server > ${jdk_layer_dir}/env/LD_LIBRARY_PATH.append
 fi
+
+# The restored layer metadata never contains the [types] table, so it must be
+# written on every build, including when the JDK is reused from the cache
+cat > "${jdk_layer_dir}.toml" << EOF
+[types]
+launch = true
+build = true
+cache = true
+
+[metadata]
+version = "${jdk_version}"
+url = "${jdk_url}"
+EOF
 
 # Set env variables to make jdk accessible for the gradle invocation below
 # This is the same logic as setting JAVA_HOME.default or LD_LIBRAY_PATH.append,
@@ -76,13 +78,11 @@ export PATH=${jdk_layer_dir}/bin:$PATH
 # 4. MAKE GRADLE CACHE LAYER
 gradle_layer_dir="${layers_dir}/gradle"
 
-if [[ ! -d ${gradle_layer_dir} ]]; then
-  mkdir -p ${gradle_layer_dir}
-  cat >> ${gradle_layer_dir}.toml <<EOF
+mkdir -p ${gradle_layer_dir}
+cat > ${gradle_layer_dir}.toml <<EOF
 [types]
 cache = true
 EOF
-fi
 ln -s ${gradle_layer_dir} $HOME/.gradle
 
 # 5. RUN BUILD

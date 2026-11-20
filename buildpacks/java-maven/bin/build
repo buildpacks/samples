@@ -41,7 +41,15 @@ if [[ ${jdk_url} != ${cached_jdk_url} ]] ; then
   mkdir -p "$layers_dir"/jdk/env
   wget -q -O - "$jdk_url" | tar pxz -C "${jdk_layer_dir}" --strip-components=1
 
-  cat > "${jdk_layer_dir}.toml" << EOF
+  # Set the environment variables used at launch time
+  mkdir -p ${jdk_layer_dir}/env
+  echo ${jdk_layer_dir} > ${jdk_layer_dir}/env/JAVA_HOME.default
+  echo ${jdk_layer_dir}/jre/lib/amd64/server > ${jdk_layer_dir}/env/LD_LIBRARY_PATH.append
+fi
+
+# The restored layer metadata never contains the [types] table, so it must be
+# written on every build, including when the JDK is reused from the cache
+cat > "${jdk_layer_dir}.toml" << EOF
 [types]
 launch = true
 build = true
@@ -51,12 +59,6 @@ cache = true
 version = "${jdk_version}"
 url = "${jdk_url}"
 EOF
-
-  # Set the environment variables used at launch time
-  mkdir -p ${jdk_layer_dir}/env
-  echo ${jdk_layer_dir} > ${jdk_layer_dir}/env/JAVA_HOME.default
-  echo ${jdk_layer_dir}/jre/lib/amd64/server > ${jdk_layer_dir}/env/LD_LIBRARY_PATH.append
-fi
 
 # Set env variables to make jdk accessible for the maven invocation below
 # This is the same logic as setting JAVA_HOME.default or LD_LIBRAY_PATH.append,
@@ -71,13 +73,11 @@ export PATH=${jdk_layer_dir}/bin:$PATH
 
 # 4. MAKE MAVEN M2 CACHE LAYER
 m2_layer_dir="${layers_dir}/maven_m2"
-if [[ ! -d ${m2_layer_dir} ]]; then
-  mkdir -p ${m2_layer_dir}
-  cat > ${m2_layer_dir}.toml << EOF
+mkdir -p ${m2_layer_dir}
+cat > ${m2_layer_dir}.toml << EOF
 [types]
 cache = true
 EOF
-fi
 ln -s ${m2_layer_dir} $HOME/.m2
 
 # 5. RUN BUILD
@@ -96,7 +96,8 @@ else
     rm -rf "${maven_layer_dir}"
     mkdir -p "${maven_layer_dir}"
     wget -q -O - "${maven_url}" | tar pxz -C "${maven_layer_dir}" --strip-components=1
-    cat > "${maven_layer_dir}.toml" << EOF
+  fi
+  cat > "${maven_layer_dir}.toml" << EOF
 [types]
 launch = true
 build = true
@@ -106,7 +107,6 @@ cache = true
 version = "${maven_version}"
 url = "${maven_url}"
 EOF
-  fi
   export PATH="${PATH}:${layers_dir}/maven/bin"
 
   echo "---> Running Maven"
