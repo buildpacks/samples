@@ -39,7 +39,10 @@ local_bundler_checksum=""
 if [[ -f Gemfile.lock ]]; then
   local_bundler_checksum=$(sha256sum Gemfile.lock | cut -d ' ' -f 1)
 fi
-remote_bundler_checksum=$(cat "${bundler_layer_dir}.toml" 2>/dev/null | yj -t | jq -r .metadata.checksum 2>/dev/null || echo 'not found')
+remote_bundler_checksum=""
+if [[ -f "${bundler_layer_dir}.toml" ]]; then
+  remote_bundler_checksum=$(yj -t < "${bundler_layer_dir}.toml" | jq -r '.metadata.checksum // empty')
+fi
 
 if [[ -n ${local_bundler_checksum} && ${local_bundler_checksum} == ${remote_bundler_checksum} ]] ; then
   # Determine if no gem dependencies have changed, so it can reuse existing gems without running bundle install
